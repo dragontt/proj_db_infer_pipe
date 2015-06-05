@@ -44,8 +44,6 @@ for (np_conf_cutoff in np_conf_cutoffs)
 			cat(regulator,length(targets),"\n")
 			pdna.target.count[i] <- sum(pdna.evid)
 			binding.evid.comb <- apply(rbind(binding.evid.max,binding.evid.sum),2,max)	
-			prc.max <- compute.prc(binding.evid.max,pdna.evid)
-			prc.sum <- compute.prc(binding.evid.sum,pdna.evid)
 			prc.comb <- compute.prc(binding.evid.comb,pdna.evid)
 		
 			if 	(length(which(prc.comb[,1]<=chip_desired_recall))>0)
