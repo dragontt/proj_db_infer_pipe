@@ -76,7 +76,8 @@ def get_fimo_scores(fn):
     for line in lines:
         temp_linesplit = line.strip().split()
         temp_name = temp_linesplit[1]
-        temp_score = (float(temp_linesplit[3]) + float(temp_linesplit[5]))/2
+        # temp_score = (float(temp_linesplit[3]) + float(temp_linesplit[5]))/2
+        temp_score = max([float(temp_linesplit[3]), float(temp_linesplit[5])])
         d[temp_name] = temp_score
     return d
 

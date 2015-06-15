@@ -25,9 +25,6 @@ for (np_conf_cutoff in np_conf_cutoffs)
 	for (chip_desired_recall in c(0.1)) # c(0.1,0.33,0.5)
 	{
 		bp.cutoff <- c()
-		pdna.target.count <- c()
-		predicted.bp.support <- c()
-		
 		chip.bp.np.sets <- c()
 
 		i <- 1
@@ -42,7 +39,6 @@ for (np_conf_cutoff in np_conf_cutoffs)
 			binding.evid.max[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$MAXP[which(bsinfo$REGULATOR==regulator)]
 			binding.evid.sum[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$SUMP[which(bsinfo$REGULATOR==regulator)]
 			cat(regulator,length(targets),"\n")
-			pdna.target.count[i] <- sum(pdna.evid)
 			binding.evid.comb <- apply(rbind(binding.evid.max,binding.evid.sum),2,max)	
 			prc.comb <- compute.prc(binding.evid.comb,pdna.evid)
 		
@@ -58,11 +54,7 @@ for (np_conf_cutoff in np_conf_cutoffs)
 			predicted.targets <- as.character(net$TARGET[which(net$REGULATOR==regulator)])[which(net$CONFIDENCE[which(net$REGULATOR==regulator)]>np_conf_cutoff)]
 			predicted.targets <- intersect(predicted.targets,orf_universe) # Narrow to space under consideration
 
-			predicted.targets.chip.supported <- intersect(predicted.targets,as.character(pdna.inter$TARGET[which(pdna.inter$REGULATOR==regulator)]))
-			predicted.targets.chip.unsupported <- setdiff(predicted.targets,as.character(pdna.inter$TARGET[which(pdna.inter$REGULATOR==regulator)]))
-
 			bp.targets <- targets[which(binding.evid.comb>bp.cutoff[i])]
-
 			pdna.targets <- targets[which(pdna.evid>0)]
 			
 			chip.bp.np.sets <- rbind(chip.bp.np.sets,c(length(bp.targets),sum(pdna.evid),length(predicted.targets),length(intersect(bp.targets,pdna.targets)),length(intersect(bp.targets,predicted.targets)),length(intersect(predicted.targets,pdna.targets)),length(intersect(bp.targets,intersect(predicted.targets,pdna.targets)))))
@@ -78,5 +70,5 @@ for (np_conf_cutoff in np_conf_cutoffs)
 filename <- paste("chip.bp.np.set.sizes.top2to20k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
 # filename <- paste("chip.bp.np.set.sizes.top10to100k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
 # filename <- paste("chip.bp.np.set.sizes.top20to200k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
-write.table(cbind(chip.bp.np.setsizes, rep(reg_bsinfo, length=nrow(chip.bp.np.setsizes)), rep(reg_pdna.inter, length=nrow(chip.bp.np.setsizes))),file=filename,col.names=FALSE,row.names=FALSE,quote=FALSE,sep='\t')
+write.table(cbind(chip.bp.np.setsizes, rep(length(reg_bsinfo), length=nrow(chip.bp.np.setsizes)), rep(length(reg_pdna.inter), length=nrow(chip.bp.np.setsizes))),file=filename,col.names=FALSE,row.names=FALSE,quote=FALSE,sep='\t')
 

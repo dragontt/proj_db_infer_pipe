@@ -64,5 +64,5 @@ for (i in 1:(length(args)-1)) {
 	cat('Load:', toString(args[i]), '\n')
 	data[length(data)+1] <- list(as.matrix(read.table(toString(args[i]))))
 }
-combined <- quantileCombine(data, verbose=TRUE)
-write.table(combined,args[length(args)],row.names=FALSE,col.names=FALSE,quote=FALSE)
+combined <- quantileCombine(data, verbose=TRUE, returnScoreListOfAllRepresentation=TRUE)
+write.table(combined[1],args[length(args)],row.names=FALSE,col.names=FALSE,quote=FALSE)
