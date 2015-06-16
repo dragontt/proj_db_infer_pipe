@@ -6,7 +6,8 @@ fnGoldNetwork <- toString(args[4])
 fnOutName <- toString(args[5])
 
 # rank_cutoffs <- seq(2000, 20000, 2000)
-rank_cutoffs <- seq(20000, 200000, 20000)
+rank_cutoffs <- seq(4000, 40000, 4000)
+# rank_cutoffs <- seq(20000, 200000, 20000)
 
 predictedNetwork <- as.matrix(read.table(fnPredictedNetwork, header=TRUE))
 goldNetwork <- as.matrix(read.table(fnGoldNetwork))

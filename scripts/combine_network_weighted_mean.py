@@ -31,7 +31,19 @@ def main(argv):
 
     # write combined network
     fn_output = parsed.ARGS[len(args)-1]
-    numpy.savetxt(fn_output, combined, fmt="%.10f", delimiter="\t", newline="\n")
+    # numpy.savetxt(fn_output, combined, fmt="%.10f", delimiter="\t", newline="\n")
+    write_adjmtr(fn_output, combined)
+
+def write_adjmtr(fn, adjmtr):
+    writer = open(fn, "w")
+    for i in range(len(adjmtr)):
+        for j in range(len(adjmtr[i])):
+            if adjmtr[i,j] == 0:
+                writer.write("0\t")
+            else:
+                writer.write("%0.10f\t" % adjmtr[i,j])
+        writer.write("\n")
+    writer.close()
 
 if __name__ == "__main__":
     main(sys.argv)
