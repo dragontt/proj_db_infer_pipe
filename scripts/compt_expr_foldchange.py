@@ -43,6 +43,7 @@ def main(argv):
 		expr += pseudocount
 
 		# expression with specified sample environmental condition
+		cond_out = cond
 		if len(cond[0].split('-')) > 1:
 			# parse indices
 			wt_index_groups = []

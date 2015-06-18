@@ -17,6 +17,9 @@ reg_bsinfo <- intersect(unique(as.character(bsinfo$REGULATOR)),unique(as.charact
 interaction_pdna.inter_cnt <- length(reg_pdna.inter) * length(orf_universe)
 interaction_bsinfo_cnt <- length(reg_bsinfo) * length(orf_universe)
 
+cat(interaction_pdna.inter_cnt, '\n')
+cat(interaction_bsinfo_cnt, '\n')
+
 # np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(2000,20000,by=2000)]
 np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(4000,40000,by=4000)]
 # np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(20000,200000,by=20000)]
@@ -70,5 +73,5 @@ for (np_conf_cutoff in np_conf_cutoffs)
 # filename <- paste("chip.bp.np.set.sizes.top2to20k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
 filename <- paste("chip.bp.np.set.sizes.top4to40k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
 # filename <- paste("chip.bp.np.set.sizes.top20to200k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
-write.table(cbind(chip.bp.np.setsizes, rep(length(interaction_bsinfo_cnt), length=nrow(chip.bp.np.setsizes)), rep(length(interaction_pdna.inter_cnt), length=nrow(chip.bp.np.setsizes))),file=filename,col.names=FALSE,row.names=FALSE,quote=FALSE,sep='\t')
+write.table(cbind(chip.bp.np.setsizes, rep(interaction_bsinfo_cnt, length=nrow(chip.bp.np.setsizes)), rep(interaction_pdna.inter_cnt, length=nrow(chip.bp.np.setsizes))),file=filename,col.names=FALSE,row.names=FALSE,quote=FALSE,sep='\t')
 
