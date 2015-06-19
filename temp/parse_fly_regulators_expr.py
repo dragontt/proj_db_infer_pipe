@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import numpy
 
-dir_res = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_zeke_singles_net_full/'
+dir_res = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_baranski_0.15m_fatbody/'
 fn_rids = dir_res + 'rids.fb'
 fn_gids = dir_res + 'gids.fb'
 fn_expr = dir_res + 'data.singles.expr'

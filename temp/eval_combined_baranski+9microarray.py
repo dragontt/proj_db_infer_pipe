@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Combine chip and pwm evaluations")
-    parser.add_argument('-e', '-eval_method', dest='eval_method', type=str, default='binned')
+    parser.add_argument('-e', '-eval_method', dest='eval_method', type=str, default='cumulative')
     parsed = parser.parse_args(argv[1:])
     return parsed
 
@@ -56,7 +56,7 @@ def main(argv):
     """ evaluate chip and pwm supports on binding overlap gold standard """
     # file initialization
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_combined/'
-    dir_sub_quantile = 'quantile_combine_baranski_9microarray/analysis_binding_overlap/chip.bp.np.set.sizes.top2to20k'
+    dir_sub_quantile = 'quantile_combine_baranski_9microarray/analysis_binding_indep/chip.bp.np.set.sizes.top4to40k'
     # dir_sub_quantile = 'quantile_combine_baranski_9microarray/analysis_binding_overlap/chip.bp.np.set.sizes.top20to200k'
     fns = []
     fns.append(dir_network + dir_sub_quantile + '.np.txt')
@@ -69,7 +69,8 @@ def main(argv):
     labels.append('chance')
     labels.append('np')
     labels.append('np + bart_only_pert')
-    x_ticks = ['2k', '4k', '6k', '8k', '10k', '12k', '14k', '16k', '18k', '20k']
+    # x_ticks = ['2k', '4k', '6k', '8k', '10k', '12k', '14k', '16k', '18k', '20k']
+    x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
     # x_ticks = ['10k', '20k', '30k', '40k', '50k', '60k', '70k', '80k', '90k', '100k']
     # x_ticks = ['20k', '40k', '60k', '80k', '100k', '120k', '140k', '160k', '180k', '200k']
 
@@ -89,7 +90,7 @@ def main(argv):
     plt.xlabel('Predictions grouped by rank')
     plt.ylabel('Interactions supported by ChIP')
     plt.xlim(-1, len(eval_chip[0]))
-    plt.ylim(0, .3)
+    plt.ylim(0, .5)
     plt.legend(loc="upper right")
 
     plt.subplot(1,2,2)
@@ -99,7 +100,7 @@ def main(argv):
     plt.xlabel('Predictions grouped by rank')
     plt.ylabel('Interactions supported by PWM')
     plt.xlim(-1, len(eval_pwm[0]))
-    plt.ylim(0, .3)
+    plt.ylim(0, .5)
     plt.legend(loc="upper right")
 
     plt.show()
@@ -153,7 +154,7 @@ def parse_binding_overlap(fn, method):
 def parse_chance_binding_overlap(fn):
     line = open(fn, 'r').readline()
     line = line.split()
-    chip = [float(line[1])/float(line[7]) for _ in range(10)]
+    chip = [float(line[1])/float(line[8]) for _ in range(10)]
     pwm = [float(line[0])/float(line[7]) for _ in range(10)]
 
     return [chip, pwm]

@@ -5,9 +5,13 @@ import numpy
 name = sys.argv[1]
 
 dir_res = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_'+ name +'/'
-fn_pert = dir_res + 'data.pert'
-fn_fc = dir_res + 'data.expr.fc.tsv'
-fn_ispert = dir_res + 'data.ispert.tsv'
+# fn_pert = dir_res + 'data.pert'
+# fn_fc = dir_res + 'data.expr.fc.tsv'
+# fn_ispert = dir_res + 'data.ispert.tsv'
+# fn_rids = dir_res + 'rids.fb'
+fn_pert = dir_res + 'data.singles.pert.adj'
+fn_fc = dir_res + 'data.singles.expr.fc.tsv'
+fn_ispert = dir_res + 'data.singles.ispert.tsv'
 fn_rids = dir_res + 'rids.fb'
 
 row_header = open(fn_fc,'r').readline()

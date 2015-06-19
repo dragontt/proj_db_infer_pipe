@@ -21,7 +21,7 @@ do
 	motif=${line[0]}
 	echo  "*** Processing $motif ... $counter"
 	cd $HOME/usr/meme/bin
-	./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/fly_promoter_seq/rsat_dmel_upstream_-1000_+200.filtered.fasta 
+	./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/fly_promoter_seq/rsat_dmel_upstream_-2000_+200.filtered.fasta 
 	#./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/crypto_promoter_seq/crNeoH99.promoters.upstream600.fasta
 	sed ' 1d ' $PROJ_DIR/$OUT_FIMO/$motif/fimo.txt | cut -f 1,2,7 > $PROJ_DIR/$OUT_FIMO/$motif/temp.txt
 	ruby $PROJ_DIR/scripts/estimate_affinity.rb -i $PROJ_DIR/$OUT_FIMO/$motif/temp.txt > $PROJ_DIR/$OUT_FIMO/$motif.summary
