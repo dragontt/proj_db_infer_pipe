@@ -27,57 +27,78 @@ def main(argv):
 
     """ evaluate chip and pwm supports on binary gold standard """
     # # file initialization
-    # combined_method = 'all_methods'
-    # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_combined/'
-    # dir_sub_quantile = 'weighed_quantile_combine_' + combined_method + '_baranski_9microarray/analysis_flynet_top20to200k/'
     # fns = []
-    # eval_range = ['', '']
-    # fns.append(dir_sub_quantile + 'analysis_chip_support.all_methods_combined_by_samples.txt')
-    # fns.append(dir_sub_quantile + 'analysis_pwm_support.all_methods_combined_by_samples.txt')
-    # fns.append(dir_sub_quantile + 'analysis_chip_support.all_methods_combined_by_experiments.txt')
-    # fns.append(dir_sub_quantile + 'analysis_pwm_support.all_methods_combined_by_experiments.txt')
-    # fns.append(dir_sub_quantile + 'analysis_chip_support.all_methods_combined_by_perturbations.txt')
-    # fns.append(dir_sub_quantile + 'analysis_pwm_support.all_methods_combined_by_perturbations.txt')
-    # fns.append(dir_sub_quantile + 'analysis_chip_support.all_methods_combined_equal.txt')
-    # fns.append(dir_sub_quantile + 'analysis_pwm_support.all_methods_combined_equal.txt')
+
+    # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
+    # dir_sub = 'analysis_flynet_top4to40k/'
+    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_model_full.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_model_full.txt')
+
+    # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
+    # dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_flynet_top4to40k/'
+    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_40.0.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_40.0.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_60.0.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_60.0.txt')
+
+    # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
+    # dir_sub = 'cisbp_-2000_+200_fimo_dbd_knn_cellCycle_np/analysis_flynet_top4to40k/'
+    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_knn_10.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_knn_10.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_knn_20.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_knn_20.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_knn_30.txt')
+    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_knn_30.txt')
 
     # # figure setup
-    # colors = ['k:', 'r', 'g', 'b', 'm']
+    # colors = ['k:', 'k', 'r', 'g', 'b', 'r--', 'g--', 'b--']
     # labels = []
     # labels.append('chance')
-    # labels.append('weighed by samples')
-    # labels.append('weighed by experiments')
-    # labels.append('weighed by perturbations')
-    # labels.append('weighed equally')
-    # # x_ticks = ['2k', '4k', '6k', '8k', '10k', '12k', '14k', '16k', '18k', '20k']
-    # # x_ticks = ['10k', '20k', '30k', '40k', '50k', '60k', '70k', '80k', '90k', '100k']
-    # x_ticks = ['20k', '40k', '60k', '80k', '100k', '120k', '140k', '160k', '180k', '200k']
+    # labels.append('np')
+    # labels.append('np + motif_cutoff_40')
+    # labels.append('np + motif_cutoff_50')
+    # labels.append('np + motif_cutoff_60')
+    # labels.append('np + motif_knn_10')
+    # labels.append('np + motif_knn_20')
+    # labels.append('np + motif_knn_30')
+    # x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
 
     # # compute chip and pwm supports
-    # [eval_chip, eval_pwm] = parse_binary_gold_standard(dir_network, fns, parsed.eval_method)
+    # [eval_chip, eval_pwm] = parse_binary_gold_standard(fns, parsed.eval_method)
 
     """ evaluate chip and pwm supports on binding overlap gold standard """
     # file initialization
-    combined_method = 'all_methods'
-    # combined_method = 'all_np'
-    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_combined/'
-    dir_sub_quantile = 'weighed_model_average_' + combined_method + '_baranski_9microarray/analysis_binding_indep/chip.bp.np.set.sizes.top4to40k.'
-    # dir_sub_quantile = 'weighed_quantile_combine_all_methods_baranski_9microarray/analysis_binding_overlap/chip.bp.np.set.sizes.top20to200k.'
     fns = []
-    fns.append(dir_network + dir_sub_quantile + combined_method + '_combined_by_samples.txt')
-    fns.append(dir_network + dir_sub_quantile + combined_method + '_combined_by_experiments.txt')
-    fns.append(dir_network + dir_sub_quantile + combined_method + '_combined_by_perturbations.txt')
-    # fns.append(dir_network + dir_sub_quantile + combined_method + '_combined_equal.txt')
+
+    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
+    dir_sub = 'analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_model_full.txt')
+
+    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
+    dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_40.0.txt')
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0.txt')
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_60.0.txt')
+
+    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
+    dir_sub = 'cisbp_-2000_+200_fimo_dbd_knn_cellCycle_np/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_knn_10.txt')
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_knn_20.txt')
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_knn_30.txt')
 
     # figure setup
-    colors = ['k:', 'r', 'g', 'b']
+    colors = ['k:', 'k', 'r', 'g', 'b', 'r--', 'g--', 'b--']
     labels = []
     labels.append('chance')
-    labels.append('weighed by samples')
-    labels.append('weighed by experiments')
-    labels.append('weighed by perturbations')
-    # labels.append('weighed equally')
-    # x_ticks = ['2k', '4k', '6k', '8k', '10k', '12k', '14k', '16k', '18k', '20k']
+    labels.append('np')
+    labels.append('np + motif_cutoff_40')
+    labels.append('np + motif_cutoff_50')
+    labels.append('np + motif_cutoff_60')
+    labels.append('np + motif_knn_10')
+    labels.append('np + motif_knn_20')
+    labels.append('np + motif_knn_30')
     x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
     # x_ticks = ['10k', '20k', '30k', '40k', '50k', '60k', '70k', '80k', '90k', '100k']
     # x_ticks = ['20k', '40k', '60k', '80k', '100k', '120k', '140k', '160k', '180k', '200k']
@@ -98,8 +119,8 @@ def main(argv):
     plt.xlabel('Predictions grouped by rank')
     plt.ylabel('Interactions supported by ChIP')
     plt.xlim(-1, len(eval_chip[0]))
-    plt.ylim(0, .5)
-    plt.legend(loc="upper right")
+    plt.ylim(0, .6)
+    # plt.legend(loc="upper right")
 
     plt.subplot(1,2,2)
     for i in range(len(eval_pwm)):

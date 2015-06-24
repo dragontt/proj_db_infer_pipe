@@ -115,12 +115,14 @@ def parse_binary_gold_standard(dir_network, fns, method):
         eval_pwm[i+1,:] = pwm_support[1,:]
 
     if method == 'cumulative':
-        temp_eval_chip = eval_chip
-        temp_eval_pwm = eval_pwm
-        for i in range(10):
-            eval_chip[:,i] = numpy.sum(temp_eval_chip[:,0:(i+1)], axis=1)/(i+1)
-            eval_pwm[:,i] = numpy.sum(temp_eval_pwm[:,0:(i+1)], axis=1)/(i+1)
-    
+        temp_eval_chip = numpy.zeros([len(fns)/2+1, 10])
+        temp_eval_pwm = numpy.zeros([len(fns)/2+1, 10])
+        for j in range(10):
+            temp_eval_chip[:,j] = numpy.sum(eval_chip[:,0:(j+1)], axis=1)/(j+1)
+            temp_eval_pwm[:,j] = numpy.sum(eval_pwm[:,0:(j+1)], axis=1)/(j+1)
+        eval_chip = temp_eval_chip
+        eval_pwm = temp_eval_pwm
+
     return [eval_chip, eval_pwm]
 
 def parse_binding_overlap(fn, method):

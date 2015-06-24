@@ -13,12 +13,9 @@ chip.bp.np.setsizes <- c()
 
 orf_universe <- intersect(union(unique(bsinfo$TARGET),unique(pdna.inter$TARGET)),unique(net$TARGET))
 reg_pdna.inter <- intersect(unique(as.character(pdna.inter$REGULATOR)),unique(as.character(net$REGULATOR)))
-reg_bsinfo <- intersect(unique(as.character(bsinfo$REGULATOR)),unique(as.character(net$REGULATOR)))
+reg_bsinfo <- intersect(intersect(unique(as.character(bsinfo$REGULATOR)),unique(as.character(net$REGULATOR))), unique(as.character(pdna.inter$REGULATOR)))
 interaction_pdna.inter_cnt <- length(reg_pdna.inter) * length(orf_universe)
 interaction_bsinfo_cnt <- length(reg_bsinfo) * length(orf_universe)
-
-cat(interaction_pdna.inter_cnt, '\n')
-cat(interaction_bsinfo_cnt, '\n')
 
 # np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(2000,20000,by=2000)]
 np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(4000,40000,by=4000)]

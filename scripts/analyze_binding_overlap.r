@@ -23,8 +23,8 @@ orf_universe <- intersect(union(unique(bsinfo$TARGET),unique(pdna.inter$TARGET))
 reg_universe <- intersect(unique(as.character(pdna.inter$REGULATOR)),unique(as.character(bsinfo$REGULATOR)))
 interaction_universe_cnt <- length(reg_universe) * length(orf_universe)
 
-np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(2000,20000,by=2000)]
-# np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(10000,100000,by=10000)]
+# np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(2000,20000,by=2000)]
+np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(4000,40000,by=4000)]
 # np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(20000,200000,by=20000)]
 for (np_conf_cutoff in np_conf_cutoffs)
 {
@@ -96,8 +96,8 @@ for (np_conf_cutoff in np_conf_cutoffs)
 	}
 }
 
-filename <- paste("chip.bp.np.set.sizes.top2to20k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
-# filename <- paste("chip.bp.np.set.sizes.top10to100k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
+# filename <- paste("chip.bp.np.set.sizes.top2to20k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
+filename <- paste("chip.bp.np.set.sizes.top4to40k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
 # filename <- paste("chip.bp.np.set.sizes.top20to200k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
 write.table(cbind(chip.bp.np.setsizes, rep(interaction_universe_cnt, length=nrow(chip.bp.np.setsizes))),file=filename,col.names=FALSE,row.names=FALSE,quote=FALSE,sep='\t')
 
