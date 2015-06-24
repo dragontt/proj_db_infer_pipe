@@ -13,7 +13,8 @@ interactions are likely or not.
 """
 
 averaging_strategies = {'NP':model_average_np, 
-                        'PWM-geometric':model_average_pwm_geometric,
+                        'geometric':model_average_pwm_geometric,
+                        'arithmetic':model_average_pwm_arithmetic,
                         'resort':resort_by_weights}
 
 def parse_args(argv):

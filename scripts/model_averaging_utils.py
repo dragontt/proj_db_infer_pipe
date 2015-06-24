@@ -117,6 +117,12 @@ def model_average_pwm_geometric(np_component, binding_strengths):
 #end function
 
 
+def model_average_pwm_arithmetic(np_component, binding_strengths):
+    ''' Performs arithmetic mean '''
+    return np_component + binding_strengths
+#end function
+
+
 def model_average_np(lasso_component, de_component, 
                      constants = {"quadrant I":3, "quadrant II":1, 
                                   "quadrant III":1, "quadrant IV":1,
