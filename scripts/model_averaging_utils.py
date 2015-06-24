@@ -9,7 +9,8 @@ An importable file to provide utilities for model averaging in netprophet.
 """
 def resort_by_weights(M, W):
     """ For all edges in M that have a corresponding edge in W,
-    resort those edges in-place by their new score, M_ij*W_ij. """
+    resort those edges in-place by their new score, M_ij*W_ij. 
+    (or quantile normalization of multiplicated scores)"""
     # select only rows for which we weights to use
     W_avail = nmp.sum(W, 1) > 0
     working_net = nmp.abs(nmp.copy(M))
@@ -17,10 +18,10 @@ def resort_by_weights(M, W):
     orig_values = nmp.sort(nmp.ravel(nmp.copy(working_net)[W_avail]))[::-1]
     working_net[W_avail] = (working_net[W_avail]+.001)*(W[W_avail]+.001)
     index_to_value = []
-    for j in xrange(nmp.shape(working_net)[0]):
+    for j in range(nmp.shape(working_net)[0]):
         if not W_avail[j]:
             continue
-        for i in xrange(nmp.shape(working_net)[1]):
+        for i in range(nmp.shape(working_net)[1]):
             index_to_value.append([(j,i), working_net[j,i]])
     index_to_value.sort(key=lambda x: -x[1])
     for n,item in enumerate(index_to_value):
@@ -43,10 +44,10 @@ def resort_by_pwm(network, pwm_net):
     orig_values = nmp.sort(nmp.ravel(nmp.copy(working_net)[pwm_avail]))[::-1]
     working_net[pwm_avail] = (working_net[pwm_avail]+.001)*(pwm_net[pwm_avail]+.001)
     index_to_value = []
-    for j in xrange(nmp.shape(working_net)[0]):
+    for j in range(nmp.shape(working_net)[0]):
         if not pwm_avail[j]:
             continue
-        for i in xrange(nmp.shape(working_net)[1]):
+        for i in range(nmp.shape(working_net)[1]):
             index_to_value.append([(j,i), working_net[j,i]])
     index_to_value.sort(key=lambda x: -x[1])
     for n,item in enumerate(index_to_value):

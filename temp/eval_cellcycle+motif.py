@@ -26,31 +26,76 @@ def main(argv):
     parsed = parse_args(argv)
 
     """ evaluate chip and pwm supports on binary gold standard """
+    # file initialization
+    fns = []
+
+    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
+    dir_sub = 'analysis_flynet_top4to40k/'
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_model_full.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_model_full.txt')
+
+    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
+    dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_flynet_top4to40k/'
+
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_40.0_geomean.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_40.0_geomean.txt')
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0_geomean.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0_geomean.txt')
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_60.0_geomean.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_60.0_geomean.txt')
+
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_40.0_resort.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_40.0_resort.txt')
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0_resort.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0_resort.txt')
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_60.0_resort.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_60.0_resort.txt')
+
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_40.0_quantcomb.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_40.0_quantcomb.txt')
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0_quantcomb.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0_quantcomb.txt')
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_60.0_quantcomb.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_60.0_quantcomb.txt')
+
+    # figure setup
+    colors = ['k:', 'k', 'r:', 'g:', 'b:', 'r--', 'g--', 'b--', 'r', 'g', 'b']
+    labels = []
+    labels.append('chance')
+    labels.append('np')
+    labels.append('np + motif_cutoff_40_geomean')
+    labels.append('np + motif_cutoff_50_geomean')
+    labels.append('np + motif_cutoff_60_geomean')
+    labels.append('np + motif_cutoff_40_resort')
+    labels.append('np + motif_cutoff_50_resort')
+    labels.append('np + motif_cutoff_60_resort')
+    labels.append('np + motif_cutoff_40_quantcomb')
+    labels.append('np + motif_cutoff_50_quantcomb')
+    labels.append('np + motif_cutoff_60_quantcomb')
+    x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
+
+    # compute chip and pwm supports
+    [eval_chip, eval_pwm] = parse_binary_gold_standard(fns, parsed.eval_method)
+
+    """ evaluate chip and pwm supports on binding overlap gold standard """
     # # file initialization
     # fns = []
 
     # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
-    # dir_sub = 'analysis_flynet_top4to40k/'
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_model_full.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_model_full.txt')
+    # dir_sub = 'analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_model_full.txt')
 
     # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-    # dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_flynet_top4to40k/'
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_40.0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_40.0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_60.0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_60.0.txt')
+    # dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_40.0.txt')
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0.txt')
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_60.0.txt')
 
     # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-    # dir_sub = 'cisbp_-2000_+200_fimo_dbd_knn_cellCycle_np/analysis_flynet_top4to40k/'
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_knn_10.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_knn_10.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_knn_20.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_knn_20.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_knn_30.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_knn_30.txt')
+    # dir_sub = 'cisbp_-2000_+200_fimo_dbd_knn_cellCycle_np/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_knn_10.txt')
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_knn_20.txt')
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_knn_30.txt')
 
     # # figure setup
     # colors = ['k:', 'k', 'r', 'g', 'b', 'r--', 'g--', 'b--']
@@ -64,51 +109,15 @@ def main(argv):
     # labels.append('np + motif_knn_20')
     # labels.append('np + motif_knn_30')
     # x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
+    # # x_ticks = ['10k', '20k', '30k', '40k', '50k', '60k', '70k', '80k', '90k', '100k']
+    # # x_ticks = ['20k', '40k', '60k', '80k', '100k', '120k', '140k', '160k', '180k', '200k']
 
     # # compute chip and pwm supports
-    # [eval_chip, eval_pwm] = parse_binary_gold_standard(fns, parsed.eval_method)
-
-    """ evaluate chip and pwm supports on binding overlap gold standard """
-    # file initialization
-    fns = []
-
-    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
-    dir_sub = 'analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_model_full.txt')
-
-    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-    dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_40.0.txt')
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0.txt')
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_60.0.txt')
-
-    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-    dir_sub = 'cisbp_-2000_+200_fimo_dbd_knn_cellCycle_np/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_knn_10.txt')
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_knn_20.txt')
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_knn_30.txt')
-
-    # figure setup
-    colors = ['k:', 'k', 'r', 'g', 'b', 'r--', 'g--', 'b--']
-    labels = []
-    labels.append('chance')
-    labels.append('np')
-    labels.append('np + motif_cutoff_40')
-    labels.append('np + motif_cutoff_50')
-    labels.append('np + motif_cutoff_60')
-    labels.append('np + motif_knn_10')
-    labels.append('np + motif_knn_20')
-    labels.append('np + motif_knn_30')
-    x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
-    # x_ticks = ['10k', '20k', '30k', '40k', '50k', '60k', '70k', '80k', '90k', '100k']
-    # x_ticks = ['20k', '40k', '60k', '80k', '100k', '120k', '140k', '160k', '180k', '200k']
-
-    # compute chip and pwm supports
-    eval_chip = [None] * (len(fns)+1)
-    eval_pwm = [None] * (len(fns)+1)
-    [eval_chip[0], eval_pwm[0]] = parse_chance_binding_overlap(fns[0])
-    for i in range(len(fns)):
-        [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_overlap(fns[i], parsed.eval_method)
+    # eval_chip = [None] * (len(fns)+1)
+    # eval_pwm = [None] * (len(fns)+1)
+    # [eval_chip[0], eval_pwm[0]] = parse_chance_binding_overlap(fns[0])
+    # for i in range(len(fns)):
+    #     [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_overlap(fns[i], parsed.eval_method)
 
     """" plot figures """
     plt.figure(num=None, figsize=(15,8), dpi=80)
