@@ -15,7 +15,7 @@ while read -r motif_name
 do
 	echo -n "tomtom comparing $motif_name ... "
 	tomtom -no-ssc -oc $DIR_OUTPUT/$motif_name -eps -verbosity 1 -min-overlap 5 -dist pearson -evalue -thresh 1 -bfile $FN_BACKGROUND $DIR_PFM/$motif_name $FN_TARGET_PFM
-	sed -n '3,$p' $DIR_OUTPUT/$motif_name/tomtom.txt | awk '{print $2, $5}' > $DIR_OUTPUT/$motif_name.tomtom
+	sed -n '2,$p' $DIR_OUTPUT/$motif_name/tomtom.txt | awk '{print $2, $5}' > $DIR_OUTPUT/$motif_name.tomtom
 	rm -r $DIR_OUTPUT/$motif_name/
 	echo "done"
 done < $FN_QUERY_LIST

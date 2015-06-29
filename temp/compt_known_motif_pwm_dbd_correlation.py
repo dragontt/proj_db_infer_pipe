@@ -4,13 +4,13 @@ import numpy
 import matplotlib.pyplot as plt
 from scipy.optimize import leastsq
 
-species = "yeast"
-species_full = "Saccharomyces_cerevisiae"
-# species = "fly"
-# species_full = "Drosophila_melanogaster"
+# species = "yeast"
+# species_full = "Saccharomyces_cerevisiae"
+species = "fly"
+species_full = "Drosophila_melanogaster"
 
 min_score_dbd = 10
-itv_score_dbd = 10
+itv_score_dbd = 5
 
 def main():
 
@@ -31,21 +31,21 @@ def main():
 		if (os.path.isfile(fn_dbd) and os.path.getsize(fn_dbd) > 0) and (os.path.isfile(fn_pwm) and os.path.getsize(fn_pwm) > 0):
 			dict_dbd = parse_dict(fn_dbd, True, min_score_dbd)
 			dict_pwm = parse_dict(fn_pwm, False, None)
-			targets = numpy.intersect1d(dict_dbd.keys(), dict_pwm.keys())
-			targets_used = []
-			for target in targets:
-				if not target in targets_used:
-					scores_dbd.append(dict_dbd[target])
-					scores_pwm.append(1 - dict_pwm[target])
-					# scores_pwm.append(-numpy.log10(dict_pwm[target]))
-					targets_used.append(target)
+			if bool(dict_dbd) and bool(dict_pwm):
+				targets = numpy.intersect1d(dict_dbd.keys(), dict_pwm.keys())
+				targets_used = []
+				for target in targets:
+					if not target in targets_used:
+						scores_dbd.append(dict_dbd[target])
+						scores_pwm.append(1 - dict_pwm[target])
+						targets_used.append(target)
 
 	# bin scores
 	[bins_scores_dbd, med_scores_pwm, avg_scores_pwm] = compt_bins(scores_dbd, scores_pwm, min_score_dbd, itv_score_dbd)	
-	# y = med_scores_pwm
-	# label_scatter = "median scores"
-	y = avg_scores_pwm
-	label_scatter = "average scores"
+	y = med_scores_pwm
+	label_scatter = "median scores"
+	# y = avg_scores_pwm
+	# label_scatter = "average scores"
 
 	# logistic fit
 	p_guess=(numpy.median(bins_scores_dbd), numpy.median(y), 1, .25)
@@ -64,27 +64,29 @@ def main():
 	plt.plot(xp, pxp, 'r-', label=label_fit)
 	plt.legend(loc="lower right")
 	plt.xlim([0, 100])
-	plt.ylim([.5, 1])
+	# plt.ylim([.5, 1])
 	plt.title("DBD vs PWM Similarity, Species: " + species)
 	plt.xlabel("DBD Percent Identity")
 	plt.ylabel("PWM Similarity (1 - E_value)")
 	plt.show()
 
 def parse_dict(fn, use_cutoff, min_score_dbd):
-	lines = open(fn, 'r')
+	lines = open(fn, 'r').readlines()
 	dict = {}
-	if use_cutoff:
-		for line in lines:
-			target = line.split()[0].split(":")[0]
-			score = float(line.split()[1])
-			if score < min_score_dbd:
-				break
-			dict[target] = score
-	else:
-		for line in lines:
-			target = line.split()[0].split(":")[0]
-			score = line.split()[1]
-			dict[target] = float(score)
+	if len(lines) > 1:
+		if use_cutoff:
+			for line in lines:
+				target = line.split()[0].split(":")[0]
+				score = float(line.split()[1])
+				if score < min_score_dbd:
+					break
+				dict[target] = score
+		else:
+			baseline = float(lines[0].split()[1])
+			for i in range(len(lines)):
+				target = lines[i].split()[0].split(":")[0]
+				score = float(lines[i].split()[1])
+				dict[target] = float(score)
 	return dict
 
 def compt_bins(scores_dbd, scores_pwm, min_score_dbd, itv_score_dbd):
