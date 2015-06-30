@@ -30,35 +30,42 @@ for (np_conf_cutoff in np_conf_cutoffs)
 		i <- 1
 		for (regulator in reg_pdna.inter)
 		{
-			# targets <- union(as.character(pdna.inter$TARGET[which(pdna.inter$REGULATOR==regulator)]),as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]))
-			targets <- orf_universe
-			pdna.evid <- rep(0,times=length(targets))
-			binding.evid.max <- rep(0,times=length(targets))
-			binding.evid.sum <- rep(0,times=length(targets))
-			pdna.evid[match(as.character(pdna.inter$TARGET[which(pdna.inter$REGULATOR==regulator)]),targets)] <- 1
-			binding.evid.max[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$MAXP[which(bsinfo$REGULATOR==regulator)]
-			binding.evid.sum[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$SUMP[which(bsinfo$REGULATOR==regulator)]
-			cat(regulator,length(targets),"\n")
-			binding.evid.comb <- apply(rbind(binding.evid.max,binding.evid.sum),2,max)	
-			prc.comb <- compute.prc(binding.evid.comb,pdna.evid)
-		
-			if 	(length(which(prc.comb[,1]<=chip_desired_recall))>0)
-			{
-				bp.cutoff[i] <- binding.evid.comb[sort.list(binding.evid.comb,decreasing=TRUE)][length(which(prc.comb[,1]<=chip_desired_recall))]
-			}
-			else
-			{
-				bp.cutoff[i] <- 1
-			}
-		
+			# NetProphet confidence cutoff
 			predicted.targets <- as.character(net$TARGET[which(net$REGULATOR==regulator)])[which(net$CONFIDENCE[which(net$REGULATOR==regulator)]>np_conf_cutoff)]
 			predicted.targets <- intersect(predicted.targets,orf_universe) # Narrow to space under consideration
 
-			bp.targets <- targets[which(binding.evid.comb>bp.cutoff[i])]
+			targets <- orf_universe
+
+			# use all ChIP evidence
+			pdna.evid <- rep(0,times=length(targets))
+			pdna.evid[match(as.character(pdna.inter$TARGET[which(pdna.inter$REGULATOR==regulator)]),targets)] <- 1
 			pdna.targets <- targets[which(pdna.evid>0)]
+
+			# use pwm binding supported by ChIP evidence
+			if (regulator %in% reg_bsinfo) {
+				binding.evid.max <- rep(0,times=length(targets))
+				binding.evid.sum <- rep(0,times=length(targets))
+				
+				binding.evid.max[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$MAXP[which(bsinfo$REGULATOR==regulator)]
+				binding.evid.sum[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$SUMP[which(bsinfo$REGULATOR==regulator)]
+				cat(regulator,length(targets),"\n")
+				binding.evid.comb <- apply(rbind(binding.evid.max,binding.evid.sum),2,max)	
+				prc.comb <- compute.prc(binding.evid.comb,pdna.evid)
 			
-			chip.bp.np.sets <- rbind(chip.bp.np.sets,c(length(bp.targets),sum(pdna.evid),length(predicted.targets),length(intersect(bp.targets,pdna.targets)),length(intersect(bp.targets,predicted.targets)),length(intersect(predicted.targets,pdna.targets)),length(intersect(bp.targets,intersect(predicted.targets,pdna.targets)))))
-	
+				if 	(length(which(prc.comb[,1]<=chip_desired_recall))>0)
+				{
+					bp.cutoff[i] <- binding.evid.comb[sort.list(binding.evid.comb,decreasing=TRUE)][length(which(prc.comb[,1]<=chip_desired_recall))]
+				} else {
+					bp.cutoff[i] <- 1
+				}
+
+				bp.targets <- targets[which(binding.evid.comb>bp.cutoff[i])]
+				
+				chip.bp.np.sets <- rbind(chip.bp.np.sets,c(length(bp.targets),sum(pdna.evid),length(predicted.targets),length(intersect(bp.targets,pdna.targets)),length(intersect(bp.targets,predicted.targets)),length(intersect(predicted.targets,pdna.targets)),length(intersect(bp.targets,intersect(predicted.targets,pdna.targets)))))
+			} 
+			else { # if pwm not supported by ChIP evidence
+				chip.bp.np.sets <- rbind(chip.bp.np.sets,c(0,sum(pdna.evid),length(predicted.targets),0,0,length(intersect(predicted.targets,pdna.targets)),0))
+			}
 			i <- i + 1
 		}
 		
