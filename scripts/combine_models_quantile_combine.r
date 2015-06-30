@@ -1,5 +1,5 @@
 #!/usr/bin/R
-# Combine mutliple networks using Quantile Combine method (ref: Hien's Thesis)
+# Combine NetProphet network model with PWM binding strength model, using Quantile Combine method (ref: Hien's Thesis)
 
 # source("/home/mblab/ykang/proj_hien_thesis/hliowThesisScript.R")
 quantileCombine <- function(scoreList, plot = FALSE, verbose = FALSE, returnScoreListOfAllRepresentation = FALSE) {
@@ -59,12 +59,16 @@ quantileCombine <- function(scoreList, plot = FALSE, verbose = FALSE, returnScor
 
 # main script
 args <- commandArgs(trailingOnly=TRUE)
-data <- list()
-for (i in 1:(length(args)-1)) {
-	cat('Load:', toString(args[i]), '\n')
-	data[length(data)+1] <- list(as.matrix(read.table(toString(args[i]))))
-}
-# combined <- quantileCombine(data, verbose=TRUE, returnScoreListOfAllRepresentation=FALSE)
-# write.table(combined,args[length(args)],row.names=FALSE,col.names=FALSE,quote=FALSE)
-combined <- quantileCombine(data, verbose=TRUE, returnScoreListOfAllRepresentation=TRUE)
-write.table(combined[[1]],args[length(args)],row.names=FALSE,col.names=FALSE,quote=FALSE)
+cat('loading network models ...\n')
+M <- as.matrix(read.table(toString(args[1]))) # NetProphet network
+W <- as.matrix(read.table(toString(args[2]))) # PWM binding strength model
+fn_out <- toString(args[3])
+
+# quantile combine sub-networks in which each regulator has valid PWM information
+index_sub <- which(rowSums(W) != 0)
+M_sub <- M[index_sub,]
+W_sub <- W[index_sub,]
+data <- list(M_sub, W_sub)
+combined_sub <- quantileCombine(data, verbose=TRUE, returnScoreListOfAllRepresentation=TRUE)
+M[index_sub,] <- combined_sub[[1]]
+write.table(M,fn_out,row.names=FALSE,col.names=FALSE,quote=FALSE)

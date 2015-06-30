@@ -16,7 +16,8 @@ def resort_by_weights(M, W):
     working_net = nmp.abs(nmp.copy(M))
     # get the original values of the matrix where we have 
     orig_values = nmp.sort(nmp.ravel(nmp.copy(working_net)[W_avail]))[::-1]
-    working_net[W_avail] = (working_net[W_avail]+.001)*(W[W_avail]+.001)
+    # working_net[W_avail] = (working_net[W_avail]+.001)*(W[W_avail]+.001)
+    working_net[W_avail] = (working_net[W_avail])*(W[W_avail])
     index_to_value = []
     for j in range(nmp.shape(working_net)[0]):
         if not W_avail[j]:
