@@ -38,6 +38,8 @@ def main(argv):
     dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_flynet_top4to40k/'
     fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_known_motif_resort_0.txt')
     fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_known_motif_resort_0.txt')
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_known_motif_quantcomb.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_known_motif_quantcomb.txt')
 
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
     dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_flynet_top4to40k/'
@@ -64,11 +66,12 @@ def main(argv):
     fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_60.0_quantcomb.txt')
 
     # figure setup
-    colors = ['k:', 'k', 'm', 'r:', 'g:', 'b:', 'r--', 'g--', 'b--', 'r-.', 'g-.', 'b-.']
+    colors = ['k:', 'k', 'm', 'm--', 'r:', 'g:', 'b:', 'r--', 'g--', 'b--', 'r-.', 'g-.', 'b-.']
     labels = []
     labels.append('chance')
     labels.append('np')
-    labels.append('np + cisbp_known_motif')
+    labels.append('np + cisbp_known_motif_resort')
+    labels.append('np + cisbp_known_motif_quantcomb')
     labels.append('np + motif_cutoff_40_geomean')
     labels.append('np + motif_cutoff_50_geomean')
     labels.append('np + motif_cutoff_60_geomean')
