@@ -29,7 +29,7 @@ Comptues ensemble of Bayesian regression trees, which are weak learners contrain
 
 - FlyBase: A comprehensive fly database. Useful files include:
 	- Conversion table between gene name and protein name: FBgn <=> FBtr <=> FBpp IDs.
-	- DMel protein fasta sequence. Use bedtools getfasta to identify DBD sequence.
+	- DMel protein fasta sequence. If DBD sequence is not specified, use NCBI Conversed Domain Database (CDD) search tool to identify domain hits of query fasta sequences; Then use bedtools getfasta to identify the DBD sequences.
 	- Gene annotation and ontology files.
 - RSAT Metazoa: DMel promoter regions with specified range. 
 
