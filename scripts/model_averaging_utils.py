@@ -121,7 +121,7 @@ def model_average_pwm_geometric(np_component, binding_strengths):
 
 def model_average_pwm_arithmetic(np_component, binding_strengths):
     ''' Performs arithmetic mean '''
-    return np_component + binding_strengths
+    return (np_component + binding_strengths)/2
 #end function
 
 

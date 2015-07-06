@@ -61,7 +61,7 @@ quantileCombine <- function(scoreList, plot = FALSE, verbose = FALSE, returnScor
 args <- commandArgs(trailingOnly=TRUE)
 cat('loading network models ...\n')
 M <- as.matrix(read.table(toString(args[1]))) # NetProphet network
-W <- as.matrix(read.table(toString(args[2]))) # PWM binding strength model
+W <- as.matrix(read.table(toString(args[2]))) # BART network or PWM binding strength model
 fn_out <- toString(args[3])
 
 # quantile combine sub-networks in which each regulator has valid PWM information
