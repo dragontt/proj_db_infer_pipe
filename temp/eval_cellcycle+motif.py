@@ -3,6 +3,7 @@
 """
 Combine mutliple tf combination of the edge scores at difference dbd cutoff.
 
+eval_type: flynet, binding_indep
 eval_method: cumulative, binned
 """
 
@@ -13,9 +14,14 @@ import os.path
 import numpy
 import matplotlib.pyplot as plt
 
+eval_type = "flynet"
+# eval_type = "binding_indep"
+
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Combine chip and pwm evaluations")
-    parser.add_argument('-e', '-eval_method', dest='eval_method', type=str, default='cumulative')
+    parser.add_argument('-t', '-eval_type', dest='eval_type', type=str, default=
+        'flynet')
+    parser.add_argument('-m', '-eval_method', dest='eval_method', type=str, default='cumulative')
     parsed = parser.parse_args(argv[1:])
     return parsed
 
@@ -25,100 +31,98 @@ def errprint(st):
 def main(argv):
     parsed = parse_args(argv)
 
-    """ evaluate chip and pwm supports on binary gold standard """
-    # # file initialization
-    # fns = []
+    if parsed.eval_type == "flynet":
 
-    # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
-    # dir_sub = 'analysis_flynet_top4to40k/'
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_model_full.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_model_full.txt')
+        # evaluate chip and pwm supports on binary gold standard 
+        # file initialization
+        fns = []
 
-    # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-    # dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_flynet_top4to40k/'
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_known_motif_resort_0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_known_motif_resort_0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_known_motif_quantcomb.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_known_motif_quantcomb.txt')
+        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
+        dir_sub = 'analysis_flynet_top4to40k/'
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_model_full.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_model_full.txt')
 
-    # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-    # dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_flynet_top4to40k/'
+        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
+        dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_flynet_top4to40k/'
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_known_motif_quantcomb.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_known_motif_quantcomb.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_known_motif_resort_0.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_known_motif_resort_0.txt')
 
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_40.0_geomean.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_40.0_geomean.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0_geomean.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0_geomean.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_60.0_geomean.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_60.0_geomean.txt')
+        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
+        dir_sub = 'fire_motifs_np_bin_20/analysis_flynet/'
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_fire_np_bin_20_quantcomb.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_fire_np_bin_20_quantcomb.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_fire_np_bin_20_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_fire_np_bin_20_resort.txt')
 
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_40.0_resort_0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_40.0_resort_0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0_resort_0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0_resort_0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_60.0_resort_0.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_60.0_resort_0.txt')
+        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
+        dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_flynet_top4to40k/'
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0_quantcomb.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0_quantcomb.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0_resort_0.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0_resort_0.txt')
 
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_40.0_quantcomb.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_40.0_quantcomb.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0_quantcomb.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0_quantcomb.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_60.0_quantcomb.txt')
-    # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_60.0_quantcomb.txt')
+        # figure setup
+        colors = ['k:', 'k', 'r', 'r--', 'g', 'g--', 'b', 'b--']
+        labels = []
+        labels.append('chance')
+        labels.append('np')
+        labels.append('np + known_motif_quantcomb')
+        labels.append('np + known_motif_resort')
+        labels.append('np + fire_motif_quantcomb')
+        labels.append('np + fire_motif_resort')
+        labels.append('np + database_motif_quantcomb')
+        labels.append('np + database_motif_resort')
 
-    # # figure setup
-    # colors = ['k:', 'k', 'm', 'm--', 'r:', 'g:', 'b:', 'r--', 'g--', 'b--', 'r-.', 'g-.', 'b-.']
-    # labels = []
-    # labels.append('chance')
-    # labels.append('np')
-    # labels.append('np + cisbp_known_motif_resort')
-    # labels.append('np + cisbp_known_motif_quantcomb')
-    # labels.append('np + motif_cutoff_40_geomean')
-    # labels.append('np + motif_cutoff_50_geomean')
-    # labels.append('np + motif_cutoff_60_geomean')
-    # labels.append('np + motif_cutoff_40_resort')
-    # labels.append('np + motif_cutoff_50_resort')
-    # labels.append('np + motif_cutoff_60_resort')
-    # labels.append('np + motif_cutoff_40_quantcomb')
-    # labels.append('np + motif_cutoff_50_quantcomb')
-    # labels.append('np + motif_cutoff_60_quantcomb')
-    # labels.append('np + motif_cutoff_40_resort')
-    # labels.append('np + motif_cutoff_50_resort')
-    # labels.append('np + motif_cutoff_60_resort')
-    # x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
+        x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
 
-    # # compute chip and pwm supports
-    # [eval_chip, eval_pwm] = parse_binary_gold_standard(fns, parsed.eval_method)
+        # compute chip and pwm supports
+        [eval_chip, eval_pwm] = parse_binary_gold_standard(fns, parsed.eval_method)
 
-    """ evaluate chip and pwm supports on binding overlap gold standard """
-    # file initialization
-    fns = []
+    elif parsed.eval_type == "binding_indep":
+        # evaluate chip and pwm supports on binding overlap gold standard
+        # file initialization
+        fns = []
 
-    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
-    dir_sub = 'analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_model_full.txt')
+        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
+        dir_sub = 'analysis_binding_indep/'
+        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_model_full.txt')
 
-    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-    dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_known_motif_quantcomb.txt')
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_known_motif_resort_0.txt')
+        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
+        dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_binding_indep/'
+        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_known_motif_quantcomb.txt')
+        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_known_motif_resort_0.txt')
 
-    # figure setup
-    colors = ['k:', 'k', 'r', 'g']
-    labels = []
-    labels.append('chance')
-    labels.append('np')
-    labels.append('np + known_motif_quantcomb')
-    labels.append('np + known_motif_resort')
-    x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
+        dir_sub = 'fire_motifs_np_bin_20/analysis_binding_indep/'
+        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_fire_np_bin_20_quantcomb.txt')
+        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_fire_np_bin_20_resort.txt')
 
-    # compute chip and pwm supports
-    eval_chip = [None] * (len(fns)+1)
-    eval_pwm = [None] * (len(fns)+1)
-    [eval_chip[0], eval_pwm[0]] = parse_chance_binding_overlap(fns[0])
-    for i in range(len(fns)):
-        [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_overlap(fns[i], parsed.eval_method)
+        dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_binding_indep/'
+        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0_quantcomb.txt')
+        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0_resort_0.txt')
 
-    """" plot figures """
+        # figure setup
+        colors = ['k:', 'k', 'r', 'r--', 'g', 'g--', 'b', 'b--']
+        labels = []
+        labels.append('chance')
+        labels.append('np')
+        labels.append('np + known_motif_quantcomb')
+        labels.append('np + known_motif_resort')
+        labels.append('np + fire_motif_quantcomb')
+        labels.append('np + fire_motif_resort')
+        labels.append('np + database_motif_quantcomb')
+        labels.append('np + database_motif_resort')
+        x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
+
+        # compute chip and pwm supports
+        eval_chip = [None] * (len(fns)+1)
+        eval_pwm = [None] * (len(fns)+1)
+        [eval_chip[0], eval_pwm[0]] = parse_chance_binding_indep(fns[0])
+        for i in range(len(fns)):
+            [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_overlap(fns[i], parsed.eval_method)
+
+    # plot figures
     plt.figure(num=None, figsize=(15,8), dpi=80)
     plt.subplot(1,2,1)
     for i in range(len(eval_chip)):
@@ -187,16 +191,20 @@ def parse_binding_overlap(fn, method):
                 chip[i] = (float(line[5]) - float(prevline[5]))/(float(line[2]) - float(prevline[2]))
                 pwm[i] = (float(line[4]) - float(prevline[4]))/(float(line[2]) - float(prevline[2]))
             prevline = line  
-
     return [chip, pwm]
 
 def parse_chance_binding_overlap(fn):
     line = open(fn, 'r').readline()
     line = line.split()
     chip = [float(line[1])/float(line[7]) for _ in range(10)]
-    # chip = [float(line[1])/float(line[8]) for _ in range(10)]
     pwm = [float(line[0])/float(line[7]) for _ in range(10)]
+    return [chip, pwm]
 
+def parse_chance_binding_indep(fn):
+    line = open(fn, 'r').readline()
+    line = line.split()
+    chip = [float(line[1])/float(line[8]) for _ in range(10)]
+    pwm = [float(line[0])/float(line[7]) for _ in range(10)]
     return [chip, pwm]
 
 if __name__ == "__main__":
