@@ -3,6 +3,7 @@
 """
 Query a list of database inference results, combine the inferred pwm fimo scan scores,
 which were preprocessed in the motif inference step.
+Inference methods: (1) cisbp, (2) fire
 """
 
 import sys
@@ -13,6 +14,7 @@ from scipy.stats.mstats import gmean
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Combine inferred pwm fimo scan scores.")
+    parser.add_argument('-m', '--inference_method', dest='inference_method', type=str, default='cisbp')
     parser.add_argument('-i', '--fn_infer', dest='fn_infer', type=str)
     parser.add_argument('-r', '--fn_rids', dest='fn_rids', type=str)
     parser.add_argument('-g', '--fn_gids', dest='fn_gids', type=str)
@@ -43,7 +45,12 @@ def main(argv):
         # get inferred tf and database motif
         linesplit = lines[i].strip().split('\t')
         infer_tf = linesplit[0]
-        infer_motifs = linesplit[1].split(',')
+        if parsed.inference_method == 'cisbp':
+            infer_motifs = linesplit[1].split(',')
+        elif parsed.inference_method == 'fire':
+            infer_motifs = linesplit[0].split(',')
+        else:
+            sys.exit("Inference method not specified.")
 
         # get fimo scores for the inferred motif
         index = numpy.where(rids == infer_tf)[0]
