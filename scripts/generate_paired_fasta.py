@@ -11,10 +11,11 @@ import argparse
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Generate paired dbd")
-    parser.add_argument('-m', '-query_motif', dest='query_motif', type=str)
-    parser.add_argument('-f1', '-dbd_fasta1', dest='dbd_fasta1', type=str)
-    parser.add_argument('-f2', '-dbd_fasta2', dest='dbd_fasta2', type=str)
-    parser.add_argument('-o', '-dir_output', dest='dir_output', type=str)
+    parser.add_argument('-m', '--query_motif', dest='query_motif', type=str)
+    parser.add_argument('-f1', '--dbd_fasta1', dest='dbd_fasta1', type=str)
+    parser.add_argument('-f2', '--dbd_fasta2', dest='dbd_fasta2', type=str)
+    parser.add_argument('-o', '--dir_output', dest='dir_output', type=str)
+    parser.add_argument('-c', '--is_cisbp', dest='is_cisbp', type=int, default=1)
     parsed = parser.parse_args(argv[1:])
     return parsed
 
@@ -46,13 +47,23 @@ def main(argv):
         all_dbds[i] = lines[i*2+1].strip()
 
     # create temp file of paired query dbd and datatbase dbd in fasta format
-    for i in range(num_dbds):
-        temp_name = all_headers[i].split('>')[1].split(':')
-        writer = open(parsed.dir_output + parsed.query_motif + '_' + \
-            temp_name[0] + '_' + temp_name[1] + '.fasta', "w")
-        writer.write("%s\n%s\n%s\n%s\n>void\n%s\n" % \
-            (query_header, query_dbd, all_headers[i], all_dbds[i], query_dbd))
-        writer.close()
+    if parsed.is_cisbp == 1:
+        for i in range(num_dbds):
+            temp_name = all_headers[i].split('>')[1].split(':')
+            writer = open(parsed.dir_output + parsed.query_motif + '_' + \
+                temp_name[0] + '_' + temp_name[1] + '.fasta', "w")
+            writer.write("%s\n%s\n%s\n%s\n>void\n%s\n" % \
+                (query_header, query_dbd, all_headers[i], all_dbds[i], query_dbd))
+            writer.close()
+    elif parsed.is_cisbp == 0:
+        for i in range(num_dbds):
+            writer = open(parsed.dir_output + parsed.query_motif + '_' + \
+                all_headers[i].split('>')[1] + '.fasta', "w")
+            writer.write("%s\n%s\n%s\n%s\n>void\n%s\n" % \
+                (query_header, query_dbd, all_headers[i], all_dbds[i], query_dbd))
+            writer.close()
+    else:
+        sys.exit("If align to database motif DBD sequence not specified.")
 
 if __name__ == "__main__":
     main(sys.argv)

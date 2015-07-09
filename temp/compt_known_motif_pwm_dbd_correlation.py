@@ -13,7 +13,8 @@ itv_score_dbd = 5
 # score_type = "average"
 # parse_method = "e_value"
 # parse_method = "-log10_fc"
-parse_method = "fraction"
+# parse_method = "fraction"
+parse_method = "binary"
 fit_function = "sigmoid"
 # fit_function = "exponential"
 
@@ -72,17 +73,16 @@ def main():
 		xp = numpy.linspace(min_score_dbd, 100, 100)
 		if fit_function == 'sigmoid':
 			pxp = sigmoid(p, xp)
-			label_fit = "sigmoid fit, c=" + str(p[2]) + ", k=" + str(p[3])
+			label_fit = "sigmoid fit, " + str.format('{0:.2f}', p[2]) + "/(1+exp(-" + str.format('{0:.2f}', p[3]) + "*(x-" + str.format('{0:.2f}', p[0]) + ")))+" + str.format('{0:.2f}', p[1])
 		elif fit_function == 'exponential':
 			pxp = exponential(p, xp)
-			label_fit = "exponential fit, c=" + str(p[2]) + ", k=" + str(p[3])
+			label_fit = "exponential fit, " + str.format('{0:.2f}', p[2]) + "*exp(" + str.format('{0:.2f}', p[3]) + "*(x-" + str.format('{0:.2f}', p[0]) + "))+" + str.format('{0:.2f}', p[1])
 		else:
 			sys.exit("Fit function not specified")
 		plt.plot(xp, pxp, 'r-', label=label_fit)
-		plt.legend(loc="lower right")
-		# plt.legend(loc="upper left")
+		plt.legend(loc="upper right")
 		plt.xlim([0, 100])
-		plt.ylim([0, 1])
+		plt.ylim([0, 1.10])
 		plt.title("DBD vs PWM Similarity, Species: " + species)
 		plt.xlabel("DBD Percent Identity")
 		plt.ylabel("PWM Similarity (1 - E_value)")
@@ -118,7 +118,7 @@ def main():
 		print pwm_counts
 		
 		# logistic fit
-		p_guess=(numpy.median(dbd_cutoffs), numpy.median(pwm_fractions), 1, 1)
+		p_guess=(numpy.median(dbd_cutoffs), numpy.median(pwm_fractions), 1, .25)
 		if fit_function == 'sigmoid':
 			p, cov, infodict, mesg, ier = leastsq(sigmoid_residuals, p_guess, args=(dbd_cutoffs, pwm_fractions), full_output=1)
 		elif fit_function == 'exponential':
@@ -132,20 +132,75 @@ def main():
 		xp = numpy.linspace(min_score_dbd, 100, 100)
 		if fit_function == 'sigmoid':
 			pxp = sigmoid(p, xp)
-			label_fit = "sigmoid fit, c=" + str(p[2]) + ", k=" + str(p[3])
-		elif fit_function == 'exponential':
+			label_fit = "sigmoid fit, " + str.format('{0:.2f}', p[2]) + "/(1+exp(-" + str.format('{0:.2f}', p[3]) + "*(x-" + str.format('{0:.2f}', p[0]) + ")))+" + str.format('{0:.2f}', p[1])
+		elif fit_function == 'exponential': 
 			pxp = exponential(p, xp)
-			label_fit = "exponential fit, c=" + str(p[2]) + ", k=" + str(p[3])
+			label_fit = "exponential fit, " + str.format('{0:.2f}', p[2]) + "*exp(" + str.format('{0:.2f}', p[3]) + "*(x-" + str.format('{0:.2f}', p[0]) + "))+" + str.format('{0:.2f}', p[1])
 		else:
 			sys.exit("Fit function not specified")
 		plt.plot(xp, pxp, 'r-', label=label_fit)
-		# plt.legend(loc="lower right")
-		plt.legend(loc="best")
+		plt.legend(loc="upper right")
 		plt.xlim([0, 100])
-		plt.ylim([0, 1])
+		plt.ylim([0, 1.10])
 		plt.title("DBD vs PWM Similarity, Species: " + species)
 		plt.xlabel("DBD Percent Identity")
 		plt.ylabel("Fraction of TFs with Similiar PWMs")
+		plt.show()	
+
+	elif parse_method == "binary":
+		# parse data
+		scores_dbd = []
+		scores_pwm = []
+		for motif in motifs:
+			fn_dbd = dir_dbd + motif
+			fn_pwm = dir_pwm + motif + ".tomtom"
+			if (os.path.isfile(fn_dbd) and os.path.getsize(fn_dbd) > 0) and (os.path.isfile(fn_pwm) and os.path.getsize(fn_pwm) > 0):
+				dict_dbd = parse_dict(fn_dbd, True, min_score_dbd, None)
+				dict_pwm = parse_dict(fn_pwm, False, None, "e_value")
+				if bool(dict_dbd) and bool(dict_pwm): 
+					# binarize pwm alignment E-value with threshold of 1
+					targets_intersect = numpy.intersect1d(dict_dbd.keys(), dict_pwm.keys())
+					targets_diff = numpy.setdiff1d(dict_dbd.keys(), dict_pwm.keys())
+					targets_used = []
+					for target in targets_intersect:
+						if not target in targets_used:
+							scores_dbd.append(dict_dbd[target])
+							scores_pwm.append(1)
+							targets_used.append(target)
+					for target in targets_diff:
+						if not target in targets_used:
+							scores_dbd.append(dict_dbd[target])
+							scores_pwm.append(0)
+							targets_used.append(target)
+		
+		# logistic fit
+		p_guess=(numpy.median(scores_dbd), numpy.median(scores_pwm), 1, 1)
+		if fit_function == 'sigmoid':
+			p, cov, infodict, mesg, ier = leastsq(sigmoid_residuals, p_guess, args=(scores_dbd, scores_pwm), full_output=1)
+		elif fit_function == 'exponential':
+			p, cov, infodict, mesg, ier = leastsq(exponential_residuals, p_guess, args=(scores_dbd, scores_pwm), full_output=1)
+		else:
+			sys.exit("Fit function not specified")
+
+		# scatter plot
+		plt.figure()
+		plt.scatter(scores_dbd, scores_pwm, alpha=.1)
+		xp = numpy.linspace(min_score_dbd, 100, 100)
+		if fit_function == 'sigmoid':
+			pxp = sigmoid(p, xp)
+			label_fit = "sigmoid fit, " + str.format('{0:.2f}', p[2]) + "/(1+exp(-" + str.format('{0:.2f}', p[3]) + "*(x-" + str.format('{0:.2f}', p[0]) + ")))+" + str.format('{0:.2f}', p[1])
+		elif fit_function == 'exponential': 
+			pxp = exponential(p, xp)
+			label_fit = "exponential fit, " + str.format('{0:.2f}', p[2]) + "*exp(" + str.format('{0:.2f}', p[3]) + "*(x-" + str.format('{0:.2f}', p[0]) + "))+" + str.format('{0:.2f}', p[1])
+		else:
+			sys.exit("Fit function not specified")
+		plt.plot(xp, pxp, 'r-', label=label_fit)
+		plt.legend(loc="upper right")
+		plt.xlim([0, 100])
+		plt.ylim([-.05, 1.25])
+		plt.title("DBD vs PWM Similarity, Species: " + species)
+		plt.xlabel("DBD Percent Identity")
+		plt.ylabel("Binary PWM Alignment E-value with Threshold of 1")
 		plt.show()	
 
 	else:

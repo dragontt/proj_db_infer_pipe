@@ -75,7 +75,7 @@ for (np_conf_cutoff in np_conf_cutoffs)
 }
 
 tempNameList <- strsplit(network,"[./]")[[1]]
-tempBasename <- paste(tempNameList[4:(length(tempNameList)-1)],collapse=".")
+tempBasename <- paste(tempNameList[4:(length(tempNameList)-2)],collapse=".")
 # fnOutName <- paste("chip.bp.np.set.sizes.top2to20k.",tempBasename,".txt", sep="")
 fnOutName <- paste("chip.bp.np.set.sizes.top4to40k.",tempBasename,".txt", sep="")
 # fnOutName <- paste("chip.bp.np.set.sizes.top20to200k.",tempBasename,".txt", sep="")

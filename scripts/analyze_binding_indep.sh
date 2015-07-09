@@ -7,12 +7,10 @@ CHIP_NET=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_physical_network_chi
 PWM_NET=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_physical_network_pwm/motif_net.adjlst
 
 sed -i 's/ /\t/g' ${NETWORK}
-fn=${NETWORK##*/}
-fn=${fn%.adjmtr}
 
 echo -e "REGULATOR\tTARGET\tCONFIDENCE" > ${NETWORK}.txt
 $HOME/proj_db_infer_pipe/scripts/adjmtr2interactions.rb -a ${NETWORK} -r ${REGS} -c ${GENES} >> ${NETWORK}.txt
 
-R --no-save --slave --args ${fn}.txt ${CHIP_NET} ${PWM_NET} < ~ykang/proj_db_infer_pipe/scripts/analyze_binding_indep.r
+R --no-save --slave --args ${NETWORK}.txt ${CHIP_NET} ${PWM_NET} < ~ykang/proj_db_infer_pipe/scripts/analyze_binding_indep.r
 
 rm ${NETWORK}.txt

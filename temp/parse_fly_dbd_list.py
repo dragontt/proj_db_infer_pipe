@@ -6,7 +6,7 @@ fn_in = dir_proj + "fly_aa_seq/pids.dbd"
 
 pids = numpy.loadtxt(fn_in, dtype=str, delimiter="\t")
 
-n_pids_per_file = 250
+n_pids_per_file = 100
 n_files = numpy.ceil(len(pids)/n_pids_per_file)
 
 for i in numpy.arange(n_files):

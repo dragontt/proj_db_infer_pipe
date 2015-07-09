@@ -2,27 +2,25 @@
 
 tf_list=$1
 
-DIR_RES=$HOME/proj_db_infer_pipe/resources
-DIR_OUT=$HOME/proj_db_infer_pipe/output/fly_cisbp_dbd_pid
-list=$DIR_RES/fly_aa_seq/${tf_list}
-# list=$DIR_RES/crypto_network_orig/regulator.gids
+DIR_PROJ=$HOME/proj_db_infer_pipe
+DIR_RES=$DIR_PROJ/resources
+# DIR_OUTPUT=$DIR_PROJ/output/fly_cisbp_dbd_pid
+DIR_OUTPUT=$DIR_PROJ/output/fly_network_dbd_pid
+TF_LIST=$DIR_RES/fly_aa_seq/${tf_list}
+
 counter=0
 while read line; do
 	counter=$[$counter +1]
-	if [ -e $DIR_OUT/$line ]; then
+	if [ -e $DIR_OUTPUT/$line ]; then
 		echo "Processing $line ... Existed ... $counter ... Done"
 	else
 		echo -n "Processing $line ... New ... $counter"
-		bash $HOME/proj_db_infer_pipe/scripts/compt_dbd_pid.sh $line $DIR_RES/fly_aa_seq/dmel-all-translation-r6.04.filtered.dbd.fasta $DIR_RES/cisbp_aa_seq/cisbp.dbd.fasta 
+		# align against CIS-BP database motif sequences
+		# bash $HOME/proj_db_infer_pipe/scripts/compt_dbd_pid.sh $line $DIR_PROJ $DIR_RES/fly_aa_seq/dmel-all-translation-r6.04.filtered.dbd.fasta $DIR_RES/cisbp_aa_seq/cisbp.dbd.fasta $DIR_OUTPUT 1
+		
+		# align against self TF DBD sequences
+		bash $HOME/proj_db_infer_pipe/scripts/compt_dbd_pid.sh $line $DIR_PROJ $DIR_RES/fly_aa_seq/dmel-all-translation-r6.04.filtered.dbd.fasta $DIR_RES/fly_aa_seq/dmel-all-translation-r6.04.filtered.dbd.fasta $DIR_OUTPUT 0
 		echo " ... Done"
 	fi
-done < $list
+done < $TF_LIST
 
-# list=$HOME/proj_db_infer_pipe/resources/crypto_network_orig/regulator.gids
-# counter=0
-# while read line; do
-# 	counter=$[$counter +1]
-# 	echo -n "Processing $line ... $counter"
-# 	bash compt_dbd_pid.sh $line ~/proj_motifcomparison/resources/yeast.dbd.fasta
-# 	echo " ... Done"
-# done < $list
