@@ -19,6 +19,7 @@ evaluateEvidSupport <- function(predictedNetwork, goldNetwork, tfs, genes, rank_
         # predictedNetwork <- filter_auto(predictedNetwork, tfs, genes)
 
         gold_inds <- which(apply(goldNetwork,1,max)>0)
+        # cat(gold_inds, "\n")
         rand <- sum(goldNetwork[gold_inds,]) / length(goldNetwork[gold_inds,])
         res <- matrix(nrow=3, ncol=length(rank_cutoffs), data=0)
         res[1,] <- rep(rand, length(rank_cutoffs))

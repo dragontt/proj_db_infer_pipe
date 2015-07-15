@@ -12,9 +12,11 @@ import os.path
 import numpy
 from scipy.stats.mstats import gmean
 
+inference_methods = ['cisbp', 'fire']
+
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Combine inferred pwm fimo scan scores.")
-    parser.add_argument('-m', '--inference_method', dest='inference_method', type=str, default='cisbp')
+    parser.add_argument('-m', '--inference_method', dest='inference_method', type=str, default='cisbp', help='options: %s' % inference_methods)
     parser.add_argument('-i', '--fn_infer', dest='fn_infer', type=str)
     parser.add_argument('-r', '--fn_rids', dest='fn_rids', type=str)
     parser.add_argument('-g', '--fn_gids', dest='fn_gids', type=str)

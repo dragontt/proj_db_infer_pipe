@@ -19,15 +19,20 @@ while read -a line
 do
 	counter=$[$counter +1]
 	motif=${line[0]}
-	echo  "*** Processing $motif ... $counter"
-	cd $HOME/usr/meme/bin
-	./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/fly_promoter_seq/rsat_dmel_upstream_-2000_+200.filtered.fasta 
-	#./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/crypto_promoter_seq/crNeoH99.promoters.upstream600.fasta
-	sed ' 1d ' $PROJ_DIR/$OUT_FIMO/$motif/fimo.txt | cut -f 1,2,7 > $PROJ_DIR/$OUT_FIMO/$motif/temp.txt
-	ruby $PROJ_DIR/scripts/estimate_affinity.rb -i $PROJ_DIR/$OUT_FIMO/$motif/temp.txt > $PROJ_DIR/$OUT_FIMO/$motif.summary
-	# mv $PROJ_DIR/$OUT_FIMO/$motif/fimo.txt $PROJ_DIR/$OUT_FIMO/$motif.fimo
-	rm -r $PROJ_DIR/$OUT_FIMO/$motif
-	echo "*** Done"
+	if [ -e $PROJ_DIR/$IN_TF_PWM/$motif ]
+		then
+		echo  "*** Processing $motif ... $counter"
+		cd $HOME/usr/meme/bin
+		./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/fly_promoter_seq/rsat_dmel_upstream_-2000_+200.filtered.fasta 
+		#./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/crypto_promoter_seq/crNeoH99.promoters.upstream600.fasta
+		sed ' 1d ' $PROJ_DIR/$OUT_FIMO/$motif/fimo.txt | cut -f 1,2,7 > $PROJ_DIR/$OUT_FIMO/$motif/temp.txt
+		ruby $PROJ_DIR/scripts/estimate_affinity.rb -i $PROJ_DIR/$OUT_FIMO/$motif/temp.txt > $PROJ_DIR/$OUT_FIMO/$motif.summary
+		# mv $PROJ_DIR/$OUT_FIMO/$motif/fimo.txt $PROJ_DIR/$OUT_FIMO/$motif.fimo
+		rm -r $PROJ_DIR/$OUT_FIMO/$motif
+		echo "*** Done"
+	else
+		echo  "*** No PWM for $motif ... $counter *** Done"
+	fi
 done < $PROJ_DIR/$IN_TF_LIST
 
 # Compute the rankded lists
