@@ -39,51 +39,18 @@ def main(argv):
         dir_sub = 'analysis_flynet_top4to40k/'
         fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_model_full.txt')
         fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_model_full.txt')
-
-        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-        dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_flynet/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_known_motif_' + parsed.combination + '.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_known_motif_' + parsed.combination + '.txt')
-
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_known_motif_' + parsed.combination + '_tf_merged_dbd40.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_known_motif_' + parsed.combination + '_tf_merged_dbd40.txt')
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_known_motif_' + parsed.combination + '_tf_merged_dbd50.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_known_motif_' + parsed.combination + '_tf_merged_dbd50.txt')
-
-        # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-        # dir_sub = 'fire_motifs_np_bin_20/analysis_flynet/'
-        # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-        # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-        # dir_sub = 'fire_motifs_np_tf_merged_dbd50_bin_20/analysis_flynet/'
-        # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-        # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-
-        # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-        # dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_flynet/'
-        # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
-        # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
-        # dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np_tf_merged_dbd50/analysis_flynet/'
-        # fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
-        # fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_model_full_tf_merged_pid40.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_model_full_tf_merged_pid40.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_model_full_tf_merged_pid50.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_model_full_tf_merged_pid50.txt')
 
         # figure setup
-        # colors = ['k:', 'k', 'r', 'g', 'g--', 'b', 'b--']
-        # labels = []
-        # labels.append('chance')
-        # labels.append('np')
-        # labels.append('np + known_motif')
-        # labels.append('np + fire_motif')
-        # labels.append('np + fire_motif_tf_merged')
-        # labels.append('np + database_motif')
-        # labels.append('np + database_motif_tf_merged')
-
-        colors = ['k:', 'k', 'r', 'g', 'b']
+        colors = ['k:', 'k', 'g--', 'b--']
         labels = []
         labels.append('chance')
         labels.append('np')
-        labels.append('np + known_motif')
-        labels.append('np + known_motif + dbd40')
-        labels.append('np + known_motif + dbd50')
+        labels.append('np_tf_merged_dbd40')
+        labels.append('np_tf_merged_dbd50')
 
         x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
 

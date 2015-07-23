@@ -23,8 +23,8 @@ do
 		then
 		echo  "*** Processing $motif ... $counter"
 		cd $HOME/usr/meme/bin
-		./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/fly_promoter_seq/rsat_dmel_upstream_-2000_+200.filtered.fasta 
-		#./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/crypto_promoter_seq/crNeoH99.promoters.upstream600.fasta
+		# ./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/fly_promoter_seq/rsat_dmel_upstream_-2000_+200.filtered.fasta 
+		./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Saccharomyces_cerevisiae.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/yeast_promoter_seq/s_cerevisiae.promoters.fasta 
 		sed ' 1d ' $PROJ_DIR/$OUT_FIMO/$motif/fimo.txt | cut -f 1,2,7 > $PROJ_DIR/$OUT_FIMO/$motif/temp.txt
 		ruby $PROJ_DIR/scripts/estimate_affinity.rb -i $PROJ_DIR/$OUT_FIMO/$motif/temp.txt > $PROJ_DIR/$OUT_FIMO/$motif.summary
 		# mv $PROJ_DIR/$OUT_FIMO/$motif/fimo.txt $PROJ_DIR/$OUT_FIMO/$motif.fimo
@@ -34,10 +34,5 @@ do
 		echo  "*** No PWM for $motif ... $counter *** Done"
 	fi
 done < $PROJ_DIR/$IN_TF_LIST
-
-# Compute the rankded lists
-# echo "*** Computing rankings ... "
-# python $PROJ_DIR/scripts/compt_fimo_rank.py -i $PROJ_DIR/$OUT_FIMO -t $PROJ_DIR/resources/crypto_network_orig/gids -o $PROJ_DIR/$OUT_RANK
-# echo "*** Done"
 
 echo "*** ALL DONE! ***"

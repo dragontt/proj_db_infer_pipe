@@ -115,6 +115,8 @@ def model_average_pwm_geometric(np_component, binding_strengths):
         for i, _ in enumerate(row):
             pwm_averaged[j, i] = list_geometric((np_component[j, i], 
                                                  binding_strengths[j, i]))
+    pwm_averaged_nan_index = nmp.where(nmp.isnan(pwm_averaged))
+    pwm_averaged[pwm_averaged_nan_index[0], pwm_averaged_nan_index[1]] = 0
     return pwm_averaged
 #end function
 

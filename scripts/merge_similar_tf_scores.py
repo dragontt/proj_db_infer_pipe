@@ -9,13 +9,15 @@ import glob
 import argparse
 import numpy
 
+dbds_formats = ['multi_dbds', 'single_dbds', 'single_adjmtr']
+
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Merge TF network scores by weighted averaging, where the weight uses DBD-PWM similarity fit.")
     parser.add_argument("-n", "--fn_adjmtr_network", dest="fn_adjmtr_network")
     parser.add_argument("-r", "--fn_rids", dest="fn_rids")
     parser.add_argument("-a", "--dir_aligned_dbd", dest="dir_aligned_dbd")
     parser.add_argument("-d", "--dbd_cutoff", dest="dbd_cutoff", type=float, default=50)
-    parser.add_argument("-m", "--use_multi_dbds", dest="use_multi_dbds", default="False")
+    parser.add_argument("-f", "--dbds_formats", dest="dbds_formats", help="options: %s" % dbds_formats, default="single_dbds")
     parser.add_argument("-t", "--fn_dbd2rids_conversion", dest="fn_dbd2rids_conversion")
     parser.add_argument("-o", "--fn_output", dest="fn_output")
     parsed = parser.parse_args(argv[1:])
@@ -23,14 +25,13 @@ def parse_args(argv):
 
 def main(argv):
     parsed = parse_args(argv)
-    use_multi_dbds = parsed.use_multi_dbds.lower()
     if not parsed.dir_aligned_dbd.endswith("/"):
         parsed.dir_aligned_dbd += "/"
 
     # parse dbd percent identity and compute weights from sigmoid fit
     sys.stdout.write("computing TF weights\n")
 
-    if use_multi_dbds == "true":
+    if parsed.dbds_formats.lower() == "multi_dbds":
         # parse tf-dbd conversion
         dbd2rid_list = numpy.loadtxt(parsed.fn_dbd2rids_conversion, dtype=str)
         dbd2rid_dict = {}
@@ -58,7 +59,7 @@ def main(argv):
                     else:
                         tf_fractions_dict[query_tf] = {paired_tf: paired_weight}
 
-    else:
+    elif parsed.dbds_formats.lower() == 'single_dbds':
         # parse single dbd similarity and compute tf weigths
         tf_fractions_dict = {}
         fns_tf = glob.glob(parsed.dir_aligned_dbd + "*")
@@ -67,7 +68,7 @@ def main(argv):
 
             lines = open(fn_tf, "r").readlines()
             for i in range(len(lines)):
-                paired_tf = lines[i].split()[0]
+                paired_tf = lines[i].split(":")[0]
                 paired_pctid = float(lines[i].split()[1])
 
                 if paired_pctid >= parsed.dbd_cutoff:
@@ -79,6 +80,12 @@ def main(argv):
                     else:
                         tf_fractions_dict[query_tf] = {paired_tf: paired_weight} 
 
+    elif parsed.dbds_formats.lower() == 'single_adjmtr':
+        pass
+
+    else:
+        sys.exit("Improper dbd alignment score format.")
+
     # merge similar tfs using weighted average
     sys.stdout.write("weighted averaging similar TFs\n")
 
@@ -88,21 +95,25 @@ def main(argv):
     network_output = numpy.zeros(network_input.shape) 
 
     # weighted average
-    for query_tf in tf_fractions_dict.keys():
+    for query_tf in rids:
         query_tf_index = numpy.where(rids == query_tf)[0][0]
 
-        if len(tf_fractions_dict[query_tf].keys()) > 1:
-            paired_tf_indices = numpy.array([], dtype=int)
-            paired_tf_weights = numpy.array([], dtype=int)
-            for paired_tf in tf_fractions_dict[query_tf].keys():
-                paired_tf_indices = numpy.append(paired_tf_indices, numpy.where(rids == paired_tf)[0][0])
-                paired_tf_weights = numpy.append(paired_tf_weights, tf_fractions_dict[query_tf][paired_tf])
-
-            paired_tf_weights /= numpy.sum(paired_tf_weights)
-            network_sub = network_input[paired_tf_indices, :]
-            network_output[query_tf_index, :] = numpy.dot(paired_tf_weights,  network_sub)
-        else:
+        if (not query_tf in tf_fractions_dict.keys()):
             network_output[query_tf_index, :] = network_input[query_tf_index, :]
+
+        else:
+            if (len(tf_fractions_dict[query_tf].keys()) > 1):
+                paired_tf_indices = numpy.array([], dtype=int)
+                paired_tf_weights = numpy.array([], dtype=int)
+                for paired_tf in tf_fractions_dict[query_tf].keys():
+                    paired_tf_indices = numpy.append(paired_tf_indices, numpy.where(rids == paired_tf)[0][0])
+                    paired_tf_weights = numpy.append(paired_tf_weights, tf_fractions_dict[query_tf][paired_tf])
+
+                paired_tf_weights /= numpy.sum(paired_tf_weights)
+                network_sub = network_input[paired_tf_indices, :]
+                network_output[query_tf_index, :] = numpy.dot(paired_tf_weights,  network_sub)
+            else:
+                network_output[query_tf_index, :] = network_input[query_tf_index, :]
 
     # write weighted average network
     sys.stdout.write("writing network\n")
