@@ -32,7 +32,7 @@ def main(argv):
     parsed.dir_output = check_dir(parsed.dir_output)
 
     # edge count: 50k, 100k, 350k (original NetProphet)
-    np_edge_count = 10000000
+    # np_edge_count = 10000000
 
     # zero out low rank edges
     lines = open(parsed.dir_input + parsed.name + ".tsv", "r").readlines()
@@ -41,6 +41,8 @@ def main(argv):
     tfs = [None] * (len(lines)-1)
     
     adjmtr = numpy.ndarray([len(tfs), len(targets)])
+    rids = numpy.loadtxt(parsed.dir_input + parsed.name + ".tsv", dtype=str, skiprows=1, usecols=[0])
+    gids = numpy.array(lines[0].strip().split(), dtype=str)
 
     for i in range(1,len(lines)):
         temp = lines[i].split()
@@ -48,10 +50,10 @@ def main(argv):
         for j in range(1,len(temp)):
             adjmtr[i-1, j-1] = float(temp[j])
 
-    rankmtr = adjmtr.shape[0]*adjmtr.shape[1] + 1 - rankdata(adjmtr)
-    indices_low_rank = rankmtr > np_edge_count
-    indices_low_rank = numpy.reshape(indices_low_rank, (len(tfs), len(targets)))
-    adjmtr[indices_low_rank] = 0
+    # rankmtr = adjmtr.shape[0]*adjmtr.shape[1] + 1 - rankdata(adjmtr)
+    # indices_low_rank = rankmtr > np_edge_count
+    # indices_low_rank = numpy.reshape(indices_low_rank, (len(tfs), len(targets)))
+    # adjmtr[indices_low_rank] = 0
 
     # write data filtered adjmtr
     writer = open(parsed.dir_output + parsed.name + ".adjmtr", "w")
@@ -63,6 +65,9 @@ def main(argv):
                 writer.write("%0.15f\t" % adjmtr[i, j])
         writer.write("\n")
     writer.close()
+
+    numpy.savetxt(parsed.dir_output + "rids", rids, fmt="%s", delimiter="\n")
+    numpy.savetxt(parsed.dir_output + "gids", gids, fmt="%s", delimiter="\n")
 
     # write individual tf to target score files
     #for i in range(adjmtr.shape[0]):
