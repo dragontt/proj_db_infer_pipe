@@ -23,6 +23,8 @@ def main(argv):
     parsed = parse_args(argv)
     parsed.dir_input = check_dir(parsed.dir_input)
     parsed.dir_output = check_dir(parsed.dir_output)
+    if not os.path.exists(parsed.dir_output):
+        os.makedirs(parsed.dir_output)
 
     fns = glob.glob(parsed.dir_input + "*")
     for fn in fns:

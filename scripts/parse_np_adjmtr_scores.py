@@ -43,6 +43,8 @@ def main(argv):
 def check_dir(fd):
     if not fd.endswith('/'):
         fd += '/'
+    if not os.path.exists(fd):
+        os.makedirs(fd)
     return fd
 
 if __name__ == "__main__":
