@@ -19,6 +19,9 @@ def main(argv):
     if not parsed.dir_output.endswith("/"):
         parsed.dir_output += "/"
 
+    if not os.path.exists(parsed.dir_output):
+        os.makedirs(parsed.dir_output)
+
     # parse inferred FIRE motifs
     lines = open(parsed.fn_input, "r").readlines()
     for line in lines:
