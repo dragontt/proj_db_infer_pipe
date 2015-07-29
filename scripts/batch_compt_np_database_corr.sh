@@ -1,2 +1,0 @@
-# nq jobscript | qsub -P long -l h_vmem=40G -N My_job_name_here
-python $HOME/proj_db_infer_pipe/scripts/compt_np_database_corr.py -n $HOME/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/combined_model_full_tf_merged_pid40_rank/ -d $HOME/proj_db_infer_pipe/output/fly_cisbp_-2000_+200_fimo_rank_full/ -o $HOME/proj_db_infer_pipe/output/fly_cisbp_network_corr/cisbp_-2000_+200_fimo_cellCycle_np_tf_merged_dbd40/
