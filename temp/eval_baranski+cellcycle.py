@@ -37,6 +37,11 @@ def main(argv):
         # file initialization
         fns = []
 
+        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_baranski_singles_net_full_global_shrinkage/'
+        dir_sub = 'analysis_flynet/'
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.np_combined.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.np_combined.txt')
+
         dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_combined_baranski_cellcycle/'
         dir_sub = 'analysis_flynet/'
         fns.append(dir_network + dir_sub + 'analysis_chip_support.np_combined.txt')

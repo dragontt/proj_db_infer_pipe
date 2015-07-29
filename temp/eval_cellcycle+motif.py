@@ -130,7 +130,7 @@ def main(argv):
         eval_pwm = [None] * (len(fns)+1)
         [eval_chip[0], eval_pwm[0]] = parse_chance_binding_indep(fns[0])
         for i in range(len(fns)):
-            [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_overlap(fns[i], parsed.eval_method)
+            [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_info(fns[i], parsed.eval_method)
 
     # plot figures
     plt.figure(num=None, figsize=(15,8), dpi=80)
@@ -182,7 +182,7 @@ def parse_binary_gold_standard(fns, method):
 
     return [eval_chip, eval_pwm]
 
-def parse_binding_overlap(fn, method):
+def parse_binding_info(fn, method):
     lines = open(fn, "r").readlines()
     chip = [0] * (len(lines))
     pwm = [0] * (len(lines))
