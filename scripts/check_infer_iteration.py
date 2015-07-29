@@ -30,9 +30,10 @@ def main(argv):
         parsed.prev_iter = check_dir(parsed.prev_iter)
         parsed.curr_iter = check_dir(parsed.curr_iter)
 
+    counter = 0
+
     # use only changed binned tf network scores for motif inference
     if parsed.iter_step == 'bin':
-        counter = 0
         fns_curr = glob.glob(parsed.curr_iter + '*')
         for fn_curr in fns_curr:
             fn_prev = parsed.prev_iter + os.path.basename(fn_curr)
@@ -43,11 +44,33 @@ def main(argv):
 
     # use only changed inferred motifs for FIMO scoring
     elif parsed.iter_step == 'motif':
-        pass
+        motifs_dict = {}
+        motifs_prev = numpy.loadtxt(parsed.prev_iter, dtype=str)
+        for i in range(len(motifs_prev)):
+            motifs_dict[motifs_prev[i,0]] = motifs_prev[i,1]
+        
+        motifs_out = numpy.empty([0,2], dtype=str)
+        motifs_curr = numpy.loadtxt(parsed.curr_iter, dtype=str)
+        for i in range(len(motifs_curr)):
+            if motifs_curr[i,1] != motifs_dict[motifs_curr[i,0]]:
+                motifs_out = numpy.vstack((motifs_out, motifs_curr[i,:]))
+        numpy.savetxt(parsed.curr_iter, motifs_out, fmt='%s')
+        print str(counter), 'unchanged TF removed.'
 
     # link unchanged FIMO scores from prev. iteration for building motif net
     elif parsed.iter_step == 'fimo':
-        pass 
+        motifs_set = set()
+        fns_curr = glob.glob(parsed.curr_iter + '*')
+        for fn in fns_curr:
+            motifs_set.add(os.path.basename(fn))
+        
+        fns_prev = glob.glob(parsed.prev_iter + '*')
+        for fn in fns_prev:
+            fn_basename = os.path.basename(fn)
+            if not fn_basename in motifs_set:
+                os.system('ln -s '+ os.path.abspath(parsed.prev_iter) +'/'+ fn_basename +' '+ parsed.curr_iter + fn_basename)
+                counter += 1
+        print str(counter), 'prev avail TF linked.'
 
     # incorrect argument
     else:

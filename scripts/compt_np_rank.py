@@ -7,11 +7,13 @@ import os.path
 from scipy.stats import rankdata
 import numpy
 
+methods = ['use_abs', 'use_sign', 'use_abs_nozero', 'use_sign_nozero']
+
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Compute rankings of netprophet scores, optional method: use_abs, use_sign, use_abs_nozero, use_sign_nozero")
     parser.add_argument('-i', '--input_dir', dest='input_dir', type=str, default='')
     parser.add_argument('-o', '--output_dir', dest='output_dir', type=str)
-    parser.add_argument('-m', '--method', dest='method', type=str, default='use_abs_nozero')
+    parser.add_argument('-m', '--method', dest='method', type=str, default='use_abs_nozero', help="options: %s, default: '%s'" % (methods, methods[2]))
     parsed = parser.parse_args(argv[1:])
     return parsed
 
