@@ -52,7 +52,7 @@ def main(argv):
         motifs_out = numpy.empty([0,2], dtype=str)
         motifs_curr = numpy.loadtxt(parsed.curr_iter, dtype=str)
         for i in range(len(motifs_curr)):
-            if motifs_curr[i,1] != motifs_dict[motifs_curr[i,0]]:
+            if (motifs_curr[i,0] in motifs_dict.keys()) and (motifs_curr[i,1] != motifs_dict[motifs_curr[i,0]]):
                 motifs_out = numpy.vstack((motifs_out, motifs_curr[i,:]))
         numpy.savetxt(parsed.curr_iter, motifs_out, fmt='%s')
         print str(counter), 'unchanged TF removed.'
