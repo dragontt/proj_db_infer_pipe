@@ -13,11 +13,12 @@ import os.path
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Infer a motif using both DBD pid of k-NN and highest correlation with network edge score.")
     parser.add_argument('-a', '--dir_dbd_pid', dest='dir_dbd_pid', type=str)
-    parser.add_argument('-c', '--dir_rk_corr', dest='dir_rk_corr', type=str)
+    parser.add_argument('-r', '--dir_rk_corr', dest='dir_rk_corr', type=str)
     parser.add_argument('-p', '--param_cutoff', dest='param_cutoff', type=float, default=40)
     parser.add_argument('-o', '--dir_output', dest='dir_output', type=str)
-    parser.add_argument('-d', '--fn_conv_dbd2rid', dest='fn_conv_dbd2rid', type=str, default='/home/mblab/ykang/proj_db_infer_pipe/resources/fly_aa_seq/pids.dbd2fbgn')
     parser.add_argument('-l', '--fn_not_use', dest='fn_not_use', type=str, default='/home/mblab/ykang/proj_db_infer_pipe/resources/cisbp_1.01/cisbp_motifs_Drosophila_melanogaster.txt')
+    parser.add_argument('-u', '--use_conv', dest='use_conv', type=bool, default=False)
+    parser.add_argument('-d', '--fn_conv_dbd2rid', dest='fn_conv_dbd2rid', type=str, default='/home/mblab/ykang/proj_db_infer_pipe/resources/fly_aa_seq/pids.dbd2fbgn')
     parsed = parser.parse_args(argv[1:])
     return parsed
 
@@ -34,9 +35,15 @@ def main(argv):
 
     dbds = get_basenames(parsed.dir_dbd_pid)
     motifs_not_use = parse_list(parsed.fn_not_use)
-    dbd2fbgn = parse_dict(parsed.fn_conv_dbd2rid, 'str')
+    if parsed.use_conv:
+        dbd2fbgn = parse_dict(parsed.fn_conv_dbd2rid, 'str')
+        regulators = list(set(dbd2fbgn.values())) 
+    else:
+        regulators = dbds
+        dbd2fbgn = {}
+        for regulator in regulators:
+            dbd2fbgn[regulator] = regulator
 
-    regulators = list(set(dbd2fbgn.values())) 
     inferred_motif = {}
     inferred_pid = {}
     inferred_corr = {}

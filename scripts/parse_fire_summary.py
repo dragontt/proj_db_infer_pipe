@@ -10,6 +10,7 @@ def parse_args(argv):
     parser = argparse.ArgumentParser(description="Summarize inferred FIRE motifs.")
     parser.add_argument('-i', '--dir_input', dest='dir_input', type=str)
     parser.add_argument('-o', '--fn_output', dest='fn_output', type=str)
+    parser.add_argument('-z', '--append_z_score', dest='append_z_score', type=bool, default=False)
     parsed = parser.parse_args(argv[1:])
     return parsed
 
@@ -33,8 +34,12 @@ def main(argv):
         fsum = fn + "/DNA/" + tf + ".summary"
         if os.path.isfile(fsum) and os.stat(fsum).st_size > 0:
             lines = open(fsum, "r").readlines()
-            motif = lines[0].split()[0]
-            writer.write("%s\t%s\n" % (tf, motif))
+            motif = lines[0].split('\t')[0]
+            if parsed.append_z_score:
+                z_score = lines[0].split('\t')[5]
+                writer.write("%s\t%s\t%s\n" % (tf, motif, z_score))
+            else:
+                writer.write("%s\t%s\n" % (tf, motif))
     writer.close()
 
 if __name__ == "__main__":

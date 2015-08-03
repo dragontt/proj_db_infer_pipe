@@ -1,0 +1,2 @@
+python ../../../scripts/compt_motif_tomtom.py -f ../../../resources/cisbp_1.01/cisbp_tfs_Drosophila_melanogaster.txt -k ../../../resources/cisbp_1.01/cisbp_pfms.Drosophila_melanogaster.meme -o tomtom_motif_cmp_Eval_1/Dmel -s Dmel -i motifs_np_bin_20_pfm/ -e 1
+python ../../../scripts/compt_motif_tomtom.py -f ../../../resources/cisbp_1.01/cisbp_tfs_Drosophila_melanogaster.txt -k ../../../resources/cisbp_1.01/cisbp_pfms.Drosophila_melanogaster.meme -o tomtom_motif_cmp_Eval_10/Dmel -s Dmel -i motifs_np_bin_20_pfm/ -e 10
