@@ -35,36 +35,25 @@ def main(argv):
         # file initialization
         fns = []
 
-        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
-        dir_sub = 'analysis_flynet_top4to40k/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_model_full.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_model_full.txt')
-
-        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-        dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_flynet/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_known_motif_' + parsed.combination + '.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_known_motif_' + parsed.combination + '.txt')
-
-        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-        dir_sub = 'fire_motifs_np_bin_20/analysis_flynet/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-
-        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-        dir_sub = 'fire_ortho_motifs_np_bin_20/analysis_flynet/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.combined_network_np_ortho_motif_net_' + parsed.combination + '.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.combined_network_np_ortho_motif_net_' + parsed.combination + '.txt')
+        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_combined_baranski_cellcycle/'
+        dir_sub = 'analysis_compiled_chip_flynet_pwm/'
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.top12to120k.np_combined.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top12to120k.np_combined.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.top12to120k.np_combined_tf_merged_dbd40.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top12to120k.np_combined_tf_merged_dbd40.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.top12to120k.np_combined_tf_merged_dbd50.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top12to120k.np_combined_tf_merged_dbd50.txt')
 
         # figure setup
-        colors = ['k:', 'k', 'r', 'g', 'b']
+        colors = ['k:', 'k', 'r', 'g']
         labels = []
         labels.append('chance')
-        labels.append('np')
-        labels.append('np + known_dmel_motif')
-        labels.append('np + inferred_dmel_motif')
-        labels.append('np + inferred_dmel+orthos_motif')
+        labels.append('np_combined')
+        labels.append('np_combined_tf_merged_dbd40')
+        labels.append('np_combined_tf_merged_dbd50')
 
-        x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
+        # x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
+        x_ticks = ['12k', '24k', '36k', '48k', '60k', '72k', '84k', '96k', '108k', '120k']
 
         # compute chip and pwm supports
         [eval_chip, eval_pwm] = parse_binary_gold_standard(fns, parsed.eval_method)
@@ -74,23 +63,9 @@ def main(argv):
         # file initialization
         fns = []
 
-        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
+        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_combined_baranski_cellcycle/'
         dir_sub = 'analysis_binding_indep/'
         fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_model_full.txt')
-
-        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-        dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_known_motif_' + parsed.combination + '.txt')
-
-        dir_sub = 'fire_motifs_np_bin_20/analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-        dir_sub = 'fire_motifs_np_tf_merged_dbd50_bin_20/analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-
-        dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
-        dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np_tf_merged_dbd50/analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
 
         # figure setup
         colors = ['k:', 'k', 'r', 'g', 'g--', 'b', 'b--']
@@ -142,22 +117,30 @@ def parse_binary_gold_standard(fns, method):
     eval_pwm = numpy.zeros([len(fns)/2+1, 10])
 
     for i in range(len(fns)/2):
-        chip_support = numpy.loadtxt(fns[i*2])
-        pwm_support = numpy.loadtxt(fns[i*2+1]) 
-        if i == 0:
-            eval_chip[0,:] = chip_support[0,:]
-            eval_pwm[0,:] = pwm_support[0,:]
-        eval_chip[i+1,:] = chip_support[1,:]
-        eval_pwm[i+1,:] = pwm_support[1,:]
+        chip_support = numpy.loadtxt(fns[i*2], dtype=str)
+        temp_index = numpy.where(chip_support == 'NA')
+        chip_support[temp_index] = '0'
+        chip_support = numpy.array(chip_support, dtype=float)
+
+        pwm_support = numpy.loadtxt(fns[i*2+1], dtype=str) 
+        temp_index = numpy.where(pwm_support == 'NA')
+        pwm_support[temp_index] = '0'
+        pwm_support = numpy.array(pwm_support, dtype=float)
         
-    if method == 'cumulative':
-        temp_eval_chip = numpy.zeros([len(fns)/2+1, 10])
-        temp_eval_pwm = numpy.zeros([len(fns)/2+1, 10])
-        for j in range(10):
-            temp_eval_chip[:,j] = numpy.sum(eval_chip[:,0:(j+1)], axis=1)/(j+1)
-            temp_eval_pwm[:,j] = numpy.sum(eval_pwm[:,0:(j+1)], axis=1)/(j+1)
-        eval_chip = temp_eval_chip
-        eval_pwm = temp_eval_pwm
+        if i == 0:
+            eval_chip[0,:] = chip_support[1,:]/chip_support[0,:]
+            eval_pwm[0,:] = pwm_support[1,:]/pwm_support[0,:]
+
+        if method == 'cumulative':
+            eval_chip[i+1,:] = chip_support[3,:]/chip_support[2,:]
+            eval_pwm[i+1,:] = pwm_support[3,:]/pwm_support[2,:]
+
+        elif method == 'binned':
+            eval_chip[i+1,0] = chip_support[3,0]/chip_support[2,0]
+            eval_pwm[i+1,0] = pwm_support[3,0]/pwm_support[2,0]
+            for j in range(1,10):
+                eval_chip[i+1,j] = (chip_support[3,j]-chip_support[3,j-1])/(chip_support[2,j]-chip_support[2,j-1])
+                eval_pwm[i+1,j] = (pwm_support[3,j]-pwm_support[3,j-1])/(pwm_support[2,j]-pwm_support[2,j-1])
 
     return [eval_chip, eval_pwm]
 
