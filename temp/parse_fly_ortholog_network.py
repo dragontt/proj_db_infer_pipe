@@ -7,7 +7,7 @@ fn_gene_ortho = sys.argv[2]
 fn_dmel_network = sys.argv[3]
 fn_dmel_rids = sys.argv[4]
 fn_dmel_gids = sys.argv[5]
-fn_ortho_network = species + '.np_network.adjmtr'
+fn_ortho_network = species + '.network.adjmtr'
 fn_ortho_rids = species + '.rids'
 fn_ortho_gids = species + '.gids'
 

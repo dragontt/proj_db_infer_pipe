@@ -1,5 +1,8 @@
 #!/usr/bin/python
+import sys
 import numpy 
+
+parsed_ortho = sys.argv[1]
 
 fn_dmel_genes = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_baranski_singles_net_full/gids.fb'
 dmel_genes = numpy.loadtxt(fn_dmel_genes, dtype=str)
@@ -7,8 +10,7 @@ dmel_genes = numpy.loadtxt(fn_dmel_genes, dtype=str)
 ortho_list = {'Drosophila_ananassae':'Dana', 'Drosophila_erecta':'Dere', 'Drosophila_grimshawi':'Dgri', 'Drosophila_mojavensis':'Dmoj', 'Drosophila_persimilis':'Dper', 'Drosophila_pseudoobscura':'Dpse', 'Drosophila_sechellia':'Dsec', 'Drosophila_simulans':'Dsim', 'Drosophila_virilis':'Dvir', 'Drosophila_willistoni':'Dwil', 'Drosophila_yakuba':'Dyak'}
 fn_ortho_conversion = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_base/gene_orthologs_fb_2015_03.tsv'
 dir_promot_seqs = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_promoter_seq/'
-# fn_dmel_ortho = dir_promot_seqs + 'rsat_dmel+ortho_upstream_-2000_+200.filtered.fasta'
-fn_dmel_ortho = dir_promot_seqs + 'rsat_dmel+4orthos_upstream_-2000_+200.filtered.fasta'
+fn_dmel_ortho = dir_promot_seqs + 'rsat_dmel+'+ ortho_list[parsed_ortho] +'_upstream_-2000_+200.filtered.fasta'
 
 ortho_conversion = {}
 for ortho in ortho_list.values():
@@ -31,7 +33,7 @@ for i in range(len(lines)/2):
 		promot_seqs.append([gene, seq])
 
 # for ortho in ortho_list.keys():
-for ortho in ['Drosophila_ananassae', 'Drosophila_erecta', 'Drosophila_grimshawi', 'Drosophila_mojavensis']:
+for ortho in [parsed_ortho]:
 	print ortho
 	fn_ortho = dir_promot_seqs + 'rsat_'+ ortho +'_upstream_-2000_+200.filtered.fasta'
 	lines = open(fn_ortho, 'r').readlines()

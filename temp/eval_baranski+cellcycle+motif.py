@@ -50,18 +50,26 @@ def main(argv):
         dir_sub = 'fire_motifs_tf_merged_dbd40_np_bin_20/analysis_compiled_chip_flynet_pwm/'
         fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_motif_net_fire_bin_20_resort.txt')
         fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_motif_net_fire_bin_20_resort.txt')
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_motif_net_fire_bin_20_resort_tf_merged_dbd40.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_motif_net_fire_bin_20_resort_tf_merged_dbd40.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_motif_net_fire_bin_20_resort_tf_merged.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_motif_net_fire_bin_20_resort_tf_merged.txt')
+
+        dir_sub = 'fire_motifs_tf_merged_dbd50_np_bin_20/analysis_compiled_chip_flynet_pwm/'
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_motif_net_fire_bin_20_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_motif_net_fire_bin_20_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_motif_net_fire_bin_20_resort_tf_merged.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_motif_net_fire_bin_20_resort_tf_merged.txt')
 
         # figure setup
-        colors = ['k:', 'k', 'k--', 'r', 'g', 'g--']
+        colors = ['k:', 'k', 'k--', 'r', 'g', 'g--', 'b', 'b--']
         labels = []
         labels.append('chance')
         labels.append('np_combined')
         labels.append('np_combined_tf_merged')
         labels.append('np_combined + motifs')
-        labels.append('np_combined_tf_merged + motifs')
-        labels.append('np_combined_tf_merged + motifs _tf_merged')
+        labels.append('np_combined_tf_merged_dbd40 + motifs')
+        labels.append('np_combined_tf_merged_dbd40 + motifs _tf_merged')
+        labels.append('np_combined_tf_merged_dbd50 + motifs')
+        labels.append('np_combined_tf_merged_dbd50 + motifs _tf_merged')
 
         x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
         # x_ticks = ['12k', '24k', '36k', '48k', '60k', '72k', '84k', '96k', '108k', '120k']
