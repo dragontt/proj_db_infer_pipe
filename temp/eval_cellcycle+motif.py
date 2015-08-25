@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Combine chip and pwm evaluations")
+    parser.add_argument('-r', '-range', dest='range', default='top4to40k')
     parser.add_argument('-t', '-eval_type', dest='eval_type', type=str, default=
         'flynet')
     parser.add_argument('-c', '-combination', dest='combination', type=str, default='resort')
@@ -38,46 +39,49 @@ def main(argv):
         # np original
         dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
         dir_sub = 'analysis_compiled_chip_flynet_pwm/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_model_full.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_model_full.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_model_full.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_model_full.txt')
 
         # known motifs
         dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
         dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_compiled_chip_flynet_pwm/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_motif_net_known_motif_resort.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_motif_net_known_motif_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_motif_net_known_motif_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_motif_net_known_motif_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_tf_merged_motif_net_known_motif_tf_merged_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_tf_merged_motif_net_known_motif_tf_merged_resort.txt')
 
         # fire inference
         dir_sub = 'fire_motifs_np_bin_20/analysis_compiled_chip_flynet_pwm/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_motif_net_fire_np_bin_20_resort.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_motif_net_fire_np_bin_20_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_motif_net_fire_np_bin_20_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_motif_net_fire_np_bin_20_resort.txt')
 
         dir_sub = 'fire_motifs_np_tf_merged_dbd50_bin_20/analysis_compiled_chip_flynet_pwm/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_motif_net_fire_np_bin_20_resort_tf_merged.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_motif_net_fire_np_bin_20_resort_tf_merged.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_motif_net_fire_np_bin_20_resort_tf_merged.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_motif_net_fire_np_bin_20_resort_tf_merged.txt')
 
         dir_sub = 'fire_ortho_motifs_np_bin_20/analysis_compiled_chip_flynet_pwm/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
         dir_sub = 'fire_ortho_dmel+Dsim+Dsec_motifs_np_bin_20/analysis_compiled_chip_flynet_pwm/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
 
         # cisbp inference
         dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_compiled_chip_flynet_pwm/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_motif_net_dbd_cutoff_40.0_resort_0.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_motif_net_dbd_cutoff_40.0_resort_0.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_motif_net_dbd_cutoff_40.0_resort_0.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_motif_net_dbd_cutoff_40.0_resort_0.txt')
 
         dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np_tf_merged_dbd50/analysis_compiled_chip_flynet_pwm/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_network_np_motif_net_dbd_cutoff_40_resort_tf_merged.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_network_np_motif_net_dbd_cutoff_40_resort_tf_merged.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_motif_net_dbd_cutoff_40_resort_tf_merged.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_motif_net_dbd_cutoff_40_resort_tf_merged.txt')
 
         # figure setup
-        colors = ['k:', 'k', 'm', 'r', 'r--', 'g', 'g--', 'b', 'b--' ]
+        colors = ['k:', 'k', 'm', 'm--', 'r', 'r--', 'g', 'g--', 'b', 'b--' ]
         labels = []
         labels.append('chance')
         labels.append('np')
         labels.append('np + known_motifs')
+        labels.append('np_tf_merged + known_motifs')
         labels.append('np + fire_dmel_motifs')
         labels.append('np_tf_merged + fire_dmel_motifs')
         labels.append('np_tf_merged + fire_indiv_ortho_motifs')
@@ -85,52 +89,58 @@ def main(argv):
         labels.append('np + cisbp_motifs')
         labels.append('np_tf_merged + cisbp_motifs')
 
-        x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
+        if parsed.range == 'top4to40k':
+            x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
+        elif parsed.range == 'top12to120k':
+            x_ticks = ['12k', '24k', '36k', '48k', '60k', '72k', '84k', '96k', '108k', '120k']
+        else:
+            x_ticks = []
 
         # compute chip and pwm supports
         [eval_chip, eval_pwm] = parse_binary_gold_standard(fns, parsed.eval_method)
 
     elif parsed.eval_type == "binding_indep":
-        # evaluate chip and pwm supports on binding overlap gold standard
-        # file initialization
-        fns = []
+        pass
+        # # evaluate chip and pwm supports on binding overlap gold standard
+        # # file initialization
+        # fns = []
 
-        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
-        dir_sub = 'analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_model_full.txt')
+        # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
+        # dir_sub = 'analysis_binding_indep/'
+        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_model_full.txt')
 
-        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-        dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_known_motif_' + parsed.combination + '.txt')
+        # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
+        # dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_binding_indep/'
+        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_known_motif_' + parsed.combination + '.txt')
 
-        dir_sub = 'fire_motifs_np_bin_20/analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-        dir_sub = 'fire_motifs_np_tf_merged_dbd50_bin_20/analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
+        # dir_sub = 'fire_motifs_np_bin_20/analysis_binding_indep/'
+        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
+        # dir_sub = 'fire_motifs_np_tf_merged_dbd50_bin_20/analysis_binding_indep/'
+        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
 
-        dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
-        dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np_tf_merged_dbd50/analysis_binding_indep/'
-        fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
+        # dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_binding_indep/'
+        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
+        # dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np_tf_merged_dbd50/analysis_binding_indep/'
+        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
 
-        # figure setup
-        colors = ['k:', 'k', 'r', 'g', 'g--', 'b', 'b--']
-        labels = []
-        labels.append('chance')
-        labels.append('np')
-        labels.append('np + known_motif')
-        labels.append('np + fire_motif')
-        labels.append('np + fire_motif_tf_merged')
-        labels.append('np + database_motif')
-        labels.append('np + database_motif_tf_merged')
-        x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
+        # # figure setup
+        # colors = ['k:', 'k', 'r', 'g', 'g--', 'b', 'b--']
+        # labels = []
+        # labels.append('chance')
+        # labels.append('np')
+        # labels.append('np + known_motif')
+        # labels.append('np + fire_motif')
+        # labels.append('np + fire_motif_tf_merged')
+        # labels.append('np + database_motif')
+        # labels.append('np + database_motif_tf_merged')
+        # x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
 
-        # compute chip and pwm supports
-        eval_chip = [None] * (len(fns)+1)
-        eval_pwm = [None] * (len(fns)+1)
-        [eval_chip[0], eval_pwm[0]] = parse_chance_binding_indep(fns[0])
-        for i in range(len(fns)):
-            [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_info(fns[i], parsed.eval_method)
+        # # compute chip and pwm supports
+        # eval_chip = [None] * (len(fns)+1)
+        # eval_pwm = [None] * (len(fns)+1)
+        # [eval_chip[0], eval_pwm[0]] = parse_chance_binding_indep(fns[0])
+        # for i in range(len(fns)):
+        #     [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_info(fns[i], parsed.eval_method)
 
     # plot figures
     plt.figure(num=None, figsize=(15,8), dpi=80)
@@ -152,7 +162,7 @@ def main(argv):
     plt.ylabel('Interactions supported by PWM')
     plt.xlim(-1, len(eval_pwm[0]))
     plt.ylim(0, .2)
-    plt.legend(loc="upper right")
+    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 
     # plt.suptitle(parsed.eval_type + '_tf_merged_dbd50_' + parsed.combination)
 

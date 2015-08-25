@@ -36,11 +36,20 @@ def main(argv):
         fns = []
 
         dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_combined_baranski_cellcycle/'
+        # dir_sub = 'archive/analysis_compiled_chip_flynet_pwm/'
+        # fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.np_combined_tf_merged_dbd40.txt')
+        # fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.np_combined_tf_merged_dbd40.txt')
+        
         dir_sub = 'analysis_compiled_chip_flynet_pwm/'
         fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.np_combined.txt')
         fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.np_combined.txt')
         fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.np_combined_tf_merged_dbd40.txt')
         fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.np_combined_tf_merged_dbd40.txt')
+
+        # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
+        # dir_sub = 'analysis_compiled_chip_flynet_pwm/'
+        # fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_model_full.txt')
+        # fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_model_full.txt')
 
         dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_combined_baranski_cellcycle_motif_incorporated/'
         dir_sub = 'fire_motifs_np_bin_20/analysis_compiled_chip_flynet_pwm/'
@@ -114,7 +123,7 @@ def main(argv):
     plt.xlabel('Predictions grouped by rank')
     plt.ylabel('Interactions supported by ChIP')
     plt.xlim(-1, len(eval_chip[0]))
-    plt.ylim(0, .45)
+    plt.ylim(0, .6)
     # plt.legend(loc="upper right")
 
     plt.subplot(1,2,2)
@@ -125,7 +134,7 @@ def main(argv):
     plt.ylabel('Interactions supported by PWM')
     plt.xlim(-1, len(eval_pwm[0]))
     plt.ylim(0, .2)
-    plt.legend(loc="upper right")
+    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 
     # plt.suptitle(parsed.eval_type + '_tf_merged_dbd50_' + parsed.combination)
 

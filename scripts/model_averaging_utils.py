@@ -123,7 +123,27 @@ def model_average_pwm_geometric(np_component, binding_strengths):
 
 def model_average_pwm_arithmetic(np_component, binding_strengths):
     ''' Performs arithmetic mean '''
-    return (np_component + binding_strengths)/2
+    sign_np_component = nmp.sign(np_component)
+    sign_np_component[nmp.where(sign_np_component == 0)] = 1
+    abs_np_component = nmp.absolute(np_component)
+    abs_binding_strengths = nmp.absolute(binding_strengths)
+    combined = (abs_np_component + abs_binding_strengths)/2
+    combined = nmp.multiply(combined, sign_np_component) 
+    return combined
+#end function
+
+
+def model_average_pwm_arithmetic_intersect(np_component, binding_strengths):
+    ''' Performs arithmetic mean of intersected edges '''
+    sign_np_component = nmp.sign(np_component)
+    sign_np_component[nmp.where(sign_np_component == 0)] = 1
+    abs_np_component = nmp.absolute(np_component)
+    abs_binding_strengths = nmp.absolute(binding_strengths)
+    inds_intersect = nmp.nonzero(nmp.multiply(abs_np_component, abs_binding_strengths))
+    combined = nmp.maximum(abs_np_component, abs_binding_strengths)
+    combined[inds_intersect] = (abs_np_component[inds_intersect] + abs_binding_strengths[inds_intersect]) /2
+    combined = nmp.multiply(combined, sign_np_component) 
+    return combined
 #end function
 
 
