@@ -65,6 +65,9 @@ def main(argv):
         dir_sub = 'fire_ortho_dmel+Dsim+Dsec_motifs_np_bin_20/analysis_compiled_chip_flynet_pwm/'
         fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
         fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
+        dir_sub = 'fire_ortho_dmel+Dsim+Dsec+Dyak+Dere+Dana_motifs_np_bin_20/analysis_compiled_chip_flynet_pwm/'
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
 
         # cisbp inference
         dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_compiled_chip_flynet_pwm/'
@@ -76,7 +79,7 @@ def main(argv):
         fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_motif_net_dbd_cutoff_40_resort_tf_merged.txt')
 
         # figure setup
-        colors = ['k:', 'k', 'm', 'm--', 'r', 'r--', 'g', 'g--', 'b', 'b--' ]
+        colors = ['k:', 'k', 'm', 'm--', 'r', 'r--', 'g', 'g--', 'g:', 'b', 'b--' ]
         labels = []
         labels.append('chance')
         labels.append('np')
@@ -85,7 +88,8 @@ def main(argv):
         labels.append('np + fire_dmel_motifs')
         labels.append('np_tf_merged + fire_dmel_motifs')
         labels.append('np_tf_merged + fire_indiv_ortho_motifs')
-        labels.append('np_tf_merged + fire_comb_ortho_motifs')
+        labels.append('np_tf_merged + fire_comb_ortho_motifs _2species')
+        labels.append('np_tf_merged + fire_comb_ortho_motifs _5species')
         labels.append('np + cisbp_motifs')
         labels.append('np_tf_merged + cisbp_motifs')
 

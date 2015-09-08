@@ -25,6 +25,7 @@ evaluateEvidSupport <- function(predictedNetwork, goldNetwork, tfs, genes, rank_
 
     # evaluate all tf edges
     cutoffs <- abs(predictedNetwork)[order(abs(predictedNetwork), decreasing=TRUE)][rank_cutoffs]
+	cat(cutoffs, "\n")
 
     for(j in 1:length(cutoffs)) {
         for (gold_ind in gold_inds) {
