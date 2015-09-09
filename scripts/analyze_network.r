@@ -29,7 +29,7 @@ evaluateEvidSupport <- function(predictedNetwork, goldNetwork, tfs, genes, rank_
 
     for(j in 1:length(cutoffs)) {
         for (gold_ind in gold_inds) {
-            target_inds <- which(abs(predictedNetwork[gold_ind,]) > cutoffs[j])
+            target_inds <- which(abs(predictedNetwork[gold_ind,]) >= cutoffs[j])
             res[3,j] <- res[3,j] + length(target_inds)
             res[4,j] <- res[4,j] + sum(goldNetwork[gold_ind,][target_inds])
         }

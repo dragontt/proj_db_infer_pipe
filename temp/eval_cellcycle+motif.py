@@ -93,10 +93,16 @@ def main(argv):
         labels.append('np + cisbp_motifs')
         labels.append('np_tf_merged + cisbp_motifs')
 
-        if parsed.range == 'top4to40k':
+        if parsed.range == 'top1to10k':
+            x_ticks = ['1k', '2k', '3k', '4k', '5k', '6k', '7k', '8k', '9k', '10k']
+        elif parsed.range == 'top4to40k':
             x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
         elif parsed.range == 'top12to120k':
             x_ticks = ['12k', '24k', '36k', '48k', '60k', '72k', '84k', '96k', '108k', '120k']
+        elif parsed.range == 'top80to800k':
+            x_ticks = ['80k', '160k', '240k', '320k', '400k', '480k', '560k', '640k', '720k', '800k']
+        elif parsed.range == 'top120to1200k':
+            x_ticks = ['120k', '240k', '360k', '480k', '600k', '720k', '840k', '960k', '1080k', '1200k']
         else:
             x_ticks = []
 
@@ -155,7 +161,12 @@ def main(argv):
     plt.xlabel('Predictions grouped by rank')
     plt.ylabel('Interactions supported by ChIP')
     plt.xlim(-1, len(eval_chip[0]))
-    plt.ylim(0, .6)
+    if parsed.range == 'top1to10k':
+        plt.ylim(0, 1)
+    elif parsed.range == 'top4to40k':
+        plt.ylim(0, .6)
+    else:
+        plt.ylim(0, .4)
     # plt.legend(loc="upper right")
 
     plt.subplot(1,2,2)
