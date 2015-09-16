@@ -16,6 +16,7 @@ eval_method_options = ['binned', 'cumulative']
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Combine chip and pwm evaluations")
+    parser.add_argument('-n', '-figure_name', dest='figure_name', default='temp_result')
     parser.add_argument('-c', '-combination', dest='combination', type=str, default='resort', help='%s' % combination_options)
     parser.add_argument('-m', '-eval_method', dest='eval_method', type=str, default='cumulative', help='%s' % eval_method_options)
     parsed = parser.parse_args(argv[1:])
@@ -27,39 +28,56 @@ def errprint(st):
 def main(argv):
     parsed = parse_args(argv)
 
+    dir_figures = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/yeast_analysis_results/'
+    figure_title = 'Yeast Holstege Network: Combined with Inferred Motif Network'
+
     fns = []
 
     # original network
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/yeast_network_holstege/'
     dir_sub = 'analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.np_bart_top400k.txt')
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.np_bart_top400k_tf_merged_dbd50.txt')
+
+    # known motifs
+    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/yeast_network_holstege_motif_incorporated/'
+    dir_sub = 'scertf_known_motif/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_np_bart_motif_net.txt')
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
 
     # FIRE motifs incorporated network
-    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/yeast_network_holstege_motif_incorporated/'
     dir_sub = 'fire_motifs_np_bart_bin_20/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_fire_bin_20_' + parsed.combination + '.txt')
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_fire_bin_20_' + parsed.combination + '.txt')
 
     dir_sub = 'fire_motifs_np_bart_tf_merged_dbd50_bin_20/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_fire_bin_20_' + parsed.combination + '.txt')
-    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_fire_bin_20_tf_merged_' + parsed.combination + '.txt')
     fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_tf_merged_net_fire_bin_20_tf_merged_' + parsed.combination + '.txt')
+    dir_sub = 'fire_ortho_scer+smik+skud+sbay_motifs_bin_20/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
+    dir_sub = 'fire_ortho_scer+smik+skud+sbay+scas+sklu_motifs_bin_20/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
 
     # CISBP motifs incorporated network
     cisbp_dbd_cutoff = str(40)
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/yeast_network_holstege_motif_incorporated/'
-    dir_sub = 'cisbp_dbd_cutoff_holstege_np_bart/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_cisbp_dbd_cutoff_'+ cisbp_dbd_cutoff +'_' + parsed.combination + '.txt')
+    # dir_sub = 'cisbp_dbd_cutoff_holstege_np_bart/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_cisbp_dbd_cutoff_'+ cisbp_dbd_cutoff +'_' + parsed.combination + '.txt')
     dir_sub = 'cisbp_dbd_cutoff_holstege_np_bart_tf_merged_dbd50/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_cisbp_dbd_cutoff_'+ cisbp_dbd_cutoff +'_tf_merged_' + parsed.combination + '.txt')
 
     # figure setup
-    colors = ['k:', 'k', 'r', 'r--', 'g', 'g--']
+    # colors = ['k:', 'k', 'k--', 'm', 'm--', 'r', 'r--', 'g--', 'g:', 'b', 'b--']
+    colors = ['k:', 'k--', 'k', 'r', 'g', 'c', 'b']
     labels = []
     labels.append('chance')
     labels.append('np_bart')
-    labels.append('np_bart + fire_motif')
+    labels.append('np_bart + tf_merged')
+    # labels.append('np_bart + known_motif')
+    # labels.append('np_bart + known_motif + tf_merged')
+    # labels.append('np_bart + fire_motif')
     labels.append('np_bart + fire_motif + tf_merged')
-    labels.append('np_bart + cisbp_motif')
+    labels.append('np_bart + fire_motif_3_ortho_species + tf_merged')
+    labels.append('np_bart + fire_motif_5_ortho_species + tf_merged')
+    # labels.append('np_bart + cisbp_motif')
     labels.append('np_bart + cisbp_motif + tf_merged')
     x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
 
@@ -71,7 +89,11 @@ def main(argv):
         [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_overlap(fns[i], parsed.eval_method)
 
     # plot figures
-    plt.figure(num=None, figsize=(15,8), dpi=80)
+    # fig = plt.figure(num=None, figsize=(25,8), dpi=80)
+    # fig.subplots_adjust(right=.7)
+
+    fig = plt.figure(num=None, figsize=(18,8), dpi=80)
+
     plt.subplot(1,2,1)
     for i in range(len(eval_chip)):
         plt.plot(eval_chip[i], colors[i], label=labels[i])
@@ -80,7 +102,6 @@ def main(argv):
     plt.ylabel('Interactions supported by ChIP')
     plt.xlim(-1, len(eval_chip[0]))
     plt.ylim(0, .35)
-    # plt.legend(loc="upper right")
 
     plt.subplot(1,2,2)
     for i in range(len(eval_pwm)):
@@ -91,9 +112,11 @@ def main(argv):
     plt.xlim(-1, len(eval_pwm[0]))
     plt.ylim(0, .35)
     plt.legend(loc="upper right")
+    # plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 
-    plt.suptitle('Yeast Holstege Network: TFs of Similar DBDs Combined for Motif Inference')
+    plt.suptitle(figure_title)
 
+    plt.savefig(dir_figures + parsed.figure_name + '.pdf', fmt='pdf')
     plt.show()
 
 def parse_binary_gold_standard(fns, method):
