@@ -2,7 +2,8 @@
 
 NETWORK=$1
 MAXRANK=$2
-DIR_ANALYSIS=$3
+NUMBINS=$3
+DIR_ANALYSIS=$4
 
 REGS=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_baranski_singles_net_full/rids.fb
 GENES=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_baranski_singles_net_full/gids.fb
@@ -12,11 +13,9 @@ PWM_NET=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_net/resources/network
 fn=${NETWORK##*/}
 fn=${fn%.adjmtr}
 
-if [ -z $DIR_ANALYSIS ]
-then
-	Rscript ~ykang/proj_db_infer_pipe/scripts/analyze_network.r ${NETWORK} ${REGS} ${GENES} ${CHIP_NET} analysis_chip_support.top$((MAXRANK / 10))to${MAXRANK}k.${fn}.txt ${MAXRANK}
-	Rscript ~ykang/proj_db_infer_pipe/scripts/analyze_network.r ${NETWORK} ${REGS} ${GENES} ${PWM_NET} analysis_pwm_support.top$((MAXRANK / 10))to${MAXRANK}k.${fn}.txt ${MAXRANK}
-else
-	Rscript ~ykang/proj_db_infer_pipe/scripts/analyze_network.r ${NETWORK} ${REGS} ${GENES} ${CHIP_NET} ${DIR_ANALYSIS}/analysis_chip_support.top$((MAXRANK / 10))to${MAXRANK}k.${fn}.txt ${MAXRANK}
-	Rscript ~ykang/proj_db_infer_pipe/scripts/analyze_network.r ${NETWORK} ${REGS} ${GENES} ${PWM_NET} ${DIR_ANALYSIS}/analysis_pwm_support.top$((MAXRANK / 10))to${MAXRANK}k.${fn}.txt ${MAXRANK}
-fi
+if [ -z $NUMBINS ]; then NUMBINS=10; fi
+
+if [ -z $DIR_ANALYSIS ]; then DIR_ANALYSIS=.; fi
+
+Rscript ~ykang/proj_db_infer_pipe/scripts/analyze_network.r ${NETWORK} ${REGS} ${GENES} ${CHIP_NET} ${DIR_ANALYSIS}/analysis_chip_support.${NUMBINS}bins.top$((MAXRANK / 10))to${MAXRANK}k.${fn}.txt ${MAXRANK} ${NUMBINS}
+Rscript ~ykang/proj_db_infer_pipe/scripts/analyze_network.r ${NETWORK} ${REGS} ${GENES} ${PWM_NET} ${DIR_ANALYSIS}/analysis_pwm_support.${NUMBINS}bins.top$((MAXRANK / 10))to${MAXRANK}k.${fn}.txt ${MAXRANK} ${NUMBINS}

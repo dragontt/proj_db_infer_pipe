@@ -1,6 +1,6 @@
 #!/usr/bash
 max_rank=$1
-dir_analysis=$2
+num_bins=$2
 
 dir_output=/home/mblab/ykang/proj_db_infer_pipe/output
 networks=()
@@ -18,5 +18,5 @@ networks+=(${dir_output}/fly_network_cellCycle_motif_incorporated/cisbp_-2000_+2
 for network in ${networks[@]}
 do
 	# echo $(dirname $network)
-	bash /home/mblab/ykang/proj_db_infer_pipe/scripts/analyze_compiled_chip_flynet_pwm.sh $network $max_rank $(dirname $network)/analysis_compiled_chip_flynet_pwm
+	qsub -P long -l h_vmem=4G /home/mblab/ykang/proj_db_infer_pipe/scripts/analyze_compiled_chip_flynet_pwm.sh $network $max_rank $num_bins $(dirname $network)/analysis_compiled_chip_flynet_pwm
 done
