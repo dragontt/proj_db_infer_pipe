@@ -1,9 +1,9 @@
 #! /bin/bash
 
 # Compute DBD percent identity of one query motif's DBD to all motif DBDs in the database. 
-# First compile the fasta files and make a temp file of paired query DBD to individual databse DBD.
-# Then compute the percent idenity of those paired DBDs. Lastly, create a ordered list of aaids of 
-# the query motif DBD to all database motif DBDs.
+# 1. Compile the fasta files and make a temp file of paired query DBD to individual databse DBD;
+# 2. Compute the percent idenity of those paired DBDs;
+# 3. Create a ordered list of aaids of the query motif DBD to all database motif DBDs.
 
 QUERY_MOTIF=$1
 DIR_PROJ=$2

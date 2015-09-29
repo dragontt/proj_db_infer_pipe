@@ -5,6 +5,7 @@ import numpy
 import matplotlib.pyplot as plt
 from scipy.optimize import leastsq
 
+figure_name = "/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_analysis_results/sigmoid_fit.pdf"
 # species = "yeast"; species_full = "Saccharomyces_cerevisiae"
 species = "fly"; species_full = "Drosophila_melanogaster"
 min_score_dbd = 0
@@ -13,8 +14,8 @@ itv_score_dbd = 5
 # score_type = "average"
 # parse_method = "e_value"
 # parse_method = "-log10_fc"
-# parse_method = "fraction"
-parse_method = "binary"
+parse_method = "fraction"
+# parse_method = "binary"
 fit_function = "sigmoid"
 # fit_function = "exponential"
 
@@ -142,9 +143,12 @@ def main():
 		plt.legend(loc="upper right")
 		plt.xlim([0, 100])
 		plt.ylim([0, 1.10])
-		plt.title("DBD vs PWM Similarity, Species: " + species)
+		# plt.title("DBD vs PWM Similarity, Species: " + species)
+		plt.title("DBD vs PWM Similarity")
 		plt.xlabel("DBD Percent Identity")
-		plt.ylabel("Fraction of TFs with Similiar PWMs")
+		plt.ylabel("Fraction of TFs with Similiar PWMs, E-value < 1")
+
+		plt.savefig(figure_name, fmt='pdf')
 		plt.show()	
 
 	elif parse_method == "binary":
@@ -200,7 +204,7 @@ def main():
 		plt.ylim([-.05, 1.25])
 		plt.title("DBD vs PWM Similarity, Species: " + species)
 		plt.xlabel("DBD Percent Identity")
-		plt.ylabel("Binary PWM Alignment E-value with Threshold of 1")
+		plt.ylabel("Binary PWM Alignment E-value < 1")
 		plt.show()	
 
 	else:

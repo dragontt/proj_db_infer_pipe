@@ -32,7 +32,7 @@ def main(argv):
     parsed = parse_args(argv)
 
     dir_figures = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_analysis_results/'
-    figure_title = 'Fly CellCycle Network: Combined with Inferred Motifs'
+    figure_title = 'Fly CellCycle Network: Combination with Inferred Motifs'
 
     if parsed.eval_type == "flynet":
 
@@ -86,7 +86,8 @@ def main(argv):
 
         # figure setup
         # colors = ['k:', 'k', 'k--', 'm', 'm--', 'r', 'r--', 'g', 'g--', 'g:', 'b', 'b--' ]
-        colors = ['k:', 'k--', 'k', 'r', 'g', 'c', 'b']
+        # colors = ['k:', 'k--', 'k', 'm']
+        colors = ['k:', 'k--', 'k', 'r', 'g', '--g', 'b']
         labels = []
         labels.append('chance')
         labels.append('np')
@@ -131,23 +132,23 @@ def main(argv):
         plt.plot(eval_chip[i], colors[i], label=labels[i])
     plt.xticks(range(len(eval_chip[0])), x_ticks)
     plt.xlabel('Predictions grouped by rank')
-    plt.ylabel('Interactions supported by ChIP')
+    plt.ylabel('Interactions supported by ChIP (%)')
     plt.xlim(-1, len(eval_chip[0]))
     if parsed.range == 'top1to10k':
-        plt.ylim(0, 1)
+        plt.ylim(10, 90)
     elif parsed.range == 'top4to40k':
-        plt.ylim(0, .6)
+        plt.ylim(13, 55)
     else:
-        plt.ylim(0, .6)
+        plt.ylim(13.5, 40)
 
     plt.subplot(1,2,2)
     for i in range(len(eval_pwm)):
         plt.plot(eval_pwm[i], colors[i], label=labels[i])
     plt.xticks(range(len(eval_pwm[0])), x_ticks)
     plt.xlabel('Predictions grouped by rank')
-    plt.ylabel('Interactions supported by PWM')
+    plt.ylabel('Interactions supported by PWM (%)')
     plt.xlim(-1, len(eval_pwm[0]))
-    plt.ylim(0, .2)
+    plt.ylim(4.5, 18)
     plt.legend(loc="upper right")
     # plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     
@@ -186,7 +187,7 @@ def parse_binary_gold_standard(fns, method):
                 eval_chip[i+1,j] = (chip_support[3,j]-chip_support[3,j-1])/(chip_support[2,j]-chip_support[2,j-1])
                 eval_pwm[i+1,j] = (pwm_support[3,j]-pwm_support[3,j-1])/(pwm_support[2,j]-pwm_support[2,j-1])
 
-    return [eval_chip, eval_pwm]
+    return [eval_chip*100, eval_pwm*100]
 
 def parse_binding_info(fn, method):
     lines = open(fn, "r").readlines()
