@@ -53,8 +53,8 @@ def main(argv):
         dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_compiled_chip_flynet_pwm/'
         # fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_motif_net_known_motif_resort.txt')
         # fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_motif_net_known_motif_resort.txt')
-        # fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_tf_merged_motif_net_known_motif_tf_merged_resort.txt')
-        # fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_tf_merged_motif_net_known_motif_tf_merged_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_tf_merged_motif_net_known_motif_tf_merged_resort.txt')
+        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_tf_merged_motif_net_known_motif_tf_merged_resort.txt')
 
         # fire inference
         dir_sub = 'fire_motifs_np_bin_20/analysis_compiled_chip_flynet_pwm/'
@@ -71,9 +71,9 @@ def main(argv):
         dir_sub = 'fire_ortho_dmel+Dsim+Dsec_motifs_np_bin_20/analysis_compiled_chip_flynet_pwm/'
         fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
         fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
-        dir_sub = 'fire_ortho_dmel+Dsim+Dsec+Dyak+Dere+Dana_motifs_np_bin_20/analysis_compiled_chip_flynet_pwm/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
+        # dir_sub = 'fire_ortho_dmel+Dsim+Dsec+Dyak+Dere+Dana_motifs_np_bin_20/analysis_compiled_chip_flynet_pwm/'
+        # fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
+        # fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_network_np_ortho_motif_net_tf_merged_resort.txt')
 
         # cisbp inference
         dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_compiled_chip_flynet_pwm/'
@@ -87,18 +87,18 @@ def main(argv):
         # figure setup
         # colors = ['k:', 'k', 'k--', 'm', 'm--', 'r', 'r--', 'g', 'g--', 'g:', 'b', 'b--' ]
         # colors = ['k:', 'k--', 'k', 'm']
-        colors = ['k:', 'k--', 'k', 'r', 'g', '--g', 'b']
+        colors = ['k:', 'k--', 'k', 'm', 'r', 'g', 'b']
         labels = []
         labels.append('chance')
         labels.append('np')
         labels.append('np_tf_merged')
         # labels.append('np + known_motifs')
-        # labels.append('np_tf_merged + known_motifs')
+        labels.append('np_tf_merged + known_motifs')
         # labels.append('np + fire_dmel_motifs')
-        labels.append('np_tf_merged + fire_dmel_motifs')
+        labels.append('np_tf_merged + fire_motifs_dmel')
         # labels.append('np_tf_merged + fire_indiv_ortho_motifs')
-        labels.append('np_tf_merged + fire_comb_ortho_motifs _2species')
-        labels.append('np_tf_merged + fire_comb_ortho_motifs _5species')
+        labels.append('np_tf_merged + fire_motifs_ortho_dmel+dsim+dsec')
+        # labels.append('np_tf_merged + fire_comb_ortho_motifs _5species')
         # labels.append('np + cisbp_motifs')
         labels.append('np_tf_merged + cisbp_motifs')
 
@@ -139,7 +139,7 @@ def main(argv):
     elif parsed.range == 'top4to40k':
         plt.ylim(13, 55)
     else:
-        plt.ylim(13.5, 40)
+        plt.ylim(13.5, 37)
 
     plt.subplot(1,2,2)
     for i in range(len(eval_pwm)):
@@ -148,7 +148,7 @@ def main(argv):
     plt.xlabel('Predictions grouped by rank')
     plt.ylabel('Interactions supported by PWM (%)')
     plt.xlim(-1, len(eval_pwm[0]))
-    plt.ylim(4.5, 18)
+    plt.ylim(4.5, 15)
     plt.legend(loc="upper right")
     # plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     

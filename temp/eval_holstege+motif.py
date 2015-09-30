@@ -29,7 +29,7 @@ def main(argv):
     parsed = parse_args(argv)
 
     dir_figures = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/yeast_analysis_results/'
-    figure_title = 'Yeast Holstege Network: TF Merging and Combination with Known Motifs'
+    figure_title = 'Yeast Holstege Network: TF Merging and Combination with Motifs'
 
     fns = []
 
@@ -50,10 +50,12 @@ def main(argv):
     # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_fire_bin_20_' + parsed.combination + '.txt')
 
     dir_sub = 'fire_motifs_np_bart_tf_merged_dbd50_bin_20/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_tf_merged_net_fire_bin_20_tf_merged_' + parsed.combination + '.txt')
-    dir_sub = 'fire_ortho_scer+smik+skud+sbay_motifs_bin_20/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_tf_merged_net_fire_bin_20_tf_merged_' + parsed.combination + '.txt')
+    dir_sub = 'fire_ortho_scer+spar+smik_motifs_bin_20/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
+    # dir_sub = 'fire_ortho_scer+smik+skud+sbay_motifs_bin_20/analysis_binding_overlap/'
     # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
-    dir_sub = 'fire_ortho_scer+smik+skud+sbay+scas+sklu_motifs_bin_20/analysis_binding_overlap/'
+    # dir_sub = 'fire_ortho_scer+smik+skud+sbay+scas+sklu_motifs_bin_20/analysis_binding_overlap/'
     # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
 
     # CISBP motifs incorporated network
@@ -62,12 +64,12 @@ def main(argv):
     # dir_sub = 'cisbp_dbd_cutoff_holstege_np_bart/analysis_binding_overlap/'
     # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_cisbp_dbd_cutoff_'+ cisbp_dbd_cutoff +'_' + parsed.combination + '.txt')
     dir_sub = 'cisbp_dbd_cutoff_holstege_np_bart_tf_merged_dbd50/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_cisbp_dbd_cutoff_'+ cisbp_dbd_cutoff +'_tf_merged_' + parsed.combination + '.txt')
+    fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_motif_net_cisbp_dbd_cutoff_'+ cisbp_dbd_cutoff +'_tf_merged_' + parsed.combination + '.txt')
 
     # figure setup
     # colors = ['k:', 'k', 'k--', 'm', 'm--', 'r', 'r--', 'g--', 'g:', 'b', 'b--']
-    colors = ['k:', 'k--', 'k', 'm']
-    # colors = ['k:', 'k--', 'k', 'r', 'g', '--g', 'b']
+    # colors = ['k:', 'k--', 'k', 'm']
+    colors = ['k:', 'k--', 'k', 'm', 'r', 'g', 'b']
     labels = []
     labels.append('chance')
     labels.append('np_bart')
@@ -76,8 +78,9 @@ def main(argv):
     labels.append('np_bart + known_motif + tf_merged')
     # labels.append('np_bart + fire_motif')
     labels.append('np_bart + fire_motif + tf_merged')
-    labels.append('np_bart + fire_motif_3_ortho_species + tf_merged')
-    labels.append('np_bart + fire_motif_5_ortho_species + tf_merged')
+    labels.append('np_bart + fire_motif_ortho_spar+smik + tf_merged')
+    # labels.append('np_bart + fire_motif_ortho_smik+skud+sbay + tf_merged')
+    # labels.append('np_bart + fire_motif_5_ortho_species + tf_merged')
     # labels.append('np_bart + cisbp_motif')
     labels.append('np_bart + cisbp_motif + tf_merged')
     x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
@@ -111,7 +114,7 @@ def main(argv):
     plt.xlabel('Predictions grouped by rank')
     plt.ylabel('Interactions supported by PWM (%)')
     plt.xlim(-1, len(eval_pwm[0]))
-    plt.ylim(5, 32.5)
+    plt.ylim(5, 35)
     plt.legend(loc="upper right")
     # plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 

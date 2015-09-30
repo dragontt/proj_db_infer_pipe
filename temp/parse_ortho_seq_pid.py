@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 dir_in = sys.argv[1]
 species = sys.argv[2]
 
-orthos = {'yeast_index': ['4906', '6553', '4911', '476', '479'], 'yeast_name': ['smik','skud','sbay','scas','sklu'], 'fly': ['Dsim','Dsec','Dyak','Dere','Dana']}
+orthos = {'yeast_index': ['4906', '6553', '4911', '476', '479', 'spar'], 'yeast_name': ['smik','skud','sbay','scas','sklu','spar'], 'fly': ['Dsim','Dsec','Dyak','Dere','Dana']}
 
 # gids = numpy.loadtxt('/home/mblab/ykang/proj_db_infer_pipe/resources/yeast_network_holstege/gids', dtype=str)
 # gids = numpy.loadtxt('/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_baranski_singles_net_full/gids.fb', dtype=str)
@@ -27,11 +27,12 @@ for key in pids.keys():
 	print key, reduce(lambda x, y: x + y, l) / len(l)
 
 # yeast results:
-# 4906 smik 50.067337
-# 6553 skud 45.0745701945
-# 4911 sbay 40.972110617
-# 476 scas 25.5733251582
-# 479 sklu 24.8165558631
+# spar spar 67.7040380356
+# 4906 smik 47.0008377031
+# 6553 skud 42.102404173
+# 4911 sbay 37.9574663019
+# 476 scas 23.8253511745
+# 479 sklu 22.7992008586
 #
 # fly results:
 # Dsim 64.6727991015
@@ -39,3 +40,4 @@ for key in pids.keys():
 # Dyak 52.2960690134
 # Dere 53.8650128957
 # Dana 31.4046373582
+
