@@ -2,8 +2,8 @@
 import os.path
 
 fn_ortho = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_base/gene_orthologs_fb_2015_03.tsv'
-fn_in = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_promoter_seq/rsat_dmel+Dsim+Dsec+Dyak+Dere+Dana_upstream_-2000_+200.filtered.fasta'
-dir_out = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_promoter_seq/rsat_dmel+Dsim+Dsec+Dyak+Dere+Dana_upstream_-2000_+200/'
+fn_in = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_promoter_seq/rsat_dmel+Dsim+Dsec+Dyak+Dere+Dana_upstream_-2000_0.filtered.fasta'
+dir_out = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_promoter_seq/rsat_dmel+Dsim+Dsec+Dyak+Dere+Dana_upstream_-2000_0/'
 
 seqs = {}
 lines = open(fn_in, 'r').readlines()

@@ -51,8 +51,10 @@ def main(argv):
 
     dir_sub = 'fire_motifs_np_bart_tf_merged_dbd50_bin_20/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_bart_tf_merged_net_fire_bin_20_tf_merged_' + parsed.combination + '.txt')
-    dir_sub = 'fire_ortho_scer+spar+smik_motifs_bin_20/analysis_binding_overlap/'
+    dir_sub = 'fire_ortho_scer+spar_motifs_bin_20/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
+    # dir_sub = 'fire_ortho_scer+spar+smik_motifs_bin_20/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
     # dir_sub = 'fire_ortho_scer+smik+skud+sbay_motifs_bin_20/analysis_binding_overlap/'
     # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
     # dir_sub = 'fire_ortho_scer+smik+skud+sbay+scas+sklu_motifs_bin_20/analysis_binding_overlap/'
@@ -78,7 +80,7 @@ def main(argv):
     labels.append('np_bart + known_motif + tf_merged')
     # labels.append('np_bart + fire_motif')
     labels.append('np_bart + fire_motif + tf_merged')
-    labels.append('np_bart + fire_motif_ortho_spar+smik + tf_merged')
+    labels.append('np_bart + fire_motif_ortho_spar + tf_merged')
     # labels.append('np_bart + fire_motif_ortho_smik+skud+sbay + tf_merged')
     # labels.append('np_bart + fire_motif_5_ortho_species + tf_merged')
     # labels.append('np_bart + cisbp_motif')

@@ -122,33 +122,36 @@ def main(argv):
         pass
 
     # plot figures
-    # fig = plt.figure(num=None, figsize=(25,8), dpi=80)
-    # fig.subplots_adjust(right=.7)
-
     fig = plt.figure(num=None, figsize=(18,8), dpi=80)
 
-    plt.subplot(1,2,1)
+    ax = plt.subplot(1,2,1)
     for i in range(len(eval_chip)):
         plt.plot(eval_chip[i], colors[i], label=labels[i])
-    plt.xticks(range(len(eval_chip[0])), x_ticks)
-    plt.xlabel('Predictions grouped by rank')
+    # plt.xticks(range(len(eval_chip[0])), x_ticks)
+    plt.xlabel('Predictions grouped by rank (1k) in log scale')
     plt.ylabel('Interactions supported by ChIP (%)')
-    plt.xlim(-1, len(eval_chip[0]))
-    if parsed.range == 'top1to10k':
-        plt.ylim(10, 90)
-    elif parsed.range == 'top4to40k':
-        plt.ylim(13, 55)
-    else:
-        plt.ylim(13.5, 37)
+    # plt.xlim(-1, len(eval_chip[0]))
+    # if parsed.range == 'top1to10k':
+    #     plt.ylim(10, 90)
+    # elif parsed.range == 'top4to40k':
+    #     plt.ylim(13, 55)
+    # else:
+    #     plt.ylim(13.5, 37)
+    plt.ylim(10,80)
+    ax.set_xscale('log')
+    plt.xlim(0, len(eval_chip[0]))
 
-    plt.subplot(1,2,2)
+    ax = plt.subplot(1,2,2)
     for i in range(len(eval_pwm)):
         plt.plot(eval_pwm[i], colors[i], label=labels[i])
-    plt.xticks(range(len(eval_pwm[0])), x_ticks)
-    plt.xlabel('Predictions grouped by rank')
+    # plt.xticks(range(len(eval_pwm[0])), x_ticks)
+    plt.xlabel('Predictions grouped by rank (1k) in log scale')
     plt.ylabel('Interactions supported by PWM (%)')
-    plt.xlim(-1, len(eval_pwm[0]))
-    plt.ylim(4.5, 15)
+    # plt.xlim(-1, len(eval_pwm[0]))
+    # plt.ylim(4.5, 15)
+    plt.ylim(4,17.5)
+    ax.set_xscale('log')
+    plt.xlim(0, len(eval_chip[0]))
     plt.legend(loc="upper right")
     # plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     
@@ -158,8 +161,10 @@ def main(argv):
     plt.show()
 
 def parse_binary_gold_standard(fns, method):
-    eval_chip = numpy.zeros([len(fns)/2+1, 10])
-    eval_pwm = numpy.zeros([len(fns)/2+1, 10])
+    evalPoints = numpy.loadtxt(fns[0]).shape[1]
+
+    eval_chip = numpy.zeros([len(fns)/2+1, evalPoints])
+    eval_pwm = numpy.zeros([len(fns)/2+1, evalPoints])
 
     for i in range(len(fns)/2):
         chip_support = numpy.loadtxt(fns[i*2], dtype=str)
@@ -183,7 +188,7 @@ def parse_binary_gold_standard(fns, method):
         elif method == 'binned':
             eval_chip[i+1,0] = chip_support[3,0]/chip_support[2,0]
             eval_pwm[i+1,0] = pwm_support[3,0]/pwm_support[2,0]
-            for j in range(1,10):
+            for j in range(1,evalPoints):
                 eval_chip[i+1,j] = (chip_support[3,j]-chip_support[3,j-1])/(chip_support[2,j]-chip_support[2,j-1])
                 eval_pwm[i+1,j] = (pwm_support[3,j]-pwm_support[3,j-1])/(pwm_support[2,j]-pwm_support[2,j-1])
 

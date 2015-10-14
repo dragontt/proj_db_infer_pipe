@@ -1,6 +1,6 @@
 #/usr/bin/python
-fn_fasta = 'resources/fly_promoter_seq/rsat_dmel_upstream_-2000_+200.fasta'
-fn_fasta_lit = 'resources/fly_promoter_seq/rsat_dmel_upstream_-2000_+200.lit.fasta'
+fn_fasta = 'resources/fly_promoter_seq/rsat_dmel_upstream_-2000_0.fasta'
+fn_fasta_lit = 'resources/fly_promoter_seq/rsat_dmel_upstream_-2000_0.lit.fasta'
 fn_annot = 'resources/fly_base/fbgn_annotation_ID_fb_2015_01.tsv'
 
 # Traverse the annotation file 3 times to get a full ID dictionary
