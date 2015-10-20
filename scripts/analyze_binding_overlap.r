@@ -2,6 +2,13 @@ args <- commandArgs(trailingOnly = TRUE)
 network <- toString(args[1])
 chip_net <- toString(args[2])
 pwm_net <- toString(args[3])
+fn_out <- toString(args[4])
+max_rank <- as.numeric(args[5])*1000
+if (length(args) < 6) {
+	num_bins <- 10
+} else {
+	num_bins <- as.integer(args[6])
+}
 
 net <- read.table(network,header=TRUE)
 pdna.inter <- read.table(chip_net,header=TRUE)
@@ -24,7 +31,7 @@ reg_universe <- intersect(unique(as.character(pdna.inter$REGULATOR)),unique(as.c
 interaction_universe_cnt <- length(reg_universe) * length(orf_universe)
 
 # np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(2000,20000,by=2000)]
-np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(4000,40000,by=4000)]
+np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(max_rank/num_bins,max_rank,by=max_rank/num_bins)]
 # np_conf_cutoffs <- net$CONFIDENCE[order(net$CONFIDENCE,decreasing=TRUE)][seq(20000,200000,by=20000)]
 for (np_conf_cutoff in np_conf_cutoffs)
 {
@@ -96,10 +103,8 @@ for (np_conf_cutoff in np_conf_cutoffs)
 	}
 }
 
-# filename <- paste("chip.bp.np.set.sizes.top2to20k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
-filename <- paste("chip.bp.np.set.sizes.top4to40k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
-# filename <- paste("chip.bp.np.set.sizes.top20to200k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
-write.table(cbind(chip.bp.np.setsizes, rep(interaction_universe_cnt, length=nrow(chip.bp.np.setsizes))),file=filename,col.names=FALSE,row.names=FALSE,quote=FALSE,sep='\t')
+# filename <- paste("chip.bp.np.set.sizes.top4to40k.",strsplit(network,"[./]")[[1]][4],".txt", sep="")
+write.table(cbind(chip.bp.np.setsizes, rep(interaction_universe_cnt, length=nrow(chip.bp.np.setsizes))),file=fn_out,col.names=FALSE,row.names=FALSE,quote=FALSE,sep='\t')
 
 ## Make NetPropet Figures
 # results <- chip.bp.np.setsizes

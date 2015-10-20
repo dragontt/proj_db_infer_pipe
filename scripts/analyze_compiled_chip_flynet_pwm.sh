@@ -14,8 +14,8 @@ fn=${NETWORK##*/}
 fn=${fn%.adjmtr}
 
 if [ -z $NUMBINS ]; then NUMBINS=10; fi
-
+MINRANK=$(bc <<< "scale=3; $MAXRANK/$NUMBINS")
 if [ -z $DIR_ANALYSIS ]; then DIR_ANALYSIS=.; fi
 
-Rscript ~ykang/proj_db_infer_pipe/scripts/analyze_network.r ${NETWORK} ${REGS} ${GENES} ${CHIP_NET} ${DIR_ANALYSIS}/analysis_chip_support.${NUMBINS}bins.top$((MAXRANK / 10))to${MAXRANK}k.${fn}.txt ${MAXRANK} ${NUMBINS}
-Rscript ~ykang/proj_db_infer_pipe/scripts/analyze_network.r ${NETWORK} ${REGS} ${GENES} ${PWM_NET} ${DIR_ANALYSIS}/analysis_pwm_support.${NUMBINS}bins.top$((MAXRANK / 10))to${MAXRANK}k.${fn}.txt ${MAXRANK} ${NUMBINS}
+Rscript ~ykang/proj_db_infer_pipe/scripts/analyze_network.r ${NETWORK} ${REGS} ${GENES} ${CHIP_NET} ${DIR_ANALYSIS}/analysis_chip_support.${NUMBINS}bins.top${MINRANK}to${MAXRANK}k.${fn}.txt ${MAXRANK} ${NUMBINS}
+Rscript ~ykang/proj_db_infer_pipe/scripts/analyze_network.r ${NETWORK} ${REGS} ${GENES} ${PWM_NET} ${DIR_ANALYSIS}/analysis_pwm_support.${NUMBINS}bins.top${MINRANK}to${MAXRANK}k.${fn}.txt ${MAXRANK} ${NUMBINS}

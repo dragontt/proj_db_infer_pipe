@@ -14,7 +14,7 @@ fnTfs <- toString(args[2])
 fnGenes <- toString(args[3])
 fnGoldNetwork <- toString(args[4])
 fnOutName <- toString(args[5])
-maxRank <- as.integer(args[6])*1000
+maxRank <- as.numeric(args[6])*1000
 if (length(args) < 7) {
     numBins <- 10
 } else {
