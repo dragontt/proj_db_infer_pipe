@@ -5,6 +5,7 @@ num_bins=$2
 dir_output=/home/mblab/ykang/proj_db_infer_pipe/output
 networks=()
 networks+=(${dir_output}/fly_network_cellCycle_global_shrinkage/combined_model_full.adjmtr)
+networks+=(${dir_output}/fly_network_cellCycle_global_shrinkage/combined_model_full_tf_merged_pid50.adjmtr)
 networks+=(${dir_output}/fly_network_cellCycle_motif_incorporated/cisbp_-2000_+200_fimo_known_motif/combined_network_np_motif_net_known_motif_resort.adjmtr)
 networks+=(${dir_output}/fly_network_cellCycle_motif_incorporated/cisbp_-2000_+200_fimo_known_motif/combined_network_np_tf_merged_motif_net_known_motif_tf_merged_resort.adjmtr)
 networks+=(${dir_output}/fly_network_cellCycle_motif_incorporated/fire_motifs_np_bin_20/combined_network_np_motif_net_fire_np_bin_20_resort.adjmtr)
