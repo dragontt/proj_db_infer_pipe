@@ -31,9 +31,11 @@ function compute_paired_pid {
 
 DIR_RES=$HOME/proj_db_infer_pipe/resources/cisbp_1.01
 # DIR_OUT=$HOME/proj_db_infer_pipe/output/fly_cisbp_known_motif_dbd_pid
-DIR_OUT=$HOME/proj_db_infer_pipe/output/yeast_cisbp_known_motif_dbd_pid
+# DIR_OUT=$HOME/proj_db_infer_pipe/output/yeast_cisbp_known_motif_dbd_pid
+DIR_OUT=$HOME/proj_db_infer_pipe/output/cisbp_known_motif_dbd_pid
 # list=$DIR_RES/cisbp_motifs_Drosophila_melanogaster.txt
-list=$DIR_RES/cisbp_motifs_Saccharomyces_cerevisiae.txt
+# list=$DIR_RES/cisbp_motifs_Saccharomyces_cerevisiae.txt
+list=$DIR_RES/cisbp_motifs_all_species.txt
 
 counter=0
 while read line; do
@@ -43,7 +45,8 @@ while read line; do
 	else
 		echo -n "Processing $line ... New ... $counter"
 		# compute_paired_pid $line $DIR_RES/cisbp.dbd.fasta.Drosophila_melanogaster $DIR_RES/cisbp.dbd.fasta.Drosophila_melanogaster $DIR_OUT
-		compute_paired_pid $line $DIR_RES/cisbp.dbd.fasta.Saccharomyces_cerevisiae $DIR_RES/cisbp.dbd.fasta.Saccharomyces_cerevisiae $DIR_OUT
+		# compute_paired_pid $line $DIR_RES/cisbp.dbd.fasta.Saccharomyces_cerevisiae $DIR_RES/cisbp.dbd.fasta.Saccharomyces_cerevisiae $DIR_OUT
+		compute_paired_pid $line $DIR_RES/cisbp.dbd.fasta $DIR_RES/cisbp.dbd.fasta $DIR_OUT
 		echo " ... Done"
 	fi
 done < $list

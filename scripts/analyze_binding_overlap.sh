@@ -7,6 +7,9 @@ DIR_ANALYSIS=$4
 
 REGS=/home/mblab/ykang/proj_db_infer_pipe/resources/yeast_network_holstege/rids
 GENES=/home/mblab/ykang/proj_db_infer_pipe/resources/yeast_network_holstege/gids
+# REGS=/home/mblab/ykang/usr/netprophet_0.1/DATA/WHOLE_YEAST_NETWORK/INPUT/tf.orfs
+# GENES=/home/mblab/ykang/usr/netprophet_0.1/DATA/WHOLE_YEAST_NETWORK/INPUT/orfs
+
 CHIP_NET=/home/mblab/ykang/proj_db_infer_pipe/resources/yeast_network_physical/chip_net.txt
 PWM_NET=/home/mblab/ykang/proj_db_infer_pipe/resources/yeast_network_physical/motif_net.txt
 

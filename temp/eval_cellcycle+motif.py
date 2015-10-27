@@ -121,7 +121,7 @@ def main(argv):
     ylim2_ratio = (ylim2[1]-ylim2[0])/(ylim2[1]-ylim2[0]+ylim1[1]-ylim1[0])
 
     gs = gridspec.GridSpec(2,1,height_ratios=[ylim1_ratio, ylim2_ratio])
-    fig = plt.figure(num=None, figsize=(8,8), dpi=80)
+    fig = plt.figure(num=None, figsize=(6,6), dpi=150)
     ax1 = fig.add_subplot(gs[0])
     ax2 = fig.add_subplot(gs[1])
 
@@ -158,6 +158,8 @@ def main(argv):
     ax2.set_xlim(xlim)
     ax1.set_ylim(ylim1)
     ax2.set_ylim(ylim2)
+    for label in ax2.xaxis.get_ticklabels()[::2]:
+        label.set_visible(False)
     ax2.get_yaxis().set_ticks([])
 
     # ax.set_xscale('log')
@@ -172,7 +174,7 @@ def main(argv):
     ylim2_ratio = (ylim2[1]-ylim2[0])/(ylim2[1]-ylim2[0]+ylim1[1]-ylim1[0])
 
     gs = gridspec.GridSpec(2,1,height_ratios=[ylim1_ratio, ylim2_ratio])
-    fig = plt.figure(num=None, figsize=(8,8), dpi=80)
+    fig = plt.figure(num=None, figsize=(6,6), dpi=150)
     ax1 = fig.add_subplot(gs[0])
     ax2 = fig.add_subplot(gs[1])
 
@@ -209,6 +211,8 @@ def main(argv):
     ax2.set_xlim(xlim)
     ax1.set_ylim(ylim1)
     ax2.set_ylim(ylim2)
+    for label in ax2.xaxis.get_ticklabels()[::2]:
+        label.set_visible(False)
     ax2.get_yaxis().set_ticks([])
 
     # ax.set_xscale('log')
@@ -252,11 +256,11 @@ def main(argv):
     [eval_chip, eval_pwm] = parse_binary_gold_standard(fns, parsed.eval_method)
 
     # plot figure
-    xlevel = 100
+    xlevel = 25
     xlevel_index = xlevel/5-1 
 
-    fig = plt.figure(num=None, figsize=(16,6), dpi=80)
-    fig.subplots_adjust(wspace=.55)
+    fig = plt.figure(num=None, figsize=(20,5), dpi=150)
+    fig.subplots_adjust(wspace=.5)
     colors = ['0.5', 'k', 'b', 'r', 'm', 'c', 'g']
     labels = []
     labels.append('chance')
@@ -273,6 +277,9 @@ def main(argv):
         plt.barh(y_pos[i], eval_chip[:,xlevel_index][i], align='center', alpha=1, color=colors[i])
     plt.ylabel('Network mapping procedures')
     plt.xlabel('Interactions supported by ChIP (%)')
+    plt.xlim([0,35])
+    plt.xticks(numpy.arange(0,36,2))
+    plt.tick_params(labelleft='off')
     plt.gca().invert_yaxis()
     plt.gca().invert_xaxis()
 
@@ -282,6 +289,8 @@ def main(argv):
     plt.yticks(y_pos, labels)
     ax.set_yticklabels(labels, horizontalalignment='center', position=(-.25,.5))
     plt.xlabel('Interactions supported by PWM (%)')
+    plt.xlim([0,10])
+    plt.xticks(numpy.arange(0,11,1))
     plt.gca().invert_yaxis()
 
     plt.savefig(dir_figures + parsed.figure_name + '_bar_' + str(xlevel) +'.pdf' , fmt='pdf')

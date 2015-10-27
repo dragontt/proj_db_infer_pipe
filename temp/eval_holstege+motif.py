@@ -71,6 +71,10 @@ def main(argv):
     # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_net.txt')
     fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
 
+    # netprophet 1.0
+    dir_sub = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/yeast_network_hu_netprophet1.0/analysis_binding_overlap/'
+    fns.append(dir_sub + 'analysis.'+ parsed.range +'.combined_model.txt')
+
     """ Figure setup """
     
     dir_figures = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/yeast_analysis_results/'
@@ -78,21 +82,22 @@ def main(argv):
 
     # figure setup
     # colors = ['k:', 'k', 'k--', 'r', 'r--', 'g--', 'g:', 'b', 'b--', 'm', 'm--']
-    colors = ['k:', 'k--', 'r', 'g--']
+    colors = ['k:', 'k--', 'r', 'g--', 'b--']
     # colors = ['k:', 'k--', 'k', 'r', 'g', 'b', 'm--']
     labels = []
     labels.append('chance')
-    labels.append('np_bart')
+    labels.append('np_bart: Holstege data')
     # labels.append('np_bart + tf_score_summing')
     # labels.append('np_bart + fire_motif')
-    labels.append('np_bart + tf_score_summing + inferred_motif')
+    labels.append('np_bart + tf_score_summing\n+ inferred_motif')
     # labels.append('np_bart + fire_motif_ortho_spar + tf_score_summing')
     # labels.append('np_bart + fire_motif_ortho_smik+skud+sbay + tf_score_summing')
     # labels.append('np_bart + fire_motif_5_ortho_species + tf_score_summing')
     # labels.append('np_bart + cisbp_motif')
     # labels.append('np_bart + cisbp_motif + tf_score_summing')
     # labels.append('np_bart + known_motif')
-    labels.append('np_bart + tf_score_summing + known_motif')
+    labels.append('np_bart + tf_score_summing\n+ known_motif')
+    labels.append('np_1.0: Hu data')
 
     # x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
 
@@ -106,48 +111,53 @@ def main(argv):
 
     x_ticks = [format(float(i)*parsed.step/320, '.0f') for i in range(1,len(eval_chip[0])+1)]
 
-    """
+
+    """ Regular support plot """
     # plot figures
     # fig = plt.figure(num=None, figsize=(25,8), dpi=80)
     # fig.subplots_adjust(right=.7)
 
-    fig = plt.figure(num=None, figsize=(18,8), dpi=80)
+    fig = plt.figure(num=None, figsize=(18,6), dpi=80)
+    fig.subplots_adjust(right=.7)
 
-    plt.subplot(1,2,1)
+    ax = plt.subplot(1,2,1)
     for i in range(len(eval_chip)):
-        plt.plot(eval_chip[i], colors[i], label=labels[i])
+        ax.plot(eval_chip[i], colors[i], label=labels[i], linewidth=2.0)
     plt.xticks(range(len(eval_chip[0])), x_ticks)
-    plt.xlabel('Predictions grouped by rank')
+    plt.xlabel('Average number of predicted targets per TF genome')
     plt.ylabel('Interactions supported by ChIP (%)')
     plt.xlim(-1, len(eval_chip[0]))
-    plt.ylim(2, 35)
+    plt.ylim(2, 50)
+    plt.yticks(numpy.arange(0,51,5))
+    for label in ax.xaxis.get_ticklabels()[::2]:
+        label.set_visible(False)
 
-    plt.subplot(1,2,2)
+    ax = plt.subplot(1,2,2)
     for i in range(len(eval_pwm)):
-        plt.plot(eval_pwm[i], colors[i], label=labels[i])
+        ax.plot(eval_pwm[i], colors[i], label=labels[i], linewidth=2.0)
+    ax.scatter(18, 10, s=75, c='c', label='ChIP network')
     plt.xticks(range(len(eval_pwm[0])), x_ticks)
-    plt.xlabel('Predictions grouped by rank')
+    plt.xlabel('Average number of predicted targets per TF genome')
     plt.ylabel('Interactions supported by PWM (%)')
     plt.xlim(-1, len(eval_pwm[0]))
-    plt.ylim(5, 35)
-    plt.legend(loc="upper right")
-    # plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-
-    plt.suptitle(figure_title)
+    plt.ylim(5, 30)
+    plt.yticks(numpy.arange(0,31,5))
+    for label in ax.xaxis.get_ticklabels()[::2]:
+        label.set_visible(False)
+    # plt.legend(loc="upper right", scatterpoints=1)
+    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., scatterpoints=1)
 
     plt.savefig(dir_figures + parsed.figure_name + '.pdf', fmt='pdf')
-    plt.show()
-    """
 
     """ Plot ChIP supoort """
-
+    """
     # broken axis
     ylim1, ylim2 = [10,50], [2.5,4.5]
     ylim1_ratio = (ylim1[1]-ylim1[0])/(ylim2[1]-ylim2[0]+ylim1[1]-ylim1[0])
     ylim2_ratio = (ylim2[1]-ylim2[0])/(ylim2[1]-ylim2[0]+ylim1[1]-ylim1[0])
 
     gs = gridspec.GridSpec(2,1,height_ratios=[ylim1_ratio, ylim2_ratio])
-    fig = plt.figure(num=None, figsize=(8,8), dpi=80)
+    fig = plt.figure(num=None, figsize=(6,6), dpi=150)
     ax1 = fig.add_subplot(gs[0])
     ax2 = fig.add_subplot(gs[1])
 
@@ -184,21 +194,25 @@ def main(argv):
     ax2.set_xlim(xlim)
     ax1.set_ylim(ylim1)
     ax2.set_ylim(ylim2)
+    for label in ax2.xaxis.get_ticklabels()[::2]:
+        label.set_visible(False)
     ax2.get_yaxis().set_ticks([])
 
     # ax.set_xscale('log')
     # plt.xlim(0, len(eval_chip[0]))
 
     plt.savefig(dir_figures + parsed.figure_name + '_chip.pdf', fmt='pdf')
+    """
 
     """ Plot PWM supoort """
+    """
     # broken axis
     ylim1, ylim2 = [12,28], [5.5,7]
     ylim1_ratio = (ylim1[1]-ylim1[0])/(ylim2[1]-ylim2[0]+ylim1[1]-ylim1[0])
     ylim2_ratio = (ylim2[1]-ylim2[0])/(ylim2[1]-ylim2[0]+ylim1[1]-ylim1[0])
 
     gs = gridspec.GridSpec(2,1,height_ratios=[ylim1_ratio, ylim2_ratio])
-    fig = plt.figure(num=None, figsize=(8,8), dpi=80)
+    fig = plt.figure(num=None, figsize=(6,6), dpi=150)
     ax1 = fig.add_subplot(gs[0])
     ax2 = fig.add_subplot(gs[1])
 
@@ -235,15 +249,18 @@ def main(argv):
     ax2.set_xlim(xlim)
     ax1.set_ylim(ylim1)
     ax2.set_ylim(ylim2)
+    for label in ax2.xaxis.get_ticklabels()[::2]:
+        label.set_visible(False)
     ax2.get_yaxis().set_ticks([])
 
     # ax.set_xscale('log')
     # plt.xlim(0, len(eval_pwm[0]))
 
-    # plt.savefig(dir_figures + parsed.figure_name + '_pwm.pdf', fmt='pdf')
-
+    plt.savefig(dir_figures + parsed.figure_name + '_pwm.pdf', fmt='pdf')
+    """
 
     """ Bar plot at specific targets per tf level """
+    """
     fns = []
     # original network
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/yeast_network_holstege/'
@@ -279,11 +296,11 @@ def main(argv):
     eval_pwm = numpy.array(eval_pwm)
 
     # plot figure
-    xlevel = 100
+    xlevel = 25
     xlevel_index = xlevel/5-1 
 
-    fig = plt.figure(num=None, figsize=(16,6), dpi=80)
-    fig.subplots_adjust(wspace=.55)
+    fig = plt.figure(num=None, figsize=(20,5), dpi=150)
+    fig.subplots_adjust(wspace=.5)
     colors = ['0.5', 'k', 'b', 'r', 'm', 'c', 'g']
     labels = []
     labels.append('chance')
@@ -300,6 +317,9 @@ def main(argv):
         plt.barh(y_pos[i], eval_chip[:,xlevel_index][i], align='center', alpha=1, color=colors[i])
     plt.ylabel('Network mapping procedures')
     plt.xlabel('Interactions supported by ChIP (%)')
+    plt.xlim([0,28])
+    plt.xticks(numpy.arange(0,29,2))
+    plt.tick_params(labelleft='off')
     plt.gca().invert_xaxis()
     plt.gca().invert_yaxis()
 
@@ -309,10 +329,12 @@ def main(argv):
     plt.yticks(y_pos, labels)
     ax.set_yticklabels(labels, horizontalalignment='center', position=(-.25,.5))
     plt.xlabel('Interactions supported by PWM (%)')
+    plt.xlim([0,22])
+    plt.xticks(numpy.arange(0,23,2))
     plt.gca().invert_yaxis()
 
     plt.savefig(dir_figures + parsed.figure_name + '_bar_' + str(xlevel) +'.pdf' , fmt='pdf')
-
+    """
 
 def parse_binary_gold_standard(fns, method):
     eval_chip = numpy.zeros([len(fns)/2+1, 10])
