@@ -16,6 +16,7 @@ def parse_args(argv):
     parser = argparse.ArgumentParser(description="Infer a motif only using dbd pid.")
     parser.add_argument('-a', '--dir_dbd_pid', dest='dir_dbd_pid', type=str)
     parser.add_argument('-o', '--dir_output', dest='dir_output', type=str)
+    parser.add_argument('-u', '--use_conv', dest='use_conv', type=bool, default=False)
     parser.add_argument('-d', '--fn_conv', dest='fn_conv', type=str, default='/home/mblab/ykang/proj_db_infer_pipe/resources/fly_aa_seq/pids.dbd2fbgn')
     parser.add_argument('-l', '--fn_not_use', dest='fn_not_use', type=str, default='/home/mblab/ykang/proj_db_infer_pipe/resources/cisbp_1.01/cisbp_motifs_Drosophila_melanogaster.txt')
     parsed = parser.parse_args(argv[1:])
@@ -32,17 +33,23 @@ def main(argv):
     parsed.dir_output = check_dir(parsed.dir_output)
 
     dbds = get_basenames(parsed.dir_dbd_pid)
-    dbd2fbgn = parse_dict(parsed.fn_conv)
     motifs_not_use = parse_list(parsed.fn_not_use)	
-
-    regulators = list(set(dbd2fbgn.values())) 
+    if parsed.use_conv:
+        dbd2fbgn = parse_dict(parsed.fn_conv, 'str')
+        regulators = list(set(dbd2fbgn.values())) 
+    else:
+        regulators = dbds
+        dbd2fbgn = {}
+        for regulator in regulators:
+            dbd2fbgn[regulator] = regulator
+ 
     inferred_motif = {}
     inferred_pid = {}
 
     # infer the motif with highest dbd pid and inlcude the tied ones
     for dbd in dbds:
         regulator = dbd2fbgn[dbd]
-        lines = open(parsed.dir_dbd_pid + dbd, 'r').readlines()
+        lines = open(parsed.dir_dbd_pid + dbd, 'r').readlines()        
         for i in range(len(lines)):
             line = lines[i].strip().split()
             motif = line[0].split(':')[0]
@@ -92,13 +99,19 @@ def get_basenames(file_dir):
             names.append(filename)
     return names
 
-def parse_dict(fn):
-    name_conv = {}
+def parse_dict(fn, dict_type):
+    out = {}
     lines = open(fn, 'r').readlines()
-    for line in lines:
-        temp = line.strip().split()
-        name_conv[temp[0]] = temp[1]
-    return name_conv
+    if dict_type == 'str':
+        for line in lines:
+            temp = line.strip().split()
+            out[temp[0]] = temp[1]
+    elif dict_type == 'float':
+        for line in lines:
+            temp = line.strip().split()
+            if temp[1] != 'nan':
+                out[temp[0]] = float(temp[1])
+    return out
 
 def parse_list(fn):
     names = set()

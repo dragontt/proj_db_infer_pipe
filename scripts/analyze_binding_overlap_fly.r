@@ -50,16 +50,18 @@ for (np_conf_cutoff in np_conf_cutoffs)
 		{
 			targets <- union(as.character(pdna.inter$TARGET[which(pdna.inter$REGULATOR==regulator)]),as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]))
 			pdna.evid <- rep(0,times=length(targets))
-			binding.evid.max <- rep(0,times=length(targets))
-			binding.evid.sum <- rep(0,times=length(targets))
+			# binding.evid.max <- rep(0,times=length(targets))
+			# binding.evid.sum <- rep(0,times=length(targets))
+			binding.evid.comb <- rep(0,times=length(targets))
 			pdna.evid[match(as.character(pdna.inter$TARGET[which(pdna.inter$REGULATOR==regulator)]),targets)] <- 1
-			binding.evid.max[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$MAXP[which(bsinfo$REGULATOR==regulator)]
-			binding.evid.sum[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$SUMP[which(bsinfo$REGULATOR==regulator)]
+			# binding.evid.max[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$MAXP[which(bsinfo$REGULATOR==regulator)]
+			# binding.evid.sum[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$SUMP[which(bsinfo$REGULATOR==regulator)]
+			binding.evid.comb[match(as.character(bsinfo$TARGET[which(bsinfo$REGULATOR==regulator)]),targets)] <- bsinfo$SCORE[which(bsinfo$REGULATOR==regulator)]
 			# cat(regulator,length(targets),"\n")
 			pdna.target.count[i] <- sum(pdna.evid)
-			binding.evid.comb <- apply(rbind(binding.evid.max,binding.evid.sum),2,max)	
-			prc.max <- compute.prc(binding.evid.max,pdna.evid)
-			prc.sum <- compute.prc(binding.evid.sum,pdna.evid)
+			# binding.evid.comb <- apply(rbind(binding.evid.max,binding.evid.sum),2,max)	
+			# prc.max <- compute.prc(binding.evid.max,pdna.evid)
+			# prc.sum <- compute.prc(binding.evid.sum,pdna.evid)
 			prc.comb <- compute.prc(binding.evid.comb,pdna.evid)
 		
 			if 	(length(which(prc.comb[,1]<=chip_desired_recall))>0)

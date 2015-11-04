@@ -5,9 +5,10 @@ import numpy
 import matplotlib.pyplot as plt
 from scipy.optimize import leastsq
 
-figure_name = "/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_analysis_results/sigmoid_fit.pdf"
-# species = "yeast"; species_full = "Saccharomyces_cerevisiae"
-species = "fly"; species_full = "Drosophila_melanogaster"
+figure_name = "/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_analysis_results/sigmoid_fit_all_species.pdf"
+# species = "yeast_"; species_full = "Saccharomyces_cerevisiae"
+# species = "fly_"; species_full = "Drosophila_melanogaster"
+species = ""; species_full = "all_species"
 min_score_dbd = 0
 itv_score_dbd = 5
 # score_type = "median"
@@ -23,8 +24,8 @@ def main():
 	# dir_proj = "/home/mblab/ykang/proj_db_infer_pipe/"
 	dir_proj = "/Users/KANG/cgscluster/proj_db_infer_pipe/"
 	fn_motif_list = dir_proj + "resources/cisbp_1.01/cisbp_motifs_" + species_full + ".txt"
-	dir_dbd = dir_proj + "output/" + species + "_cisbp_known_motif_dbd_pid/"
-	dir_pwm = dir_proj + "output/" + species + "_cisbp_known_motif_pwm_similarity/"
+	dir_dbd = dir_proj + "output/" + species + "cisbp_known_motif_dbd_pid/"
+	dir_pwm = dir_proj + "output/" + species + "cisbp_known_motif_pwm_similarity/"
 
 	motifs = numpy.loadtxt(fn_motif_list, dtype=str)
 
@@ -128,8 +129,8 @@ def main():
 			sys.exit("Fit function not specified")
 
 		# scatter plot
-		plt.figure()
-		plt.scatter(dbd_cutoffs, pwm_fractions, alpha=.5)
+		plt.figure(num=None, figsize=(5.5,4.5), dpi=80)
+		plt.scatter(dbd_cutoffs, pwm_fractions, s=50, alpha=.5)
 		xp = numpy.linspace(min_score_dbd, 100, 100)
 		if fit_function == 'sigmoid':
 			pxp = sigmoid(p, xp)
@@ -139,10 +140,10 @@ def main():
 			label_fit = "exponential fit, " + str.format('{0:.2f}', p[2]) + "*exp(" + str.format('{0:.2f}', p[3]) + "*(x-" + str.format('{0:.2f}', p[0]) + "))+" + str.format('{0:.2f}', p[1])
 		else:
 			sys.exit("Fit function not specified")
-		plt.plot(xp, pxp, 'r-', label=label_fit)
+		plt.plot(xp, pxp, 'r-', label=label_fit, linewidth=4.0)
 		plt.legend(loc="upper right")
 		plt.xlim([0, 100])
-		plt.ylim([0, 1.10])
+		plt.ylim([0, 1])
 		# plt.title("DBD vs PWM Similarity, Species: " + species)
 		plt.title("DBD vs PWM Similarity")
 		plt.xlabel("DBD Percent Identity")
