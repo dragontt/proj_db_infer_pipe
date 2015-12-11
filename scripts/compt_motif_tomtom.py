@@ -71,7 +71,7 @@ def main(argv):
                 # os.system('echo Dmel: '+ known_motifs[i,0] +' cisbp: '+ known_motifs[i,1] +' ortho: '+ tf + ' >> log')
                 # os.system('cat '+ tmp_dir_tomtom +'/tomtom.txt >> log')
 
-    os.system('rm -r tomtom_output')
+    # os.system('rm -r tomtom_output')
 
     # write results
     numpy.savetxt(parsed.fn_output, results, fmt='%s', delimiter='\t')

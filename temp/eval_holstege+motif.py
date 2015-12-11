@@ -54,38 +54,52 @@ def main(argv):
     """
 
     """ NP 2.0: known pwm, dbd sequences """
-    """
+    
     fns = []
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/'
-    # np 1.0: Hu data
+    # # np 1.0: Hu data
+    # dir_sub = 'yeast_network_hu_netprophet1.0/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model.txt')
+    # # np 1.0 + bart: Holstege data
+    # dir_sub = 'yeast_network_holstege/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k.txt')
+    # # np + tf_merging
+    # dir_sub = 'yeast_network_holstege/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k_tf_merged_dbd50.txt')
+    # # # np + cis-bp motifs
+    # # dir_sub = 'yeast_network_holstege_motif_incorporated/cisbp_dbd_only_holstege_np_bart_tf_merged_dbd50/analysis_binding_overlap/'
+    # # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_motif_net_dbd_only_tf_merged_dbd50.txt')
+    # # np + fire
+    # dir_sub = 'yeast_network_holstege_motif_incorporated/fire_motifs_np_bart_tf_merged_dbd50_bin_20/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_bart_tf_merged_net_fire_bin_20_tf_merged_resort.txt')
+    # # np + known pwm
+    # dir_sub = 'yeast_network_holstege_motif_incorporated/scertf_known_motif/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
+
     dir_sub = 'yeast_network_hu_netprophet1.0/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model.txt')
-    # np 1.0 + bart: Holstege data
+    dir_sub = 'yeast_network_raw_holstege_np_local/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model.txt')
     dir_sub = 'yeast_network_holstege/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k.txt')
-    # np + tf_merging
-    dir_sub = 'yeast_network_holstege/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k_tf_merged_dbd50.txt')
-    # np + cis-bp motifs
-    dir_sub = 'yeast_network_holstege_motif_incorporated/cisbp_dbd_only_holstege_np_bart_tf_merged_dbd50/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_motif_net_dbd_only_tf_merged_dbd50.txt')
-    # np + known pwm
-    dir_sub = 'yeast_network_holstege_motif_incorporated/scertf_known_motif/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
 
-    # figure setup
-    colors = ['k:', 'k--', 'k', 'r', 'b', 'g']
-    labels = []
-    labels.append('chance')
-    labels.append('Netprophet 1.0: Hu data (published)')
-    labels.append('NP 1.0: Holstege data')
-    labels.append('NP 1.0 + weighted averaging (WA)')
-    labels.append('NP 1.0 + WA + CIS-BP motifs + WA')
-    labels.append('NP 1.0 + WA + known motifs + WA')
-    """
+    # # figure setup
+    # colors = ['k:', 'k--', 'k', 'r', 'b', 'g']
+    # labels = []
+    # labels.append('chance')
+    # labels.append('Netprophet 1.0: Hu data (published)')
+    # labels.append('NP 1.0: Holstege data')
+    # labels.append('NP 1.0 + weighted averaging (WA)')
+    # # labels.append('NP 1.0 + WA + CIS-BP motifs + WA')
+    # labels.append('NP 1.0 + WA + FIRE motifs + WA')
+    # labels.append('NP 1.0 + WA + known motifs + WA')
+
+    colors = ['k:', 'k--', 'b', 'k']
+    labels = ['chance', 'np 1.0: Hu', 'np 1.0 local_shrink: Holstege', 'np 1.0 + bart: Holstege']
+    
 
     """ Figure setup """
-    """
+    
     dir_figures = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/yeast_analysis_results/'
     # figure_title = 'Yeast Holstege Network: TF Merging and Combination with Motifs'
 
@@ -98,10 +112,10 @@ def main(argv):
     print 'chip chance:', eval_chip[0][0], 'pwm chance:', eval_pwm[0][0]
 
     x_ticks = [format(float(i)*parsed.step/320, '.0f') for i in range(1,len(eval_chip[0])+1)]
-    """
+    
 
     """ Regular support plot """
-    """
+    
     # plot figures
     # fig = plt.figure(num=None, figsize=(25,8), dpi=80)
     # fig.subplots_adjust(right=.7)
@@ -138,7 +152,7 @@ def main(argv):
     plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., scatterpoints=1)
 
     plt.savefig(dir_figures + parsed.figure_name + '.pdf', fmt='pdf')
-    """
+    
 
     """ Plot ChIP supoort """
     """
@@ -251,7 +265,7 @@ def main(argv):
     """
 
     """ Bar plot at specific targets per tf level """
-    
+    """
     fns = []
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/'
     # np 1.0 + bart: Holstege data
@@ -329,6 +343,7 @@ def main(argv):
 
     # plt.savefig(dir_figures + parsed.figure_name + '_bar_' + str(xlevel) +'.pdf' , fmt='pdf')
     plt.savefig(dir_figures + parsed.figure_name +'.pdf' , fmt='pdf')
+    """
 
 def parse_binary_gold_standard(fns, method):
     eval_chip = numpy.zeros([len(fns)/2+1, 10])

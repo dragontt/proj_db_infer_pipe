@@ -1,18 +1,20 @@
 import numpy
 
-fn_chip = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_physical_network_chip/chip_net_genome_wide.adjmtr'
+# fn_chip = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_physical_network_chip/chip_net_genome_wide.adjmtr'
+fn_chip = '/home/mblab/ykang/ChIP_data/fly/binding_interactions_only_genome_wide_phantom_peaks_removed.adjmtr'
 fn_pwm = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_net/resources/networks/physical/motif_net.adjmtr'
 
 # get subnet based on pwm nonzero gids
 chip = numpy.loadtxt(fn_chip)
 pwm = numpy.loadtxt(fn_pwm)
-# gid_indices = numpy.intersect1d(numpy.unique(numpy.nonzero(chip)[1]), numpy.unique(numpy.nonzero(pwm)[1]))
-gid_indices = numpy.unique(numpy.nonzero(pwm)[1])
+gid_indices = numpy.intersect1d(numpy.unique(numpy.nonzero(chip)[1]), numpy.unique(numpy.nonzero(pwm)[1]))
+# gid_indices = numpy.unique(numpy.nonzero(pwm)[1])
 chip_sub = chip[:,gid_indices]
 pwm_sub = pwm[:,gid_indices]
 
 # overlap of rids
 rid_indices = numpy.intersect1d(numpy.unique(numpy.nonzero(chip_sub)[0]), numpy.unique(numpy.nonzero(pwm_sub)[0]))
+print len(rid_indices)
 chip_sub = chip_sub[rid_indices,:]
 pwm_sub = pwm_sub[rid_indices,:]
 overlap_sub = numpy.multiply(chip_sub, pwm_sub)

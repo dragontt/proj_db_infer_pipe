@@ -4,14 +4,9 @@
 # Input variables
 IN_TF_LIST=$1 	# list of tf names
 IN_TF_PWM=$2	# directory of tf pwm
-OUT_FIMO=$3		# directory of fimo alignment output 
-# OUT_RANK=$4		# direcotry of the ranked lists of fimo output
-
-# Algin pfms individually 
-PROJ_DIR=$HOME/proj_db_infer_pipe
-
-mkdir -p $PROJ_DIR/$OUT_FIMO
-# mkdir -p $PROJ_DIR/$OUT_RANK
+IN_PROMOTERS=$3	# promoter sequence file (e.g. yeast_promoter_seq/s_cerevisiae.promoters.fasta, fly_promoter_seq/rsat_dmel_upstream_-2000_+200.filtered.fasta)
+IN_BACKGROUND=$4	# background frequency file (e.g. Saccharomyces_cerevisiae.bmf, Drosophila_melanogaster.bmf)
+OUT_FIMO=$5		# directory of fimo alignment output 
 
 counter=0
 
@@ -19,20 +14,18 @@ while read -a line
 do
 	counter=$[$counter +1]
 	motif=${line[0]}
-	if [ -e $PROJ_DIR/$IN_TF_PWM/$motif ]
+	if [ -e $IN_TF_PWM/$motif ]
 		then
 		echo  "*** Processing $motif ... $counter"
-		cd $HOME/usr/meme/bin
-		# ./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Drosophila_melanogaster.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/fly_promoter_seq/rsat_dmel_upstream_-2000_+200.filtered.fasta 
-		./fimo -o $PROJ_DIR/$OUT_FIMO/$motif --thresh 5e-3 --bgfile $PROJ_DIR/resources/cisbp_all_species_bg_freq/Saccharomyces_cerevisiae.bmf $PROJ_DIR/$IN_TF_PWM/$motif $PROJ_DIR/resources/yeast_promoter_seq/s_cerevisiae.promoters.fasta 
-		sed ' 1d ' $PROJ_DIR/$OUT_FIMO/$motif/fimo.txt | cut -f 1,2,7 > $PROJ_DIR/$OUT_FIMO/$motif/temp.txt
-		ruby $PROJ_DIR/scripts/estimate_affinity.rb -i $PROJ_DIR/$OUT_FIMO/$motif/temp.txt > $PROJ_DIR/$OUT_FIMO/$motif.summary
-		# mv $PROJ_DIR/$OUT_FIMO/$motif/fimo.txt $PROJ_DIR/$OUT_FIMO/$motif.fimo
-		rm -r $PROJ_DIR/$OUT_FIMO/$motif
+		fimo -o $OUT_FIMO/$motif --thresh 5e-3 --bgfile $IN_BACKGROUND $IN_TF_PWM/$motif resources/$IN_PROMOTERS
+		sed ' 1d ' $OUT_FIMO/$motif/fimo.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp.txt
+		ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp.txt > $OUT_FIMO/$motif.summary
+		sed ' 1d ' $OUT_FIMO/$motif/fimo.txt | sort -t $'\t' -k 1,1 | cut -f 1,2,3,4,5 > $OUT_FIMO/$motif.loci
+		rm -r $OUT_FIMO/$motif
 		echo "*** Done"
 	else
 		echo  "*** No PWM for $motif ... $counter *** Done"
 	fi
-done < $PROJ_DIR/$IN_TF_LIST
+done < $IN_TF_LIST
 
 echo "*** ALL DONE! ***"

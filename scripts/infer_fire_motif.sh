@@ -1,10 +1,9 @@
 #! /bin/bash
 
-fn_fasta=$1 		# species' fasta file
-dir_binned_expr=$2 	# directory of binned expression files
-fn_tf_list=$3 		# a list of tf names
-fasta_len=600
-# fasta_len=2200
+fn_tf_list=$1		# a list of tf names
+fn_fasta=$2 		# promoter sequence file
+dir_binned_expr=$3 	# directory of binned expression files
+fasta_len=$4		# length of promoter sequence (e.g. 600 for yeast, 2200 for fly)
 
 cd $HOME/usr/FIRE-1.1a/
 export FIREDIR=`pwd`

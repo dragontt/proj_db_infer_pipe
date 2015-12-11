@@ -18,21 +18,23 @@ def main():
 	# map_adjlst2adjmtr(fn_pwm_adjlst, fn_pwm_adjmtr, fn_rids, fn_gids, 1)
 
 	""" Build new chip network """
-	# dir_chip = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_physical_network_chip/'
-	# fn_rids = dir_chip + 'rids.fb'
-	# fn_gids = dir_chip + 'gids.fb'
+	dir_chip = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_physical_network_chip/'
+	fn_rids = dir_chip + 'rids.fb'
+	fn_gids = dir_chip + 'gids.fb'
 	# fn_chip_adjlst = dir_chip + 'binding_interactions_only_genome_wide'
 	# fn_chip_adjmtr = dir_chip + 'chip_net_only_genome_wide.adjmtr'
-	
-	# map_adjlst2adjmtr(fn_chip_adjlst, fn_chip_adjmtr, fn_rids, fn_gids, 0)
+	fn_chip_adjlst = '/home/mblab/ykang/ChIP_data/fly/binding_interactions_only_genome_wide_phantom_peaks_removed'
+	fn_chip_adjmtr = '/home/mblab/ykang/ChIP_data/fly/binding_interactions_only_genome_wide_phantom_peaks_removed.adjmtr'
+
+	map_adjlst2adjmtr(fn_chip_adjlst, fn_chip_adjmtr, fn_rids, fn_gids, 0)
 
 	""" Build new pwm network from CISBP direct evidence motifs """
-	dir_proj = '/home/mblab/ykang/proj_db_infer_pipe/'
-	fn_tf2motif = dir_proj + 'resources/cisbp_1.01/cisbp_tfs_Drosophila_melanogaster.txt'
-	dir_fimo = dir_proj + 'output/fly_cisbp_-2000_+200_fimo_full/'
-	fn_adjlst = dir_proj + 'resources/fly_physical_network_pwm/motif_net.adjlst'
+	# dir_proj = '/home/mblab/ykang/proj_db_infer_pipe/'
+	# fn_tf2motif = dir_proj + 'resources/cisbp_1.01/cisbp_tfs_Drosophila_melanogaster.txt'
+	# dir_fimo = dir_proj + 'output/fly_cisbp_-2000_+200_fimo_full/'
+	# fn_adjlst = dir_proj + 'resources/fly_physical_network_pwm/motif_net.adjlst'
 
-	compile_adjlst(fn_tf2motif, dir_fimo, fn_adjlst)
+	# compile_adjlst(fn_tf2motif, dir_fimo, fn_adjlst)
 
 def map_adjlst2adjmtr(fn_adjlst, fn_adjmtr, fn_rids, fn_gids, skiprows):
 	rids = numpy.loadtxt(fn_rids, dtype=str)

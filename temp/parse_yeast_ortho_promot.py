@@ -8,9 +8,10 @@ fn_scerevisiae_seq = dir_promot + 's_cerevisiae.promoters.fasta'
 dir_ortho_seq = dir_promot + 'Six_Species_Promoters/'
 fn_sparadoxus_seq = dir_promot + 'sgd_mit_spar_utr5_600.fasta'
 
-# ortho_species = ['smik','skud','sbay','scas','sklu']
-ortho_species = []
-fn_output = dir_promot + 'ortho_scer+spar+' + '+'.join(ortho_species) + '.fasta' 
+ortho_species = ['smik','skud','sbay','scas','sklu']
+fn_output = dir_promot + 'ortho_scer+' + '+'.join(ortho_species) + '.fasta'
+# ortho_species = []
+# fn_output = dir_promot + 'ortho_scer+spar+' + '+'.join(ortho_species) + '.fasta' 
 
 name_conversion = {}
 data = open(fn_name_conversion, 'r').readlines()

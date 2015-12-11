@@ -5,10 +5,10 @@ import numpy
 import matplotlib.pyplot as plt
 from scipy.optimize import leastsq
 
-figure_name = "/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_analysis_results/sigmoid_fit_all_species.pdf"
+figure_name = "/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_analysis_results/sigmoid_fit_combined_yeast_fly.pdf"
 # species = "yeast_"; species_full = "Saccharomyces_cerevisiae"
 # species = "fly_"; species_full = "Drosophila_melanogaster"
-species = ""; species_full = "all_species"
+# species = ""; species_full = "all_species"
 min_score_dbd = 0
 itv_score_dbd = 5
 # score_type = "median"
@@ -23,9 +23,13 @@ fit_function = "sigmoid"
 def main():
 	# dir_proj = "/home/mblab/ykang/proj_db_infer_pipe/"
 	dir_proj = "/Users/KANG/cgscluster/proj_db_infer_pipe/"
-	fn_motif_list = dir_proj + "resources/cisbp_1.01/cisbp_motifs_" + species_full + ".txt"
-	dir_dbd = dir_proj + "output/" + species + "cisbp_known_motif_dbd_pid/"
-	dir_pwm = dir_proj + "output/" + species + "cisbp_known_motif_pwm_similarity/"
+	# fn_motif_list = dir_proj + "resources/cisbp_1.01/cisbp_motifs_" + species_full + ".txt"
+	# dir_dbd = dir_proj + "output/" + species + "cisbp_known_motif_dbd_pid/"
+	# dir_pwm = dir_proj + "output/" + species + "cisbp_known_motif_pwm_similarity/"
+
+	fn_motif_list = dir_proj + "resources/cisbp_1.01/cisbp_motifs_combined_yeast_fly.txt"
+	dir_dbd = dir_proj + "output/cisbp_combined_fly_yeast_motif_dbd_pid/"
+	dir_pwm = dir_proj + "output/cisbp_combined_fly_yeast_motif_pwm_similarity/"
 
 	motifs = numpy.loadtxt(fn_motif_list, dtype=str)
 
