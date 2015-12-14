@@ -1,6 +1,4 @@
 #! /bin/bash
-# bash align_fimo.sh resources/scertf_names.txt resources/scertf_pwms output/scertf Saccharomyces_cerevisiae
-
 # Input variables
 IN_TF_LIST=$1 	# list of tf names
 IN_TF_PWM=$2	# directory of tf pwm
@@ -17,7 +15,7 @@ do
 	if [ -e $IN_TF_PWM/$motif ]
 		then
 		echo  "*** Processing $motif ... $counter"
-		fimo -o $OUT_FIMO/$motif --thresh 5e-3 --bgfile $IN_BACKGROUND $IN_TF_PWM/$motif resources/$IN_PROMOTERS
+		fimo -o $OUT_FIMO/$motif --thresh 5e-3 --bgfile $IN_BACKGROUND $IN_TF_PWM/$motif $IN_PROMOTERS
 		sed ' 1d ' $OUT_FIMO/$motif/fimo.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp.txt
 		ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp.txt > $OUT_FIMO/$motif.summary
 		sed ' 1d ' $OUT_FIMO/$motif/fimo.txt | sort -t $'\t' -k 1,1 | cut -f 1,2,3,4,5 > $OUT_FIMO/$motif.loci
