@@ -60,7 +60,8 @@ def main(argv):
             if len(infer_motifs) > 1:
                 temp_mtr = numpy.zeros([len(infer_motifs), len(gids)])
                 for j in range(len(infer_motifs)):
-                    fn_motif = parsed.dir_fimo + infer_motifs[j] + ".summary"
+                    # fn_motif = parsed.dir_fimo + infer_motifs[j] + ".summary"
+                    fn_motif = parsed.dir_fimo + infer_motifs[j] + ".summary_mask3"
                     if os.path.isfile(fn_motif):
                         dict_scores = get_fimo_scores(fn_motif)
                         for k in range(len(gids)):
@@ -69,7 +70,8 @@ def main(argv):
                 adjmtr[index[0], :] = gmean(temp_mtr).data
 
             else:
-                fn_motif = parsed.dir_fimo + infer_motifs[0] + ".summary"   
+                # fn_motif = parsed.dir_fimo + infer_motifs[0] + ".summary" 
+                fn_motif = parsed.dir_fimo + infer_motifs[0] + ".summary_mask3"   
                 if os.path.isfile(fn_motif):
                     dict_scores = get_fimo_scores(fn_motif)
                     for j in range(len(gids)):

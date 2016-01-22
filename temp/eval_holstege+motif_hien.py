@@ -78,13 +78,18 @@ def main(argv):
 
     dir_sub = 'yeast_network_holstege_hien/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.hien_np.txt')
-    dir_sub = 'yeast_network_holstege_zeke/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.zekeNp.txt')
+    dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model_full.txt')
 
     dir_sub = 'yeast_network_holstege_hien/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.hien_bart.txt')
-    dir_sub = 'yeast_network_raw_holstege_bart/archive/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.yeast_holstege_bart.txt')
+    dir_sub = 'yeast_network_raw_holstege_bart/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.yeast_holstege_bart_full.txt')
+
+    dir_sub = 'yeast_network_holstege/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k.txt')
+    dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_combined.txt')
 
     # # figure setup
     # colors = ['k:', 'k--', 'k', 'r', 'b', 'g']
@@ -97,8 +102,8 @@ def main(argv):
     # labels.append('NP 1.0 + WA + FIRE motifs + WA')
     # labels.append('NP 1.0 + WA + known motifs + WA')
 
-    colors = ['k:', 'b--', 'b', 'g--', 'g']
-    labels = ["chance", "hien's np", "zeke's np", "hien's bart", "my bart"]
+    colors = ['k:', 'b--', 'b', 'g--', 'g', 'r--', 'r']
+    labels = ["chance", "hien's np", "my np", "hien's bart", "my bart", "hien's np_bart", "my np_bart"]
     
 
     """ Figure setup """
