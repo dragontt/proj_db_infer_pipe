@@ -16,7 +16,7 @@ inference_methods = ['cisbp', 'fire']
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Combine inferred pwm fimo scan scores.")
-    parser.add_argument('-m', '--inference_method', dest='inference_method', type=str, default='cisbp', help='options: %s' % inference_methods)
+    parser.add_argument('-m', '--inference_method', dest='inference_method', type=str, default='fire', help='options: %s' % inference_methods)
     parser.add_argument('-i', '--fn_infer', dest='fn_infer', type=str)
     parser.add_argument('-r', '--fn_rids', dest='fn_rids', type=str)
     parser.add_argument('-g', '--fn_gids', dest='fn_gids', type=str)
@@ -61,7 +61,7 @@ def main(argv):
                 temp_mtr = numpy.zeros([len(infer_motifs), len(gids)])
                 for j in range(len(infer_motifs)):
                     # fn_motif = parsed.dir_fimo + infer_motifs[j] + ".summary"
-                    fn_motif = parsed.dir_fimo + infer_motifs[j] + ".summary_mask3"
+                    fn_motif = parsed.dir_fimo + infer_motifs[j] + ".summary_mask3_cons_thd_0.5"
                     if os.path.isfile(fn_motif):
                         dict_scores = get_fimo_scores(fn_motif)
                         for k in range(len(gids)):
@@ -71,7 +71,7 @@ def main(argv):
 
             else:
                 # fn_motif = parsed.dir_fimo + infer_motifs[0] + ".summary" 
-                fn_motif = parsed.dir_fimo + infer_motifs[0] + ".summary_mask3"   
+                fn_motif = parsed.dir_fimo + infer_motifs[0] + ".summary_mask3_cons_thd_0.5"
                 if os.path.isfile(fn_motif):
                     dict_scores = get_fimo_scores(fn_motif)
                     for j in range(len(gids)):

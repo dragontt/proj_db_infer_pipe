@@ -34,18 +34,33 @@ def main(argv):
     fns = []
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/'
 
-    dir_sub = 'yeast_network_holstege/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k.txt')
+    # dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_model_full_tf_merged.txt')
+    # # dir_sub = 'yeast_network_raw_holstege_np_motif_incorporated/fire_motifs_bin_20/analysis_binding_overlap/'
+    # # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_tf_merged.txt')
+    # dir_sub = 'yeast_network_raw_holstege_np_motif_incorporated/scertf_motif/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_tf_merged.txt')
+    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_mask3_tf_merged.txt')
 
-    dir_sub = 'yeast_network_holstege_motif_incorporated/fire_motifs_np_bart_tf_merged_dbd50_bin_20/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_bart_tf_merged_net_fire_bin_20_tf_merged_resort.txt')
+    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_mask3_cons_thd_0.05_tf_merged.txt')
+    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_mask3_cons_thd_0.1_tf_merged.txt')
+    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_mask3_cons_thd_0.3_tf_merged.txt')
+    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_mask3_cons_thd_0.5_tf_merged.txt')
 
-    dir_sub = 'yeast_network_holstege_motif_incorporated/fire_ortho_scer_motifs_bin_20/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_tf_merged_motif_net_mask1_merged.txt')
+    # colors = ['k:', 'k', 'r', 'm', 'g', 'b', 'c', 'y']
+    # labels = ["chance", "np", "np + known_motif_no_mask", "np + known_motif_consElem", "np + known_motif_phastCons_thd_0.05", "np + known_motif_phastCons_thd_0.1", "np + known_motif_phastCons_thd_0.3", "np + known_motif_phastCons_thd_0.5"]
 
-    colors = ['k:', 'k', 'r', 'g']
-    labels = ["chance", "np_bart", "np_bart_fire_motif", "np_bart_fire_ortho_motif"]
-    
+    dir_sub = 'yeast_network_raw_holstege_np_motif_incorporated/scertf_motif/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.motif_net.txt')
+    fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.motif_net_mask3.txt')
+
+    fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.motif_net_mask3_cons_thd_0.05.txt')
+    fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.motif_net_mask3_cons_thd_0.1.txt')
+    fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.motif_net_mask3_cons_thd_0.3.txt')
+    fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.motif_net_mask3_cons_thd_0.5.txt')
+
+    colors = ['k:', 'r', 'm', 'g', 'b', 'c', 'y']
+    labels = ["chance", "motif_no_mask", "motif_consElem", "motif_phastCons_thd_0.05", "motif_phastCons_thd_0.1", "motif_phastCons_thd_0.3", "motif_phastCons_thd_0.5"]
 
     """ Figure setup """
     

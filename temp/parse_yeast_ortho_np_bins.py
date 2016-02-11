@@ -3,9 +3,9 @@ import glob
 import os
 
 fn_gids = '/home/mblab/ykang/proj_db_infer_pipe/resources/yeast_network_holstege/gids'
-fn_seqs = '/home/mblab/ykang/proj_db_infer_pipe/resources/yeast_promoter_seq/ortho_scer+spar.fasta'
-dir_np_scores = '/home/mblab/ykang/proj_db_infer_pipe/output/yeast_network_holstege_orthologs/ortho_scer+spar/np_bart_tf_merged_bin_20/'
-dir_combined_scores = '/home/mblab/ykang/proj_db_infer_pipe/output/yeast_network_holstege_orthologs/ortho_scer+spar/np_bart_tf_merged_orthos_bin_20/'
+fn_seqs = '/home/mblab/ykang/proj_db_infer_pipe/resources/yeast_promoter_seq/ortho_scer+spar+smik+skud+sbay+scas+sklu.fasta'
+dir_np_scores = '/home/mblab/ykang/proj_db_infer_pipe/output/yeast_network_raw_holstege_np_motif_inference/fire_motifs_bin_20/np_bins/'
+dir_combined_scores = '/home/mblab/ykang/proj_db_infer_pipe/output/yeast_network_raw_holstege_np_motif_inference/fire_motifs_scer+spar+smik+skud+sbay+scas+sklu_bin_20/np_bins/'
 
 orthos = {}
 data = open(fn_gids, 'r').readlines()
