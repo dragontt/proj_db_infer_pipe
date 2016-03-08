@@ -3,12 +3,16 @@
 Mask UCSC phastCons data to binary conserved elements with threshold.
 """
 import glob
+import sys
 
-threshold = 0.05
+threshold = float(sys.argv[1])
+print "Threshold =", threshold
 
 # phastCons file directories
-dir_phastcons = '/home/mblab/ykang/proj_db_infer_pipe/resources/yeast_promoter_seq/ucsc_phastCons/'
-fns = sorted(glob.glob(dir_phastcons + 'sacCer3.*.wigFixed'))
+#dir_phastcons = '/home/mblab/ykang/proj_db_infer_pipe/resources/yeast_promoter_seq/ucsc_phastCons/'
+#fns = sorted(glob.glob(dir_phastcons + 'sacCer3.*.wigFixed'))
+dir_phastcons = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_promoter_seq/ucsc_phastCons/'
+fns = sorted(glob.glob(dir_phastcons + 'dm6.27way.phastCons.wigFix'))
 
 # list of conserved hits in tuples (chr, start, end)
 conserved_loci = []

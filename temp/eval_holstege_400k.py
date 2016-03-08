@@ -34,33 +34,15 @@ def main(argv):
     fns = []
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/'
 
-    # dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_model_full_tf_merged.txt')
-    # dir_sub = 'yeast_network_raw_holstege_np_motif_incorporated/fire_motifs_scer+spar+smik+skud+sbay+scas+sklu_bin_20/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_tf_merged.txt')
-    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_mask1_tf_merged.txt')
-    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_mask2_tf_merged.txt')
-    # fns.append(dir_network + dir_sub + 'analysis.20bins.top1.600to32k.combined_np_motif_mask3_tf_merged.txt')
+    dir_sub = 'yeast_network_holstege/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart.txt')
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k.txt')
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_tf_merged.txt')
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k_tf_merged_dbd50.txt')
 
-    # colors = ['k:', 'k', 'r', 'm', 'g', 'b']
-    # labels = ["chance", "np", "np + inferred_motif_no_mask", "np + inferred_motif_mask1", "np + inferred_motif_mask2", "np + inferred_motif_mask3"]
+    colors = ['k:', 'b', 'r', 'b--', 'r--']
+    labels = ["chance", "np_bart", "np_bart_400k", "np_bart_tf_merged", "np_bart_400k_tf_merged"]
 
-
-
-    dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model_full_tf_merged.txt')
-    dir_sub = 'yeast_network_raw_holstege_np_motif_incorporated/scertf_motif/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_motif_tf_merged.txt')
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_motif_tf_merged.add_pseudocount.txt')
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_motif_mask3_tf_merged.txt')
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_motif_mask3_tf_merged.add_pseudocount.txt')
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_motif_mask3_cons_thd_0.05_tf_merged.txt')
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_motif_mask3_cons_thd_0.05_tf_merged.add_pseudocount.txt')
-
-    colors = ['k:', 'k', 'r', '--r', 'm', '--m', 'g','--g']
-    labels = ["chance", "np", "np + knowm_motif_no_mask", "np + knowm_motif_no_mask.add_pc", "np + known_motif_consElem", "np + known_motif_consElem.add_pc", "np + known_motif_phastCons_thd_0.05", "np + known_motif_phastCons_thd_0.05.add_pc"]
-    # colors = ['k:', 'k', 'r', 'm', 'g', 'b', 'c', 'y']
-    # labels = ["chance", "np", "np + inferred_motif_no_mask", "np + inferred_motif_consElem", "np + inferred_motif_phastCons_thd_0.05", "np + inferred_motif_phastCons_thd_0.1", "np + inferred_motif_phastCons_thd_0.3", "np + inferred_motif_phastCons_thd_0.5"]
 
     """ Figure setup """
     
@@ -74,6 +56,10 @@ def main(argv):
     for i in range(len(fns)):
         [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_overlap(fns[i], parsed.eval_method)
     print 'chip chance:', eval_chip[0][0], 'pwm chance:', eval_pwm[0][0]
+    print 'chip:'
+    print eval_chip
+    print 'pwm:'
+    print eval_pwm
 
     x_ticks = [format(float(i)*parsed.step/320, '.0f') for i in range(1,len(eval_chip[0])+1)]
     

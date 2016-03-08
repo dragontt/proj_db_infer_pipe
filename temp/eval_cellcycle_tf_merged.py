@@ -12,13 +12,16 @@ import argparse
 import glob
 import os.path
 import numpy
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Combine chip and pwm evaluations")
-    parser.add_argument('-r', '-range', dest='range', default='top4to40k')
-    parser.add_argument('-t', '-eval_type', dest='eval_type', type=str, default=
-        'flynet')
+    parser.add_argument('-n', '-figure_name', dest='figure_name', default='temp_result')
+    parser.add_argument('-r', '-range', dest='range', default='20bins.top4.845to96.9k')
+    parser.add_argument('-s', '-step', dest='step', default=4845, type=float)
     parser.add_argument('-c', '-combination', dest='combination', type=str, default='resort')
     parser.add_argument('-m', '-eval_method', dest='eval_method', type=str, default='cumulative')
     parsed = parser.parse_args(argv[1:])
@@ -29,113 +32,90 @@ def errprint(st):
 
 def main(argv):
     parsed = parse_args(argv)
+    
+    fns = []
+    dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/'
 
-    if parsed.eval_type == "flynet":
+    # np + tf_merging
+    dir_sub = 'fly_network_cellCycle_global_shrinkage/analysis_compiled_chip_flynet_pwm/'
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_model_full.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_model_full.txt')
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_model_full_tf_merged_pid50.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_model_full_tf_merged_pid50.txt')
 
-        # evaluate chip and pwm supports on binary gold standard 
-        # file initialization
-        fns = []
+    # bart + tf_merging
+    dir_sub = 'fly_network_cellCycle_bart/analysis_compiled_chip_flynet_pwm/'
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.fly_bart_full.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.fly_bart_full.txt')
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.fly_bart_full_tf_merged.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.fly_bart_full_tf_merged.txt')
 
-        dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
-        dir_sub = 'analysis_compiled_chip_flynet_pwm/'
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_model_full.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_model_full.txt')
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_model_full_tf_merged_pid50.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_model_full_tf_merged_pid50.txt')
-        fns.append(dir_network + dir_sub + 'analysis_chip_support.top4to40k.combined_model_full_tf_merged_pert_only_pid50.txt')
-        fns.append(dir_network + dir_sub + 'analysis_pwm_support.top4to40k.combined_model_full_tf_merged_pert_only_pid50.txt')
+    # figure setup
+    colors = ['k:', 'k', '--k', 'g', '--g']
+    labels = []
+    labels.append('chance')
+    labels.append('NP')
+    labels.append('NP + tf_merging')
+    labels.append('BART')
+    labels.append('BART + tf_merging')
 
-        # figure setup
-        colors = ['k:', 'k', 'b', 'r--']
-        labels = []
-        labels.append('chance')
-        labels.append('np')
-        labels.append('np_tf_merged')
-        labels.append('np_tf_merged_pert_tfs_only')
+    """ Figure setup """
+    
+    dir_figures = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_analysis_results/'
+    # figure_title = 'Fly CellCycle Network: Combination with Inferred Motifs'
 
-        if parsed.range == 'top4to40k':
-            x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
-        elif parsed.range == 'top12to120k':
-            x_ticks = ['12k', '24k', '36k', '48k', '60k', '72k', '84k', '96k', '108k', '120k']
-        else:
-            x_ticks = []
+    # compute chip and pwm supports
+    [eval_chip, eval_pwm] = parse_binary_gold_standard(fns, parsed.eval_method)
+    print 'chip chance:', eval_chip[0][0], 'pwm chance:', eval_pwm[0][0]
 
-        # compute chip and pwm supports
-        [eval_chip, eval_pwm] = parse_binary_gold_standard(fns, parsed.eval_method)
+    # targets per tf
+    x_ticks = [format(float(i)*parsed.step/969, '.0f') for i in range(1,len(eval_chip[0])+1)]
 
-    elif parsed.eval_type == "binding_indep":
-        pass
-        # # evaluate chip and pwm supports on binding overlap gold standard
-        # # file initialization
-        # fns = []
-
-        # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_global_shrinkage/'
-        # dir_sub = 'analysis_binding_indep/'
-        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_model_full.txt')
-
-        # dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/fly_network_cellCycle_motif_incorporated/'
-        # dir_sub = 'cisbp_-2000_+200_fimo_known_motif/analysis_binding_indep/'
-        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_known_motif_' + parsed.combination + '.txt')
-
-        # dir_sub = 'fire_motifs_np_bin_20/analysis_binding_indep/'
-        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-        # dir_sub = 'fire_motifs_np_tf_merged_dbd50_bin_20/analysis_binding_indep/'
-        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_fire_np_bin_20_' + parsed.combination + '.txt')
-
-        # dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np/analysis_binding_indep/'
-        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
-        # dir_sub = 'cisbp_-2000_+200_fimo_dbd_cutoff_cellCycle_np_tf_merged_dbd50/analysis_binding_indep/'
-        # fns.append(dir_network + dir_sub + 'chip.bp.np.set.sizes.top4to40k.combined_network_np_motif_net_dbd_cutoff_50.0_' + parsed.combination + '.txt')
-
-        # # figure setup
-        # colors = ['k:', 'k', 'r', 'g', 'g--', 'b', 'b--']
-        # labels = []
-        # labels.append('chance')
-        # labels.append('np')
-        # labels.append('np + known_motif')
-        # labels.append('np + fire_motif')
-        # labels.append('np + fire_motif_tf_merged')
-        # labels.append('np + database_motif')
-        # labels.append('np + database_motif_tf_merged')
-        # x_ticks = ['4k', '8k', '12k', '16k', '20k', '24k', '28k', '32k', '36k', '40k']
-
-        # # compute chip and pwm supports
-        # eval_chip = [None] * (len(fns)+1)
-        # eval_pwm = [None] * (len(fns)+1)
-        # [eval_chip[0], eval_pwm[0]] = parse_chance_binding_indep(fns[0])
-        # for i in range(len(fns)):
-        #     [eval_chip[i+1], eval_pwm[i+1]] = parse_binding_overlap(fns[i], parsed.eval_method)
-
+    """ Regular support plot """
+    
     # plot figures
-    plt.figure(num=None, figsize=(15,8), dpi=80)
-    plt.subplot(1,2,1)
+    # fig = plt.figure(num=None, figsize=(25,8), dpi=80)
+    # fig.subplots_adjust(right=.7)
+
+    fig = plt.figure(num=None, figsize=(18,6), dpi=80)
+    fig.subplots_adjust(right=.7)
+
+    ax = plt.subplot(1,2,1)
     for i in range(len(eval_chip)):
-        plt.plot(eval_chip[i], colors[i], label=labels[i])
+        ax.plot(eval_chip[i], colors[i], label=labels[i], linewidth=1.5)
     plt.xticks(range(len(eval_chip[0])), x_ticks)
-    plt.xlabel('Predictions grouped by rank')
-    plt.ylabel('Interactions supported by ChIP')
-    plt.xlim(-1, len(eval_chip[0]))
-    plt.ylim(0, .6)
-    # plt.legend(loc="upper right")
+    plt.xlabel('Average number of predicted targets per TF in the genome')
+    plt.ylabel('Interactions supported by ChIP (%)')
+    plt.xlim(-1, len(eval_chip[0])+1)
+    plt.ylim(0,90)
+    plt.yticks(numpy.arange(0,95,10))
+    for label in ax.xaxis.get_ticklabels()[::2]:
+        label.set_visible(False)
 
-    plt.subplot(1,2,2)
+    ax = plt.subplot(1,2,2)
     for i in range(len(eval_pwm)):
-        plt.plot(eval_pwm[i], colors[i], label=labels[i])
+        ax.plot(eval_pwm[i], colors[i], label=labels[i], linewidth=1.5)
+    # ax.scatter(11,12.4, s=75, c='c')
+    # ax.annotate('ChIP network', xy=(10.75, 12), xycoords='data', xytext=(-50, -30), textcoords='offset points', arrowprops=dict(arrowstyle="->"))
     plt.xticks(range(len(eval_pwm[0])), x_ticks)
-    plt.xlabel('Predictions grouped by rank')
-    plt.ylabel('Interactions supported by PWM')
-    plt.xlim(-1, len(eval_pwm[0]))
-    plt.ylim(0, .2)
-    plt.legend(loc='upper right')
-    # plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+    plt.xlabel('Average number of predicted targets per TF in the genome')
+    plt.ylabel('Interactions supported by PWM (%)')
+    plt.xlim(-1, len(eval_pwm[0])+1)
+    plt.ylim(0,16)
+    plt.yticks(numpy.arange(0,16.5,2))
+    for label in ax.xaxis.get_ticklabels()[::2]:
+        label.set_visible(False)
+    handles, labels = ax.get_legend_handles_labels()
+    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., scatterpoints=1)
 
-    # plt.suptitle(parsed.eval_type + '_tf_merged_dbd50_' + parsed.combination)
+    plt.savefig(dir_figures + parsed.figure_name + '.pdf', fmt='pdf')
 
-    plt.show()
 
 def parse_binary_gold_standard(fns, method):
-    eval_chip = numpy.zeros([len(fns)/2+1, 10])
-    eval_pwm = numpy.zeros([len(fns)/2+1, 10])
+    evalPoints = numpy.loadtxt(fns[0]).shape[1]
+
+    eval_chip = numpy.zeros([len(fns)/2+1, evalPoints])
+    eval_pwm = numpy.zeros([len(fns)/2+1, evalPoints])
 
     for i in range(len(fns)/2):
         chip_support = numpy.loadtxt(fns[i*2], dtype=str)
@@ -159,11 +139,11 @@ def parse_binary_gold_standard(fns, method):
         elif method == 'binned':
             eval_chip[i+1,0] = chip_support[3,0]/chip_support[2,0]
             eval_pwm[i+1,0] = pwm_support[3,0]/pwm_support[2,0]
-            for j in range(1,10):
+            for j in range(1,evalPoints):
                 eval_chip[i+1,j] = (chip_support[3,j]-chip_support[3,j-1])/(chip_support[2,j]-chip_support[2,j-1])
                 eval_pwm[i+1,j] = (pwm_support[3,j]-pwm_support[3,j-1])/(pwm_support[2,j]-pwm_support[2,j-1])
 
-    return [eval_chip, eval_pwm]
+    return [eval_chip*100, eval_pwm*100]
 
 def parse_binding_info(fn, method):
     lines = open(fn, "r").readlines()

@@ -50,21 +50,20 @@ def main(argv):
     # competitors 
     dir_network = '/Users/KANG/cgscluster/network_evaluation/output/fly/'
     # flynet 
-    fns.append(dir_network + 'analysis_chip_support.'+ parsed.range +'.flynet.txt')
-    fns.append(dir_network + 'analysis_pwm_support.'+ parsed.range +'.flynet.txt')
-    # redfly
-    fns.append(dir_network + 'analysis_chip_support.'+ parsed.range +'.redfly.txt')
-    fns.append(dir_network + 'analysis_pwm_support.'+ parsed.range +'.redfly.txt')
+    fns.append(dir_network + 'analysis_chip_support.'+ parsed.range +'.flynet_microarray_orig.txt')
+    fns.append(dir_network + 'analysis_pwm_support.'+ parsed.range +'.flynet_microarray_orig.txt')
+    # # redfly
+    # fns.append(dir_network + 'analysis_chip_support.'+ parsed.range +'.redfly.txt')
+    # fns.append(dir_network + 'analysis_pwm_support.'+ parsed.range +'.redfly.txt')
 
     # figure setup
-    colors = ['k:', 'k', 'g', 'b', '--m', '--r']
+    colors = ['k:', 'k', 'g', 'b', 'r']
     labels = []
     labels.append('chance')
     labels.append('np')
     labels.append('np + fire_motif')
     labels.append('np + known_motif')
-    labels.append('flynet')
-    labels.append('redfly')
+    labels.append('flynet_microarray')
     
 
     """ Figure setup """

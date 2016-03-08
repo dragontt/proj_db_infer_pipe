@@ -28,6 +28,7 @@ counter=0
 
 while read -a line
 do
+	## process fimo scan
 	# counter=$[$counter +1]
 	# motif=${line[0]}
 	# echo  "*** Processing $motif ... $counter"
@@ -36,18 +37,6 @@ do
 	# sed ' 1d ' $OUT_FIMO/$motif/fimo.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp.txt
 	# ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp.txt > $OUT_FIMO/${motif}.summary
 
-	# python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask1 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/yeast_promoter_seq/s_cerevisiae.promoters.cons_elem_mask.txt -o $OUT_FIMO/$motif/fimo_mask1.txt
-	# sed ' 1d ' $OUT_FIMO/$motif/fimo_mask1.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp_mask1.txt
-	# ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp_mask1.txt > $OUT_FIMO/${motif}.summary_mask1
-
-	# python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask2 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/yeast_promoter_seq/s_cerevisiae.promoters.cons_elem_mask.txt -o $OUT_FIMO/$motif/fimo_mask2.txt
-	# sed ' 1d ' $OUT_FIMO/$motif/fimo_mask2.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp_mask2.txt
-	# ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp_mask2.txt > $OUT_FIMO/${motif}.summary_mask2
-
-	# python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask3 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/yeast_promoter_seq/s_cerevisiae.promoters.cons_elem_mask.txt -o $OUT_FIMO/$motif/fimo_mask3.txt
-	# sed ' 1d ' $OUT_FIMO/$motif/fimo_mask3.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp_mask3.txt
-	# ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp_mask3.txt > $OUT_FIMO/${motif}.summary_mask3
-
 	# rm $OUT_FIMO/$motif/cisml.css
 	# rm $OUT_FIMO/$motif/cisml.xml
 	# rm $OUT_FIMO/$motif/fimo.gff
@@ -55,25 +44,26 @@ do
 	# rm $OUT_FIMO/$motif/fimo-to-html.xsl
 	# rm $OUT_FIMO/$motif/fimo.xml
 
+	# post process masked fimo scores
 	counter=$[$counter +1]
 	motif=${line[0]}
 	echo  "*** Processing $motif ... $counter"
 
-	python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask3 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/yeast_promoter_seq/s_cerevisiae.promoters.cons_threshold_0.05_mask.txt -o $OUT_FIMO/$motif/fimo_mask3_cons_thd_0.05.txt
+	python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask1 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/fly_promoter_seq/dmel_-2000_+200.rsat_promoters.cons_elem_mask.txt -o $OUT_FIMO/$motif/fimo_mask1.txt
+	sed ' 1d ' $OUT_FIMO/$motif/fimo_mask1.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp_mask1.txt
+	ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp_mask1.txt > $OUT_FIMO/${motif}.summary_mask1
+
+	python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask2 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/fly_promoter_seq/dmel_-2000_+200.rsat_promoters.cons_elem_mask.txt -o $OUT_FIMO/$motif/fimo_mask2.txt
+	sed ' 1d ' $OUT_FIMO/$motif/fimo_mask2.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp_mask2.txt
+	ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp_mask2.txt > $OUT_FIMO/${motif}.summary_mask2
+
+	python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask3 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/fly_promoter_seq/dmel_-2000_+200.rsat_promoters.cons_elem_mask.txt -o $OUT_FIMO/$motif/fimo_mask3.txt
+	sed ' 1d ' $OUT_FIMO/$motif/fimo_mask3.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp_mask3.txt
+	ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp_mask3.txt > $OUT_FIMO/${motif}.summary_mask3
+
+	python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask3 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/fly_promoter_seq/dmel_-2000_+200.rsat_promoters.cons_threshold_0.05_mask.txt -o $OUT_FIMO/$motif/fimo_mask3_cons_thd_0.05.txt
 	sed ' 1d ' $OUT_FIMO/$motif/fimo_mask3_cons_thd_0.05.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp_mask3_cons_thd_0.05.txt
 	ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp_mask3_cons_thd_0.05.txt > $OUT_FIMO/${motif}.summary_mask3_cons_thd_0.05
-
-	python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask3 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/yeast_promoter_seq/s_cerevisiae.promoters.cons_threshold_0.1_mask.txt -o $OUT_FIMO/$motif/fimo_mask3_cons_thd_0.1.txt
-	sed ' 1d ' $OUT_FIMO/$motif/fimo_mask3_cons_thd_0.1.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp_mask3_cons_thd_0.1.txt
-	ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp_mask3_cons_thd_0.1.txt > $OUT_FIMO/${motif}.summary_mask3_cons_thd_0.1
-
-	python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask3 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/yeast_promoter_seq/s_cerevisiae.promoters.cons_threshold_0.3_mask.txt -o $OUT_FIMO/$motif/fimo_mask3_cons_thd_0.3.txt
-	sed ' 1d ' $OUT_FIMO/$motif/fimo_mask3_cons_thd_0.3.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp_mask3_cons_thd_0.3.txt
-	ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp_mask3_cons_thd_0.3.txt > $OUT_FIMO/${motif}.summary_mask3_cons_thd_0.3
-
-	python $HOME/proj_db_infer_pipe/scripts/mask_fimo.py -m mask3 -i $OUT_FIMO/$motif/fimo.txt -a $HOME/proj_db_infer_pipe/resources/yeast_promoter_seq/s_cerevisiae.promoters.cons_threshold_0.5_mask.txt -o $OUT_FIMO/$motif/fimo_mask3_cons_thd_0.5.txt
-	sed ' 1d ' $OUT_FIMO/$motif/fimo_mask3_cons_thd_0.5.txt | cut -f 1,2,7 > $OUT_FIMO/$motif/temp_mask3_cons_thd_0.5.txt
-	ruby $HOME/proj_db_infer_pipe/scripts/estimate_affinity.rb -i $OUT_FIMO/$motif/temp_mask3_cons_thd_0.5.txt > $OUT_FIMO/${motif}.summary_mask3_cons_thd_0.5
 
 	echo "*** Done"
 done < $IN_TF_LIST
