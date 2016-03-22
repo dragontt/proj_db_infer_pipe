@@ -34,61 +34,29 @@ def main(argv):
     parsed = parse_args(argv)
     
     fns = []
+
+    # competitors
+    dir_network = '/Users/KANG/cgscluster/network_evaluation/output/'
+    dir_sub = 'yeast/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.clr_network_full.txt')
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.spearman_net.txt')
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.inferelator_output_full.txt')
+
+    # np_tf_merged + bart_tf_merged + inferred_motif
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/'
-
-    # # np
-    # dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model_full.txt')
-
-    # # np + bart + tf_merging
-    # dir_sub = 'yeast_network_raw_holstege_bart/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_tf_merged_bart_tf_merged.txt')
-
-    # # np + bart + inferred_motif
-    # dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/fire_scer/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
-
-    # # np + bart + inferred_ortho_motif
-    # dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/fire_ortho/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
-
-    # # np + bart + known_motif
-    # dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/known_scertf/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
-
-    # colors = ['k:', 'k', 'b', 'r', '--r', 'g']
-    # labels = []
-    # labels.append('chance')
-    # labels.append('NP')
-    # labels.append('NP + BART')
-    # labels.append('NP + BART + inferred_motifs')
-    # labels.append('NP + BART + inferred_ortho_motifs')
-    # labels.append('NP + BART + known_motifs')
-
-    # np
-    dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model_full.txt')
-
-    # np + bart + tf_merging
-    dir_sub = 'yeast_network_raw_holstege_bart/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_tf_merged_bart_tf_merged.txt')
-
-    # np + bart + inferred_motif
-    dir_sub = 'yeast_network_raw_holstege_np_motif_incorporated/fire_motifs_bin_20/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_motif_tf_merged.txt')
-
-    # np + bart + inferred_motif
     dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/fire_scer/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
 
-
-    colors = ['k:', 'k', 'b', 'r', 'm']
+    colors = ['k:', '--b', '--r', '--g', 'k']
     labels = []
     labels.append('chance')
-    labels.append('NP')
-    labels.append('NP + BART')
-    labels.append('NP + inferred_motifs')
-    labels.append('NP + BART + inferred_motifs')
+    labels.append('CLR')
+    labels.append('Spearman_net (flynet)')
+    labels.append('Inferelator')
+    labels.append('NP + BART + inferred_motif')
+
+    # colors = ['k:', 'k', 'r', 'm', 'g', 'b', 'c', 'y']
+    # labels = ["chance", "np", "np + inferred_motif_no_mask", "np + inferred_motif_consElem", "np + inferred_motif_phastCons_thd_0.05", "np + inferred_motif_phastCons_thd_0.1", "np + inferred_motif_phastCons_thd_0.3", "np + inferred_motif_phastCons_thd_0.5"]
 
     """ Figure setup """
     
@@ -122,12 +90,10 @@ def main(argv):
     plt.xlabel('Average number of predicted targets per TF in the genome')
     plt.ylabel('Interactions supported by ChIP (%)')
     plt.xlim(-1, len(eval_chip[0])+1)
-    if parsed.range == '20bins.top1.600to32k':
-        plt.ylim(0, 50)
-        plt.yticks(numpy.arange(0,50.5,5))
-    else:
-        plt.ylim(0, 75)
-        plt.yticks(numpy.arange(0,75.5,10))
+    plt.ylim(0, 50)
+    plt.yticks(numpy.arange(0,50.5,5))
+    # plt.ylim(0, 75)
+    # plt.yticks(numpy.arange(0,75.5,10))
     for label in ax.xaxis.get_ticklabels()[::2]:
         label.set_visible(False)
 
@@ -141,12 +107,10 @@ def main(argv):
     plt.xlabel('Average number of predicted targets per TF in the genome')
     plt.ylabel('Interactions supported by PWM (%)')
     plt.xlim(-1, len(eval_pwm[0])+1)
-    if parsed.range == '20bins.top1.600to32k':
-        plt.ylim(0, 25)
-        plt.yticks(numpy.arange(0,25.5,5))
-    else:
-        plt.ylim(0, 35)
-        plt.yticks(numpy.arange(0,35.5,5))
+    plt.ylim(0, 25)
+    plt.yticks(numpy.arange(0,25.5,5))
+    # plt.ylim(0, 35)
+    # plt.yticks(numpy.arange(0,35.5,5))
     for label in ax.xaxis.get_ticklabels()[::2]:
         label.set_visible(False)
     handles, labels = ax.get_legend_handles_labels()

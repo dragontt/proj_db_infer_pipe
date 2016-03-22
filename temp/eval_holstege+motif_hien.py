@@ -60,50 +60,22 @@ def main(argv):
     # # np 1.0: Hu data
     # dir_sub = 'yeast_network_hu_netprophet1.0/analysis_binding_overlap/'
     # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model.txt')
-    # # np 1.0 + bart: Holstege data
-    # dir_sub = 'yeast_network_holstege/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k.txt')
-    # # np + tf_merging
-    # dir_sub = 'yeast_network_holstege/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k_tf_merged_dbd50.txt')
-    # # # np + cis-bp motifs
-    # # dir_sub = 'yeast_network_holstege_motif_incorporated/cisbp_dbd_only_holstege_np_bart_tf_merged_dbd50/analysis_binding_overlap/'
-    # # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_motif_net_dbd_only_tf_merged_dbd50.txt')
-    # # np + fire
-    # dir_sub = 'yeast_network_holstege_motif_incorporated/fire_motifs_np_bart_tf_merged_dbd50_bin_20/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_bart_tf_merged_net_fire_bin_20_tf_merged_resort.txt')
-    # # np + known pwm
-    # dir_sub = 'yeast_network_holstege_motif_incorporated/scertf_known_motif/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_tf_merged_motif_net_tf_merged.txt')
 
-    dir_sub = 'yeast_network_holstege_hien/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.hien_np.txt')
     dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model_full.txt')
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model_full_tf_merged.txt')
 
-    dir_sub = 'yeast_network_holstege_hien/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.hien_bart.txt')
     dir_sub = 'yeast_network_raw_holstege_bart/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.yeast_holstege_bart_full.txt')
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.yeast_holstege_bart_full_tf_merged.txt')
 
-    dir_sub = 'yeast_network_holstege/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_top400k.txt')
     dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.np_bart_combined.txt')
+    dir_sub = 'yeast_network_raw_holstege_bart/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_tf_merged_bart_tf_merged.txt')
 
-    # # figure setup
-    # colors = ['k:', 'k--', 'k', 'r', 'b', 'g']
-    # labels = []
-    # labels.append('chance')
-    # labels.append('Netprophet 1.0: Hu data (published)')
-    # labels.append('NP 1.0: Holstege data')
-    # labels.append('NP 1.0 + weighted averaging (WA)')
-    # # labels.append('NP 1.0 + WA + CIS-BP motifs + WA')
-    # labels.append('NP 1.0 + WA + FIRE motifs + WA')
-    # labels.append('NP 1.0 + WA + known motifs + WA')
-
-    colors = ['k:', 'b--', 'b', 'g--', 'g', 'r--', 'r']
-    labels = ["chance", "hien's np", "my np", "hien's bart", "my bart", "hien's np_bart", "my np_bart"]
+    colors = ['k:', 'k', 'k--', 'g', 'g--', 'b', 'b--']
+    labels = ["chance", "np", "np_tf_merged", "bart", "bart_tf_merged", "np + bart", "np_tf_merged + bart_tf_merged"]
     
 
     """ Figure setup """

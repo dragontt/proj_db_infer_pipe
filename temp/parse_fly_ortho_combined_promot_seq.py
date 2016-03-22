@@ -3,7 +3,8 @@ import sys
 import numpy 
 
 # parsed_ortho = sys.argv[1]
-parsed_ortho = ['Drosophila_simulans','Drosophila_sechellia','Drosophila_yakuba','Drosophila_erecta','Drosophila_ananassae']
+# parsed_ortho = ['Drosophila_simulans','Drosophila_sechellia','Drosophila_yakuba','Drosophila_erecta','Drosophila_ananassae']
+parsed_ortho = ['Drosophila_simulans','Drosophila_sechellia']
 
 fn_dmel_genes = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_baranski_singles_net_full/gids.fb'
 dmel_genes = numpy.loadtxt(fn_dmel_genes, dtype=str)
@@ -12,7 +13,7 @@ ortho_list = {'Drosophila_ananassae':'Dana', 'Drosophila_erecta':'Dere', 'Drosop
 fn_ortho_conversion = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_base/gene_orthologs_fb_2015_03.tsv'
 dir_promot_seqs = '/home/mblab/ykang/proj_db_infer_pipe/resources/fly_promoter_seq/'
 # fn_dmel_ortho = dir_promot_seqs + 'rsat_dmel+'+ ortho_list[parsed_ortho] +'_upstream_-2000_0.filtered.fasta'
-fn_dmel_ortho = dir_promot_seqs + 'rsat_dmel+'+ '+'.join([ortho_list[parsed_ortho[i]] for i in range(len(parsed_ortho))]) +'_upstream_-2000_0.filtered.fasta'
+fn_dmel_ortho = dir_promot_seqs + 'rsat_dmel+'+ '+'.join([ortho_list[parsed_ortho[i]] for i in range(len(parsed_ortho))]) +'_upstream_-2000_+200.filtered.fasta'
 
 ortho_conversion = {}
 for ortho in ortho_list.values():
@@ -26,7 +27,7 @@ for i in range(5, len(lines)):
 promot_seqs = []
 
 print 'Dmel'
-fn_dmel = dir_promot_seqs + 'rsat_dmel_upstream_-2000_0.filtered.fasta'
+fn_dmel = dir_promot_seqs + 'rsat_dmel_upstream_-2000_+200.filtered.fasta'
 lines = open(fn_dmel, 'r').readlines()
 for i in range(len(lines)/2):
 	gene = lines[i*2].strip().split('>')[1]
@@ -38,13 +39,13 @@ for i in range(len(lines)/2):
 # for ortho in [parsed_ortho]:
 for ortho in parsed_ortho:
 	print ortho
-	fn_ortho = dir_promot_seqs + 'rsat_'+ ortho +'_upstream_-2000_0.filtered.fasta'
+	fn_ortho = dir_promot_seqs + 'rsat_'+ ortho +'_upstream_-2000_+200.filtered.fasta'
 	lines = open(fn_ortho, 'r').readlines()
 	for i in range(len(lines)/2):
 		gene = ortho_conversion[ortho_list[ortho]][lines[i*2].strip().split('>')[1]]
 		seq = lines[i*2+1]
 		if gene in dmel_genes:
-			# promot_seqs.append([gene, seq])
+			# promot_seqs.append([gene +'.'+ ortho_list[ortho], seq])
 			promot_seqs.append([lines[i*2].strip().split('>')[1], seq])
 
 promot_seqs = numpy.array(promot_seqs, dtype=str)

@@ -5,11 +5,11 @@ MAXRANK=$2
 NUMBINS=$3
 DIR_ANALYSIS=$4
 
-REGS=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_baranski_singles_net_full/rids.fb
-GENES=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_baranski_singles_net_full/gids.fb
+REGS=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_cellCycle/rids_full.fb
+GENES=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_network_cellCycle/gids_full.fb
 
 CHIP_NET=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_physical_network_chip/chip_net_genome_wide.adjmtr
-PWM_NET=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_net/resources/networks/physical/motif_net.adjmtr
+PWM_NET=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_physical_network_pwm/flynet_motif_net.adjmtr
 
 # CHIP_NET=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_physical_network_chip/chip_net_genome_wide.intersect_with_pwm.adjmtr
 # PWM_NET=/home/mblab/ykang/proj_db_infer_pipe/resources/fly_physical_network_pwm/flynet_motif_net.intersect_with_chip.adjmtr

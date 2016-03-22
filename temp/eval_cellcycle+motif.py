@@ -119,8 +119,8 @@ def main(argv):
     plt.xlabel('Average number of predicted targets per TF in the genome')
     plt.ylabel('Interactions supported by ChIP (%)')
     plt.xlim(-1, len(eval_chip[0])+1)
-    plt.ylim(0,90)
-    plt.yticks(numpy.arange(0,95,10))
+    plt.ylim(10,55)
+    plt.yticks(numpy.arange(10,55.5,5))
     for label in ax.xaxis.get_ticklabels()[::2]:
         label.set_visible(False)
 
@@ -133,8 +133,8 @@ def main(argv):
     plt.xlabel('Average number of predicted targets per TF in the genome')
     plt.ylabel('Interactions supported by PWM (%)')
     plt.xlim(-1, len(eval_pwm[0])+1)
-    plt.ylim(0,16)
-    plt.yticks(numpy.arange(0,16.5,2))
+    plt.ylim(4,14)
+    plt.yticks(numpy.arange(4,14.5,2))
     for label in ax.xaxis.get_ticklabels()[::2]:
         label.set_visible(False)
     handles, labels = ax.get_legend_handles_labels()

@@ -11,8 +11,8 @@ if not os.path.exists(dir_out):
 
 rids = numpy.loadtxt(fn_in, dtype=str, delimiter="\t")
 
-# n_rids_per_file = 25
-n_rids_per_file = 1000
+n_rids_per_file = 10
+# n_rids_per_file = 1000
 n_files = numpy.ceil(len(rids)/float(n_rids_per_file))
 
 for i in numpy.arange(n_files):

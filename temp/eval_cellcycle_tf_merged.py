@@ -36,28 +36,28 @@ def main(argv):
     fns = []
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/'
 
-    # np + tf_merging
-    dir_sub = 'fly_network_cellCycle_global_shrinkage/analysis_compiled_chip_flynet_pwm/'
-    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_model_full.txt')
-    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_model_full.txt')
-    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_model_full_tf_merged_pid50.txt')
-    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_model_full_tf_merged_pid50.txt')
+    # np
+    dir_sub = 'fly_network_cellCycle_np_bart/analysis_compiled_chip_flynet_pwm/'
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.np_full.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.np_full.txt')
 
-    # bart + tf_merging
-    dir_sub = 'fly_network_cellCycle_bart/analysis_compiled_chip_flynet_pwm/'
-    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.fly_bart_full.txt')
-    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.fly_bart_full.txt')
-    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.fly_bart_full_tf_merged.txt')
-    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.fly_bart_full_tf_merged.txt')
+    # np_tf_merged + bart_tf_merged
+    dir_sub = 'fly_network_cellCycle_np_bart/analysis_compiled_chip_flynet_pwm/'
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_np_tf_merged_bart_tf_merged.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_np_tf_merged_bart_tf_merged.txt')
+
+    # np + bart + known motifs
+    dir_sub = 'fly_network_cellCycle_np_bart_motif_incorporated/known_cisbp/analysis_compiled_chip_flynet_pwm/'
+    fns.append(dir_network + dir_sub + 'analysis_chip_support.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
+    fns.append(dir_network + dir_sub + 'analysis_pwm_support.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
 
     # figure setup
-    colors = ['k:', 'k', '--k', 'g', '--g']
+    colors = ['k:', 'k', 'b', 'g']
     labels = []
     labels.append('chance')
     labels.append('NP')
-    labels.append('NP + tf_merging')
-    labels.append('BART')
-    labels.append('BART + tf_merging')
+    labels.append('NP + BART')
+    labels.append('NP + BART + known_motifs')
 
     """ Figure setup """
     
@@ -87,8 +87,10 @@ def main(argv):
     plt.xlabel('Average number of predicted targets per TF in the genome')
     plt.ylabel('Interactions supported by ChIP (%)')
     plt.xlim(-1, len(eval_chip[0])+1)
+    # plt.ylim(0,60)
+    # plt.yticks(numpy.arange(0,60.5,10))
     plt.ylim(0,90)
-    plt.yticks(numpy.arange(0,95,10))
+    plt.yticks(numpy.arange(0,90.5,10))
     for label in ax.xaxis.get_ticklabels()[::2]:
         label.set_visible(False)
 
@@ -101,8 +103,8 @@ def main(argv):
     plt.xlabel('Average number of predicted targets per TF in the genome')
     plt.ylabel('Interactions supported by PWM (%)')
     plt.xlim(-1, len(eval_pwm[0])+1)
-    plt.ylim(0,16)
-    plt.yticks(numpy.arange(0,16.5,2))
+    plt.ylim(0,12)
+    plt.yticks(numpy.arange(0,12.5,2))
     for label in ax.xaxis.get_ticklabels()[::2]:
         label.set_visible(False)
     handles, labels = ax.get_legend_handles_labels()
