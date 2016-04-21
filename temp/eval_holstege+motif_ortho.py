@@ -36,59 +36,51 @@ def main(argv):
     fns = []
     dir_network = '/Users/KANG/cgscluster/proj_db_infer_pipe/output/'
 
-    # # np
-    # dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model_full.txt')
+    # np: Hu data
+    dir_sub = 'yeast_network_hu_netprophet1.0/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model.txt')
+
+    # np 
+    dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model_full.txt')
 
     # # np + bart + tf_merging
     # dir_sub = 'yeast_network_raw_holstege_bart/analysis_binding_overlap/'
     # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_tf_merged_bart_tf_merged.txt')
 
-    # # np + bart + inferred_motif
-    # dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/fire_scer/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
+    # np + bart + inferred_motif
+    dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/fire_scer/analysis_binding_overlap/'
+    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
 
     # # np + bart + inferred_ortho_motif
     # dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/fire_ortho/analysis_binding_overlap/'
     # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
 
-    # # np + bart + known_motif
-    # dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/known_scertf/analysis_binding_overlap/'
-    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
-
-    # colors = ['k:', 'k', 'b', 'r', '--r', 'g']
-    # labels = []
-    # labels.append('chance')
-    # labels.append('NP')
-    # labels.append('NP + BART')
-    # labels.append('NP + BART + inferred_motifs')
-    # labels.append('NP + BART + inferred_ortho_motifs')
-    # labels.append('NP + BART + known_motifs')
-
-    # np
-    dir_sub = 'yeast_network_raw_holstege_np_global/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_model_full.txt')
-
-    # np + bart + tf_merging
-    dir_sub = 'yeast_network_raw_holstege_bart/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_network_np_tf_merged_bart_tf_merged.txt')
-
-    # np + bart + inferred_motif
-    dir_sub = 'yeast_network_raw_holstege_np_motif_incorporated/fire_motifs_bin_20/analysis_binding_overlap/'
-    fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_motif_tf_merged.txt')
-
-    # np + bart + inferred_motif
-    dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/fire_scer/analysis_binding_overlap/'
+    # np + bart + known_motif
+    dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/known_scertf/analysis_binding_overlap/'
     fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
 
-
-    colors = ['k:', 'k', 'b', 'r', 'm']
+    colors = ['k:', '--k', 'k', 'r', 'g']
     labels = []
     labels.append('chance')
-    labels.append('NP')
-    labels.append('NP + BART')
-    labels.append('NP + inferred_motifs')
-    labels.append('NP + BART + inferred_motifs')
+    labels.append('Netprophet 1.0        [Hu]')
+    labels.append('Netprophet 1.0')
+    labels.append('Netprophet 2.0        [Holstege]')
+    labels.append('%s\n%s' % ('Netprophet 2.0', 'using known motif'))
+
+
+
+    # dir_sub = 'yeast_network_raw_holstege_np_bart_motif_incorporated/fire_scer/analysis_binding_overlap/'
+    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_tf_merged.txt')
+    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_robust10_tf_merged.txt')
+    # fns.append(dir_network + dir_sub + 'analysis.'+ parsed.range +'.combined_np_bart_motif_zscore15_tf_merged.txt')
+
+    # colors = ['k:', 'r', 'g', 'b']
+    # labels = []
+    # labels.append('chance')
+    # labels.append('NP + BART + motifs')
+    # labels.append('NP + BART + motifs 100%_robust')
+    # labels.append('NP + BART + motifs z_score > 15')
 
     """ Figure setup """
     

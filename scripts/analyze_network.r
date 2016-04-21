@@ -34,11 +34,12 @@ evaluateEvidSupport <- function(predictedNetwork, goldNetwork, tfs, genes, rank_
     goldNetwork <- filter_auto(goldNetwork, tfs, genes)
     # predictedNetwork <- filter_auto(predictedNetwork, tfs, genes)
 
-    gold_inds <- which(apply(goldNetwork,1,max)>0)
+    gold_row_inds <- which(apply(goldNetwork,1,max)>0)
+    gold_col_inds <- which(apply(goldNetwork,2,max)>0)
 
     res <- matrix(nrow=5, ncol=length(rank_cutoffs), data=0)
-    res[1,] <- rep(length(goldNetwork[gold_inds,]), length(rank_cutoffs))
-    res[2,] <- rep(sum(goldNetwork[gold_inds,]), length(rank_cutoffs))
+    res[1,] <- rep(length(goldNetwork[gold_row_inds,gold_col_inds]), length(rank_cutoffs))
+    res[2,] <- rep(sum(goldNetwork[gold_row_inds,gold_col_inds]), length(rank_cutoffs))
 
     # evaluate all tf edges
     cutoffs <- abs(predictedNetwork)[order(abs(predictedNetwork), decreasing=TRUE)][rank_cutoffs]
@@ -46,33 +47,16 @@ evaluateEvidSupport <- function(predictedNetwork, goldNetwork, tfs, genes, rank_
 
     for(j in 1:length(cutoffs)) {
         tfs_supported <- c()
-        for (gold_ind in gold_inds) {
-            target_inds <- which(abs(predictedNetwork[gold_ind,]) >= cutoffs[j])
+        for (gold_row_ind in gold_row_inds) {
+            target_inds <- which(abs(predictedNetwork[gold_row_ind,gold_col_inds]) >= cutoffs[j])
             if (length(target_inds) > 0) {
-                tfs_supported <- c(tfs_supported, tfs[gold_ind])
+                tfs_supported <- c(tfs_supported, tfs[gold_row_ind])
             }
             res[3,j] <- res[3,j] + length(target_inds)
-            res[4,j] <- res[4,j] + sum(goldNetwork[gold_ind,][target_inds])
+            res[4,j] <- res[4,j] + sum(goldNetwork[gold_row_ind,gold_col_inds][target_inds])
         }
         res[5,j] <- length(tfs_supported)
-        
-        # predictedSubNet <- abs(predictedNetwork)[gold_inds,]
-        # inds <- which(predictedSubNet > cutoffs[j])
-        # res[3,j] <- length(inds)
-        # res[4,j] <- sum(goldNetwork[inds])
     }
-
-    # # evaluate chip tf edges
-    # cutoffs <- abs(predictedNetwork[gold_inds,])[order(abs(predictedNetwork[gold_inds,]), decreasing=TRUE)][rank_cutoffs]
-    # for(j in 1:length(cutoffs)) {
-    #     if(j == 1) {
-    #             inds <- which(abs(predictedNetwork)[gold_inds,] >= cutoffs[j])
-    #     } else {
-    #             inds <- which(abs(predictedNetwork)[gold_inds,] >= cutoffs[j] & abs(predictedNetwork)[gold_inds,] < cutoffs[j-1])
-    #     }
-    #     res[3,j] <- sum(goldNetwork[gold_inds,][inds])/length(inds)
-    # }
-
     write.table(res, file=fnOutName, col.names=FALSE, row.names=FALSE, quote=FALSE, sep='\t')
 }
 

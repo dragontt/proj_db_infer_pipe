@@ -23,6 +23,7 @@ def parse_args(argv):
     parser.add_argument('-f', '--dir_fimo', dest='dir_fimo', type=str)    
     parser.add_argument('-o', '--fn_adjmtr', dest='fn_adjmtr', type=str)
     parser.add_argument('-s', '--summary_suffix', dest='summary_suffix', type=str, default=".summary")
+    parser.add_argument('-z', '--zscore_thld', dest='zscore_thld', type=float, default=0)
     parsed = parser.parse_args(argv[1:])
     return parsed
 
@@ -48,6 +49,7 @@ def main(argv):
         # get inferred tf and database motif
         linesplit = lines[i].strip().split('\t')
         infer_tf = linesplit[0]
+        zscore = float(linesplit[3])
         if parsed.inference_method == 'cisbp':
             infer_motifs = linesplit[1].split(',')
         elif parsed.inference_method == 'fire':
@@ -55,31 +57,32 @@ def main(argv):
         else:
             sys.exit("Inference method not specified.")
 
-        # get fimo scores for the inferred motif
-        index = numpy.where(rids == infer_tf)[0]
-        if len(index) > 0:
-            if len(infer_motifs) > 1:
-                temp_mtr = numpy.zeros([len(infer_motifs), len(gids)])
-                for j in range(len(infer_motifs)):
-                    fn_motif = parsed.dir_fimo + infer_motifs[j] + parsed.summary_suffix
-                    # fn_motif = parsed.dir_fimo + infer_motifs[j] + ".summary"
-                    # fn_motif = parsed.dir_fimo + infer_motifs[j] + ".summary_mask3_cons_thd_0.5"
+        if zscore >= parsed.zscore_thld:
+            # get fimo scores for the inferred motif
+            index = numpy.where(rids == infer_tf)[0]
+            if len(index) > 0:
+                if len(infer_motifs) > 1:
+                    temp_mtr = numpy.zeros([len(infer_motifs), len(gids)])
+                    for j in range(len(infer_motifs)):
+                        fn_motif = parsed.dir_fimo + infer_motifs[j] + parsed.summary_suffix
+                        # fn_motif = parsed.dir_fimo + infer_motifs[j] + ".summary"
+                        # fn_motif = parsed.dir_fimo + infer_motifs[j] + ".summary_mask3_cons_thd_0.5"
+                        if os.path.isfile(fn_motif):
+                            dict_scores = get_fimo_scores(fn_motif)
+                            for k in range(len(gids)):
+                                t = gids[k]
+                                temp_mtr[j, k] = dict_scores[t] if t in dict_scores else 0
+                    adjmtr[index[0], :] = gmean(temp_mtr).data
+
+                else:
+                    fn_motif = parsed.dir_fimo + infer_motifs[0] + parsed.summary_suffix
+                    # fn_motif = parsed.dir_fimo + infer_motifs[0] + ".summary" 
+                    # fn_motif = parsed.dir_fimo + infer_motifs[0] + ".summary_mask3_cons_thd_0.5"
                     if os.path.isfile(fn_motif):
                         dict_scores = get_fimo_scores(fn_motif)
-                        for k in range(len(gids)):
-                            t = gids[k]
-                            temp_mtr[j, k] = dict_scores[t] if t in dict_scores else 0
-                adjmtr[index[0], :] = gmean(temp_mtr).data
-
-            else:
-                fn_motif = parsed.dir_fimo + infer_motifs[0] + parsed.summary_suffix
-                # fn_motif = parsed.dir_fimo + infer_motifs[0] + ".summary" 
-                # fn_motif = parsed.dir_fimo + infer_motifs[0] + ".summary_mask3_cons_thd_0.5"
-                if os.path.isfile(fn_motif):
-                    dict_scores = get_fimo_scores(fn_motif)
-                    for j in range(len(gids)):
-                        t = gids[j]
-                        adjmtr[index[0], j] = dict_scores[t] if t in dict_scores else 0
+                        for j in range(len(gids)):
+                            t = gids[j]
+                            adjmtr[index[0], j] = dict_scores[t] if t in dict_scores else 0
         
     # write adjmtr file
     write_adjmtr(adjmtr, parsed.fn_adjmtr)
